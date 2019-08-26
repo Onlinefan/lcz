@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProjCityTry2 extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddProjCityTry2 extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function($table) {
-            $table->string('city');
+        Schema::create('products', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddProjCityTry2 extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function($table) {
-            $table->dropColumn('city');
-        });
+        Schema::dropIfExists('products');
     }
 }

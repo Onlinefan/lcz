@@ -3,45 +3,77 @@
 @section('content')
 <div class="middle-box text-center loginscreen   animated fadeInDown">
     <div>
-        <div> <h1 class="logo-name">IN+</h1></div>
-        <h3>Register to IN+</h3>
-        <p>Create account to see it in action.</p>
+        <div> <h1 class="logo-name">ЛЦЗ</h1></div>
+        <h3>Регистрация</h3>
+        <p>Создайте аккаунт</p>
         <form class="m-t" role="form"  method="POST" action="{{ route('register') }}">
-          {{ csrf_field() }}
-          <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            <input type="text" class="form-control" placeholder="Name" name="name" value="{{ old('name') }}" required autofocus>
-            @if ($errors->has('name'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('name') }}</strong>
-                </span>
-            @endif
-          </div>
-          <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
-            @if ($errors->has('email'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-            @endif
-          </div>
-          <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <input type="password" class="form-control" placeholder="Password" name="password" required>
-            @if ($errors->has('password'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-            @endif
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required>
-          </div>
-          <div class="form-group">
-            <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div>
-          </div>
-          <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+            {{ csrf_field() }}
+            <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" placeholder="Введите имя" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                @if ($errors->has('first_name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('first_name') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('second_name') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" placeholder="Введите фамилию" name="second_name" value="{{ old('second_name') }}" required autofocus>
+                @if ($errors->has('second_name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('second_name') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('patronymic') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" placeholder="Введите отчество" name="patronymic" value="{{ old('patronymic') }}" required autofocus>
+                @if ($errors->has('patronymic'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('patronymic') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" placeholder="Введите отдел" name="department" value="{{ old('department') }}" required autofocus>
+                @if ($errors->has('department'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('department') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <input type="email" class="form-control" placeholder="Введите email" name="email" value="{{ old('email') }}" required>
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" placeholder="Введите логин" name="login" value="{{ old('login') }}" required>
+                @if ($errors->has('login'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('login') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                <input type="password" class="form-control" placeholder="Введите пароль" name="password" required>
+                @if ($errors->has('password'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Введите пароль еще раз" name="password_confirmation" required>
+            </div>
+            <div class="form-group">
+                <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Согласен с политикой и условиями </label></div>
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">Зарегистрироваться</button>
 
-          <p class="text-muted text-center"><small>Already have an account?</small></p>
-          <a class="btn btn-sm btn-white btn-block" href="{{ route('login') }}">Login</a>
+            <p class="text-muted text-center"><small>Уже зарегистрированы?</small></p>
+            <a class="btn btn-sm btn-white btn-block" href="{{ route('login') }}">Авторизация</a>
         </form>
         <p class="m-t"> <small>Лаборатория цифрового зрения &copy; {{ date('Y') }}</small> </p>
     </div>
