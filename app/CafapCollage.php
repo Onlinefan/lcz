@@ -5,19 +5,22 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Project model for projects table
+ * Class CafapCollage model for cafap_collage table
  * @package App
  */
-class Project extends Model
+class CafapCollage extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'cafap_collage';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function head()
+    public function cafap()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Cafap');
     }
 }

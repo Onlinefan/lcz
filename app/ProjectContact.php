@@ -5,13 +5,24 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contract model for contracts table
+ * Class ProjectContact model for project_contacts table
  * @package App
  */
-class Contract extends Model
+class ProjectContact extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'project_roads';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

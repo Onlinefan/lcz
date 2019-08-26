@@ -5,13 +5,24 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contract model for contracts table
+ * Class ProjectRegion - model for project_regions table
  * @package App
  */
-class Contract extends Model
+class ProjectRegion extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'project_regions';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function region()
+    {
+        return $this->belongsTo('App\Region');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

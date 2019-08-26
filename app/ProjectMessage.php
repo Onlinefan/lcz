@@ -5,11 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contract model for contracts table
+ * Class ProjectMessage model for project_messages table
  * @package App
  */
-class Contract extends Model
+class ProjectMessage extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'project_messages';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
 
@@ -19,5 +22,13 @@ class Contract extends Model
     public function project()
     {
         return $this->belongsTo('App\Project');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 }

@@ -5,16 +5,24 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Production model for production table
+ * Class ProjectProductCount model for project_products_count
  * @package App
  */
-class Production extends Model
+class ProjectProductCount extends Model
 {
     /** @var string $table - table name */
-    protected $table = 'production';
+    protected $table = 'project_products_count';
 
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

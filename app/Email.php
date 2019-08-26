@@ -5,10 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contact model for contacts table
+ * Class Email model for emails table
  * @package App
  */
-class Contact extends Model
+class Email extends Model
 {
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];

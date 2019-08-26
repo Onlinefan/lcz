@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Production model for production table
+ * Class DocumentServiceStatus model for documents_service_status
  * @package App
  */
-class Production extends Model
+class DocumentServiceStatus extends Model
 {
     /** @var string $table - table name */
-    protected $table = 'production';
+    protected $table = 'documents_service_status';
 
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
@@ -19,8 +19,8 @@ class Production extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function project()
+    public function contract()
     {
-        return $this->belongsTo('App\Project');
+        return $this->belongsTo('App\Contract');
     }
 }

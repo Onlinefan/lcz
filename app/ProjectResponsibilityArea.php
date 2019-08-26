@@ -5,11 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contract model for contracts table
+ * Class ProjectResponsibilityArea model for project_responsibility_area table
  * @package App
  */
-class Contract extends Model
+class ProjectResponsibilityArea extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'project_responsibility_area';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
 

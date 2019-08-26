@@ -5,11 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contact model for contacts table
+ * Class RoadType model for road_types table
  * @package App
  */
-class Contact extends Model
+class RoadType extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'road_types';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
 }

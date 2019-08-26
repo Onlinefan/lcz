@@ -5,10 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Project model for projects table
+ * Class Document model for documents table
  * @package App
  */
-class Project extends Model
+class Document extends Model
 {
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
@@ -16,8 +16,8 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function head()
+    public function project()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Project');
     }
 }

@@ -5,19 +5,22 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Project model for projects table
+ * Class Pir model for pir table
  * @package App
  */
-class Project extends Model
+class Pir extends Model
 {
+    /** @var string $table - table name */
+    protected $table = 'pir';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function head()
+    public function project()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Project');
     }
 }
