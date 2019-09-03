@@ -24,33 +24,17 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>Червяков Андрей</td>
-                                    <td>Ген. директор</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td><a href="mailto:name@email.com">name@email.com</a></td>
-                                    <td>г. Москва, пр. Энергетиков, д. 123, оф. 456</td>
-                                    <td>ООО "Увядшая лилия"</td>
-                                </tr>
-                                <tr>
-                                    <td>Андреев Игорь</td>
-                                    <td>Менеджер по продажам</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td><a href="mailto:noname@noemail.com">noname@noemail.com</a></td>
-                                    <td>г. Сургут, ул. Ленина, д. 123, оф. 456</td>
-                                    <td>ООО "СургутПромСтрой"</td>
-                                </tr>
-                                <tr>
-                                    <td>Пронин Илья</td>
-                                    <td>Начальник отдела продаж</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td>+7(999)123-45-67</td>
-                                    <td><a href="mailto:default@email.com">default@email.com</a></td>
-                                    <td>г. Урюпинск, пр. Стахановцев, д. 123, оф. 456</td>
-                                    <td>ООО "Аленький цветочек"</td>
-                                </tr>
+                                @foreach ($contacts as $contact)
+                                    <tr>
+                                        <td>{{$contact->fio}}</td>
+                                        <td>{{$contact->position}}</td>
+                                        <td>{{$contact->work_number}}</td>
+                                        <td>{{$contact->mobile_number}}</td>
+                                        <td><a href="mailto:name@email.com">{{$contact->email}}</a></td>
+                                        <td>{{$contact->address}}</td>
+                                        <td>{{$contact->company}}</td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
