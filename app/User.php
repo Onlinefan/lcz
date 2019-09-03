@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,5 +44,35 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->hasMany('App\Project');
+    }
+
+    public function findUsers(Request $request)
+    {
+        $query = [];
+        if ($request['first_name']) {
+            $query = $query + ['first_name' => $request['first_name']];
+        }
+
+        if ($request['second_name']) {
+            $query = $query + ['second_name' => $request['second_name']];
+        }
+
+        if ($request['patronymic']) {
+            $query = $query + ['patronymic' => $request['patronymic']];
+        }
+
+        if ($request['login']) {
+            $query = $query + ['login' => $request['login']];
+        }
+
+        if ($request['role']) {
+            $query = $query + ['role' => $request['role']];
+        }
+
+        if ($request['status']) {
+            $query = $query + ['status' => $request['status']];
+        }
+
+        return $this->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->where($query)->get();
     }
 }

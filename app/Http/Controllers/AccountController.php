@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Account;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
@@ -12,9 +14,19 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('accounts');
+        if (empty($request)) {
+            $users = DB::table('users')->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->get();
+        }
+        else {
+            $user = new User;
+            $users = $user->findUsers($request);
+        }
+        return view('accounts', [
+            'users' => $users,
+            'request' => $request
+        ]);
     }
 
     /**
@@ -51,15 +63,22 @@ class AccountController extends Controller
         return $accounts;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Account $account)
+    public function edit(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        if (!empty($request)) {
+            $user->first_name = $request['first_name'] ?: $user->first_name;
+            $user->second_name = $request['second_name'] ?: $user->second_name;
+            $user->patronymic = $request['patronymic'] ?: $user->patronymic;
+            $user->login = $request['login'] ?: $user->login;
+            $user->role = $request['role'] ?: $user->role;
+            $user->status = $request['status'] ?: $user->status;
+            $user->save();
+        }
+
+        return view('account_edit', [
+            'user' => $user
+        ]);
     }
 
     /**

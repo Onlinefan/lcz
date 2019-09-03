@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/projects', 'ProjectController@index')->name('projects');
-Route::get('/accounts', 'AccountController@index')->name('accounts');
+Route::match(['get', 'post'], '/accounts', 'AccountController@index')->name('accounts');
 Route::get('/summary', 'SummaryController@index')->name('summary');
 Route::get('/statuses', 'StatusController@index')->name('statuses');
 Route::get('/contracts', 'ContractController@index')->name('contracts');
@@ -32,3 +32,4 @@ Route::get('/projects2', 'Project2Controller@index')->name('projects2');
 Route::get('/funds', 'FundController@index')->name('funds');
 Route::get('/letters', 'LetterController@index')->name('letters');
 Route::resource('/regions', 'RegionController');
+Route::match(['get', 'post'], '/account_edit/{id}', 'AccountController@edit')->name('account_edit');
