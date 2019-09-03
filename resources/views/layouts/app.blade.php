@@ -52,7 +52,7 @@
         'name'=> 'Контакты',
       ),
       array(
-        'route'=> 'production',
+        'route'=> 'production_plan',
         'icon'=> 'industry',
         'name'=> 'План производства',
       ),
