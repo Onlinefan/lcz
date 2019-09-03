@@ -31,5 +31,6 @@ Route::get('/progress', 'ProgressController@index')->name('progress');
 Route::get('/projects2', 'Project2Controller@index')->name('projects2');
 Route::get('/funds', 'FundController@index')->name('funds');
 Route::get('/letters', 'LetterController@index')->name('letters');
+Route::post('/add_letter', 'LetterController@create')->name('add_letter');
 Route::resource('/regions', 'RegionController');
 Route::match(['get', 'post'], '/account_edit/{id}', 'AccountController@edit')->name('account_edit');

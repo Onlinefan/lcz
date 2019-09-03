@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Email;
 use App\Letter;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class LetterController extends Controller
      */
     public function index()
     {
-        return view('letters');
+        $emails = Email::all();
+        return view('letters', [
+            'emails' => $emails
+        ]);
     }
 
     /**
@@ -22,9 +26,20 @@ class LetterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        if (!empty($request)) {
+            $email = new Email();
+            $email->type = $request['type'];
+            $email->number = $request['number'];
+            $email->email_date = date('Y-m-d', strtotime($request['email_date']));
+            $email->theme = $request['theme'];
+            $email->status = $request['status'];
+            $email->recipient = $request['recipient'];
+            $email->save();
+        }
+
+        return redirect('/letters');
     }
 
     /**
