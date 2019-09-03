@@ -23,11 +23,11 @@
                     </h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">2 520 654 000 </h1>
+                    <h1 class="no-margins">{{(int)$contracts->contract_sum}}</h1>
                     <div class="progress progress-mini">
-                        <div style="width: 48%;" class="progress-bar"></div>
+                        <div style="width: {{($signPercent->count/$contracts->contract_count)*100}}%;" class="progress-bar"></div>
                     </div>
-                    <div class="stat-percent font-bold text-success">83 <i class="fa fa-bolt"></i></div>
+                    <div class="stat-percent font-bold text-success">{{$contracts->contract_count}} <i class="fa fa-bolt"></i></div>
                     <small>Количество контрактов</small>
                 </div>
             </div>
@@ -38,11 +38,11 @@
                     <h5>Поступления</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">1 520 654 000</h1>
+                    <h1 class="no-margins">{{(int)$incomes->income_sum}}</h1>
                     <div class="progress progress-mini">
                         <div style="width: 58%;" class="progress-bar progress-bar-danger"></div>
                     </div>
-                    <div class="stat-percent font-bold text-info">2 150 000 <i class="fa fa-level-up"></i></div>
+                    <div class="stat-percent font-bold text-info">{{$incomes->income_count}} <i class="fa fa-level-up"></i></div>
                     <small>Выставлено счетов </small>
                 </div>
             </div>
@@ -221,19 +221,14 @@
                 <div class="ibox-content">
                     <div>
                         <p>
-                            <button class="btn btn-success btn-facebook btn-outline" type="button"><i class="fa fa-rss"></i>&nbsp;&nbsp;Сводная по проектам</button>
-                            <button class="btn btn-warning " type="button"><i class="fa fa-shield"></i>&nbsp;Проекты</button>
-                            <button class="btn btn-success " type="button"><i class="fa fa-user"></i>&nbsp;Проекты на РП</button>
-                            <button class="btn btn-danger " type="button"><i class="fa fa-bell"></i>&nbsp;Реестр договоров</button>
-                            <button class="btn btn-info " type="button"><i class="fa fa-phone"></i>&nbsp;Контакты</button>
-                            <button class="btn btn-primary " type="button"><i class="fa fa-warning"></i>&nbsp;План производства</button>
-
-                            <a class="btn btn-white">
-                                Реестр ЛОП
-                            </a>
-                            <a class="btn btn-white">
-                                Архив АКТов
-                            </a>
+                            <a class="btn btn-success btn-facebook btn-outline" href="/summary"><i class="fa fa-rss"></i>&nbsp;&nbsp;Сводная по проектам</a>
+                            <a class="btn btn-warning " href="/projects"><i class="fa fa-shield"></i>&nbsp;Проекты</a>
+                            <a class="btn btn-success " href="statuses"><i class="fa fa-user"></i>&nbsp;Проекты на РП</a>
+                            <a class="btn btn-danger " href="/contracts"><i class="fa fa-bell"></i>&nbsp;Реестр договоров</a>
+                            <a class="btn btn-info " href="/contacts"><i class="fa fa-phone"></i>&nbsp;Контакты</a>
+                            <a class="btn btn-primary " href="/production"><i class="fa fa-warning"></i>&nbsp;План производства</a>
+                            <a class="btn btn-white" href="/openings"> Реестр ЛОП</a>
+                            <a class="btn btn-white"> Архив АКТов</a>
                         </p>
                     </div>
                 </div>
@@ -431,7 +426,8 @@
                                     "RU-VGG": 550,
                                     "RU-DA": 200,
                                     "RU-BRY": 120,
-                                    "RU-SMO": 2000
+                                    "RU-SMO": 2000,
+                                    "RU-KIR": 5
                                 };
 
                                 $('#world-map').vectorMap({
