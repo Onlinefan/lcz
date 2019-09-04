@@ -18,43 +18,24 @@
                             <table class="table table-striped table-bordered table-hover dataTables-example1">
                                 <thead>
                                 <tr>
-                                    <th>Иванов И.</th>
-                                    <th>Петров П.</th>
-                                    <th>Егоров Е.</th>
-                                    <th>Алексеев А.</th>
-                                    <th>Сергеев С.</th>
+                                    @if (isset($tableHead['realization']))
+                                        @foreach ($tableHead['realization'] as $head)
+                                            <th>{{$head}}</th>
+                                        @endforeach
+                                    @endif
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Индия (пилот)</td>
-                                    <td>Самара (пилот)</td>
-                                </tr>
-                                <tr>
-                                    <td>Тамбов ВГК</td>
-                                    <td>Псков (пилот)</td>
-                                    <td>Мурманск (ПИР)</td>
-                                    <td></td>
-                                    <td>Архангельск (Коперник)</td>
-                                </tr>
-                                <tr>
-                                    <td>Лен. область</td>
-                                    <td></td>
-                                    <td>Казань (пилот)</td>
-                                    <td></td>
-                                    <td>Алтай</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Кисловодск</td>
-                                </tr>
+                                    @if (isset($tableBody['realization']))
+                                        @for ($project = 0; $project < $maxCountReal; $project++)
+                                            <tr>
+                                                @foreach ($tableBody['realization'] as $body)
+                                                    <td>{{isset($body[$project]) ? $body[$project] : ''}}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endfor
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -66,43 +47,24 @@
                             <table class="table table-striped table-bordered table-hover dataTables-example2">
                                 <thead>
                                 <tr>
-                                    <th>Иванов И.</th>
-                                    <th>Петров П.</th>
-                                    <th>Егоров Е.</th>
-                                    <th>Алексеев А.</th>
-                                    <th>Сергеев С.</th>
+                                    @if (isset($tableHead['exploitation']))
+                                        @foreach ($tableHead['exploitation'] as $head)
+                                            <th>{{$head}}</th>
+                                        @endforeach
+                                    @endif
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Индия (пилот)</td>
-                                    <td>Самара (пилот)</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Псков (пилот)</td>
-                                    <td>Мурманск (ПИР)</td>
-                                    <td></td>
-                                    <td>Архангельск (Коперник)</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Казань (пилот)</td>
-                                    <td></td>
-                                    <td>Алтай</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Кисловодск</td>
-                                </tr>
+                                    @if (isset($tableBody['exploitation']))
+                                        @for ($project = 0; $project < $maxCountExp; $project++)
+                                            <tr>
+                                                @foreach ($tableBody['exploitation'] as $body)
+                                                    <td>{{isset($body[$project]) ? $body[$project] : ''}}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endfor
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -114,43 +76,24 @@
                             <table class="table table-striped table-bordered table-hover dataTables-example3">
                                 <thead>
                                 <tr>
-                                    <th>Иванов И.</th>
-                                    <th>Петров П.</th>
-                                    <th>Егоров Е.</th>
-                                    <th>Алексеев А.</th>
-                                    <th>Сергеев С.</th>
+                                    @if (isset($tableHead['finished']))
+                                        @foreach ($tableHead['finished'] as $head)
+                                            <th>{{$head}}</th>
+                                        @endforeach
+                                    @endif
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Прикамье</td>
-                                    <td>Индия (пилот)</td>
-                                    <td>Самара (пилот)</td>
-                                </tr>
-                                <tr>
-                                    <td>Тамбов ВГК</td>
-                                    <td>Псков (пилот)</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Архангельск (Коперник)</td>
-                                </tr>
-                                <tr>
-                                    <td>Лен. область</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Алтай</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Кисловодск</td>
-                                </tr>
+                                    @if (isset($tableBody['finished']))
+                                        @for ($project = 0; $project < $maxCountFin; $project++)
+                                            <tr>
+                                                @foreach ($tableBody['finished'] as $body)
+                                                    <td>{{isset($body[$project]) ? $body[$project] : ''}}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endfor
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
