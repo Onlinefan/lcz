@@ -31,4 +31,17 @@ class ProjectProductCount extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public static function createRecords($arProducts, $projectId)
+    {
+        foreach ($arProducts['product_id'] as $key => $productId) {
+            self::createRecord($productId, $arProducts['count'][$key], $projectId);
+        }
+    }
+
+    public static function createRecord($productId, $count, $projectId)
+    {
+        $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count]);
+        $projectProduct->save();
+    }
 }

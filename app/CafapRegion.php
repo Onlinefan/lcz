@@ -31,4 +31,17 @@ class CafapRegion extends Model
     {
         return $this->belongsTo('App\Region');
     }
+
+    public static function createRecords($arRegions, $cafapId)
+    {
+        foreach ($arRegions as $regionId) {
+            self::createRecord($regionId, $cafapId);
+        }
+    }
+
+    public static function createRecord($regionId, $cafapId)
+    {
+        $cafapRegion = new CafapRegion(['region_id' => $regionId, 'cafap_id' => $cafapId]);
+        $cafapRegion->save();
+    }
 }

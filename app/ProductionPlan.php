@@ -39,4 +39,30 @@ class ProductionPlan extends Model
     {
         return $this->belongsTo('App\Product');
     }
+
+    public static function createRecords($arProductionPlan, $arProductionFiles, $project)
+    {
+        foreach ($arProductionPlan['month'] as $key => $month) {
+            $fileStart = new File();
+            $fileStartName = File::createName($project->name);
+            $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileStartName);
+
+            $fileEnd = new File();
+            $fileEndName = File::createName($project->name);
+            $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileEndName);
+
+            $productionPlan = new ProductionPlan([
+                'month' => $month,
+                'region_id' => $arProductionPlan['region_id'][$key],
+                'product_id' => $arProductionPlan['product_id'][$key],
+                'project_id' => $project->id,
+                'rk_count' => $arProductionPlan['rk_count'][$key],
+                'date_shipping' => $arProductionPlan['date_shipping'][$key],
+                'priority' => $arProductionPlan['priority'][$key],
+                'preliminary_calculation_equipment' => $fileStart->id,
+                'final_calculation_equipment' => $fileEnd->id
+            ]);
+            $productionPlan->save();
+        }
+    }
 }

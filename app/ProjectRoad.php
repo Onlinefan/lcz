@@ -31,4 +31,17 @@ class ProjectRoad extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public static function createRecords($arRoads, $projectId)
+    {
+        foreach ($arRoads['road_id'] as $key => $roadId) {
+            self::createRecord($roadId, $arRoads['count'][$key], $projectId);
+        }
+    }
+
+    public static function createRecord($roadId, $count, $projectId)
+    {
+        $projectRoad = new ProjectRoad(['project_id' => $projectId, 'road_id' => $roadId, 'count' => $count]);
+        $projectRoad->save();
+    }
 }

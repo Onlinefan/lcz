@@ -14,6 +14,7 @@
 @endsection
 
 @section('sidebar-menu')
+
   <ul class="nav metismenu" id="side-menu" style="padding-left:0px;">
     @foreach (array(
       array(
@@ -72,7 +73,7 @@
         'name'=> 'Статус реализации проекта',
       ),
       array(
-        'route'=> 'projects2',
+        'route'=> 'edit-project',
         'icon'=> 'tasks',
         'name'=> 'Создание/редактирование проекта',
       ),

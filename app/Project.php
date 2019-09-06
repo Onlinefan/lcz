@@ -20,4 +20,19 @@ class Project extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function createRecord()
+    {
+        $this->code = 'somecode';
+        $this->save();
+        $codeStr = strval($this->id);
+        while (strlen($codeStr) < 4) {
+            $codeStr = '0' . $codeStr;
+        }
+
+        $this->code = 'ID' . $codeStr;
+        $this->save();
+
+        return $this;
+    }
 }

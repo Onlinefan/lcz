@@ -23,4 +23,20 @@ class ProjectResponsibilityArea extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public static function createRecord($arResponsibility, $projectId)
+    {
+        $projectResponsibility = new ProjectResponsibilityArea([
+            'project_id' => $projectId,
+            'examination' => isset($arResponsibility['examination_other']) ? $arResponsibility['examination_other'] : $arResponsibility['examination_main'],
+            'smr' => isset($arResponsibility['smr_other']) ? $arResponsibility['smr_other'] : $arResponsibility['smr_main'],
+            'installation' => isset($arResponsibility['installation_other']) ? $arResponsibility['installation_other'] : $arResponsibility['installation_main'],
+            'pnr' => isset($arResponsibility['pnr_other']) ? $arResponsibility['pnr_other'] : $arResponsibility['pnr_main'],
+            'support_permission' => isset($arResponsibility['support_permission_other']) ? $arResponsibility['support_permission_other'] : $arResponsibility['support_permission_main'],
+            'tu_220' => isset($arResponsibility['tu_220_other']) ? $arResponsibility['tu_220_other'] : $arResponsibility['tu_220_main'],
+            'tu_communication' => isset($arResponsibility['tu_communication_other']) ? $arResponsibility['tu_communication_other'] : $arResponsibility['tu_communication_main']
+        ]);
+
+        $projectResponsibility->save();
+    }
 }

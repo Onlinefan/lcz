@@ -23,4 +23,20 @@ class CafapCollage extends Model
     {
         return $this->belongsTo('App\Cafap');
     }
+
+    public static function createRecords($arCollage, $cafapId, $project)
+    {
+        foreach ($arCollage as $collage) {
+            $file = new File();
+            $fileName = File::createName($project->name);
+            $file->createFile($collage, public_path('/Проекты/' . $project->code . '/Управление проектом/Коллаж/'), $fileName);
+            self::createRecord($cafapId, $file->id);
+        }
+    }
+
+    public static function createRecord($cafapId, $fileId)
+    {
+        $collage = new CafapCollage(['cafap_id' => $cafapId, 'file' => $fileId]);
+        $collage->save();
+    }
 }

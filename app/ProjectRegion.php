@@ -31,4 +31,18 @@ class ProjectRegion extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public static function createRecords($arRegions, $projectId)
+    {
+        foreach ($arRegions as $regionId) {
+            self::createRecord($regionId, $projectId);
+        }
+    }
+
+    public static function createRecord($regionId, $projectId)
+    {
+        $projectRegion = new ProjectRegion(['project_id' => $projectId, 'region_id' => $regionId]);
+        $projectRegion->country_id = $projectRegion->region->country_id;
+        $projectRegion->save();
+    }
 }

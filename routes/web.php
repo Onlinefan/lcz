@@ -28,7 +28,7 @@ Route::get('/production_plan', 'ProductionPlanController@index')->name('producti
 Route::get('/openings', 'OpeningController@index')->name('openings');
 Route::get('/home2', 'Home2Controller@index')->name('home2');
 Route::get('/progress', 'ProgressController@index')->name('progress');
-Route::get('/projects2', 'Project2Controller@index')->name('projects2');
+Route::get('/edit-project', 'ProjectController@create')->name('edit-project');
 Route::get('/funds', 'FundController@index')->name('funds');
 Route::get('/letters', 'LetterController@index')->name('letters');
 Route::post('/add_letter', 'LetterController@create')->name('add_letter');
@@ -36,3 +36,4 @@ Route::resource('/regions', 'RegionController');
 Route::match(['get', 'post'], '/account_edit/{id}', 'AccountController@edit')->name('account_edit');
 Route::match(['get', 'post'], '/add_production_plan', 'ProductionPlanController@createView')->name('add_production_plan');
 Route::match(['get', 'post'], '/add_production_plan_to_table', 'ProductionPlanController@create')->name('add_production_plan');
+Route::match(['get', 'post'], '/add-project', 'ProjectController@add')->name('add-project');
