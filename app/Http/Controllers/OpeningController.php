@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Opening;
+use App\Project;
 use Illuminate\Http\Request;
 
 class OpeningController extends Controller
@@ -14,7 +15,10 @@ class OpeningController extends Controller
      */
     public function index()
     {
-        return view('openings');
+        $projects = Project::all();
+        return view('openings', [
+            'projects' => $projects
+        ]);
     }
 
     /**

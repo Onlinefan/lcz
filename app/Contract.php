@@ -49,4 +49,9 @@ class Contract extends Model
         $this->project_id = $project->id;
         $this->save();
     }
+
+    public function lppFile()
+    {
+        return $this->belongsTo('App\File', 'lpp');
+    }
 }

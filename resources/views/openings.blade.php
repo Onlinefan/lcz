@@ -28,32 +28,29 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>Никифоров Иван</td>
-                                    <td>Текст 1</td>
-                                    <td>Центральный</td>
-                                    <td>Обслуживание</td>
-                                    <td>Положительная</td>
-                                    <td>Автоматическое</td>
-                                    <td>7657.00</td>
-                                    <td>Проектирование</td>
-                                    <td><a href="#">Ссылка 1</a></td>
-                                    <td><a href="#">Ссылка 2</a></td>
-                                    <td><a href="#">Ссылка 3</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Абрамов Михаил</td>
-                                    <td>Текст 2</td>
-                                    <td>Северо-Западный</td>
-                                    <td>Обслуживание</td>
-                                    <td>Положительная</td>
-                                    <td>Автоматическое</td>
-                                    <td>34243.00</td>
-                                    <td>Проектирование</td>
-                                    <td><a href="#">Ссылка 4</a></td>
-                                    <td><a href="#">Ссылка 5</a></td>
-                                    <td><a href="#">Ссылка 6</a></td>
-                                </tr>
+                                @foreach ($projects as $project)
+                                    <tr>
+                                        <td>{{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}</td>
+                                        <td>{{$project->name}}</td>
+                                        <td>
+                                            @foreach ($project->regions as $region)
+                                                {{$region->region->name}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($project->serviceType as $serviceType)
+                                                {{$serviceType->serviceType->name}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>{{$project->contract->lcz_role}}</td>
+                                        <td>Автоматическое</td>
+                                        <td>{{$project->contract->amount}}</td>
+                                        <td>{{$project->status}}</td>
+                                        <td><a href="#">Ссылка 1</a></td>
+                                        <td><a href="/download?path={{substr($project->contract->lppFile->path, strripos($project->contract->lppFile->path, 'Проекты/')) . $project->contract->lppFile->file_name}}">{{$project->contract->lppFile->file_name}}</a></td>
+                                        <td><a href="#">Ссылка 3</a></td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -29,4 +29,9 @@ class ProjectServiceType extends Model
         $model = new ProjectServiceType(['project_id' => $projectId, 'service_type_id' => $typeId]);
         $model->save();
     }
+
+    public function serviceType()
+    {
+        return $this->belongsTo('App\ServiceType', 'service_type_id');
+    }
 }

@@ -37,3 +37,4 @@ Route::match(['get', 'post'], '/account_edit/{id}', 'AccountController@edit')->n
 Route::match(['get', 'post'], '/add_production_plan', 'ProductionPlanController@createView')->name('add_production_plan');
 Route::match(['get', 'post'], '/add_production_plan_to_table', 'ProductionPlanController@create')->name('add_production_plan');
 Route::match(['get', 'post'], '/add-project', 'ProjectController@add')->name('add-project');
+Route::get('/download', 'DownloadController@index')->name('download');

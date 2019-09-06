@@ -21,6 +21,21 @@ class Project extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function regions()
+    {
+        return $this->hasMany('App\ProjectRegion', 'project_id');
+    }
+
+    public function serviceType()
+    {
+        return $this->hasMany('App\ProjectServiceType', 'project_id');
+    }
+
+    public function contract()
+    {
+        return $this->hasOne('App\Contract');
+    }
+
     public function createRecord()
     {
         $this->code = 'somecode';
