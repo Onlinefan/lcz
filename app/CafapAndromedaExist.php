@@ -26,5 +26,6 @@ class CafapAndromedaExist extends Model
     public static function createRecord($regionId, $cafapId, $exist)
     {
         $cafapAndromeda = new CafapAndromedaExist(['region_id' => $regionId, 'cafap_id' => $cafapId, 'exist' => $exist]);
+        $cafapAndromeda->save();
     }
 }

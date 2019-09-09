@@ -43,12 +43,18 @@
                                             @endforeach
                                         </td>
                                         <td>{{$project->contract->lcz_role}}</td>
-                                        <td>Автоматическое</td>
+                                        <td>
+                                            @foreach ($project->products as $product)
+                                                @if (intval($product->count) !== 0)
+                                                    {{$product->product->name}}<br>
+                                                @endif
+                                            @endforeach
+                                        </td>
                                         <td>{{$project->contract->amount}}</td>
                                         <td>{{$project->status}}</td>
-                                        <td><a href="#">Ссылка 1</a></td>
+                                        <td><a href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Проекты/')) . $project->contract->lopFile->file_name}}">{{$project->contract->lopFile->file_name}}</a></td>
                                         <td><a href="/download?path={{substr($project->contract->lppFile->path, strripos($project->contract->lppFile->path, 'Проекты/')) . $project->contract->lppFile->file_name}}">{{$project->contract->lppFile->file_name}}</a></td>
-                                        <td><a href="#">Ссылка 3</a></td>
+                                        <td><a href="{{$project->contract->purchase_reference}}" target="_blank">Ссылка на закупку</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

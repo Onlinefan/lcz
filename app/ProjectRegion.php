@@ -34,14 +34,14 @@ class ProjectRegion extends Model
 
     public static function createRecords($arRegions, $projectId)
     {
-        foreach ($arRegions as $regionId) {
-            self::createRecord($regionId, $projectId);
+        foreach ($arRegions['id'] as $key => $regionId) {
+            self::createRecord($regionId, $projectId, $arRegions['address_count'][$key]);
         }
     }
 
-    public static function createRecord($regionId, $projectId)
+    public static function createRecord($regionId, $projectId, $addressCount)
     {
-        $projectRegion = new ProjectRegion(['project_id' => $projectId, 'region_id' => $regionId]);
+        $projectRegion = new ProjectRegion(['project_id' => $projectId, 'region_id' => $regionId, 'address_count' => $addressCount]);
         $projectRegion->country_id = $projectRegion->region->country_id;
         $projectRegion->save();
     }

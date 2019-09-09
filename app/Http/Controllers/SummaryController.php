@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\ProjectCountry;
 use App\Summary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SummaryController extends Controller
 {
@@ -14,6 +16,7 @@ class SummaryController extends Controller
      */
     public function index()
     {
+        $projectCountries = ProjectCountry::select(DB::raw('country_id, count(*) as project_count, '));
         return view('summary');
     }
 

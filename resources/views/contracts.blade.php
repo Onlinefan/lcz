@@ -87,7 +87,7 @@
                                         <td>{{$project->contract->original_status === 'Отсутствует' ?: 'Есть'}}</td>
                                         <td>{{$project->contract->service_terms}}</td>
 
-                                        @if ($project->contract->documentsServiceStatus)
+                                        @if (!$project->contract->documentsServiceStatus->isEmpty())
                                             @if ($project->contract->documentsServiceStatus[0]->is_documents)
                                                 {{-- Статус выставленных документов --}}
                                                 <td>{{$project->contract->documentsServiceStatus[0]->payment_document}}</td>

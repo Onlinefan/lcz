@@ -19,7 +19,7 @@ class ProjectServiceType extends Model
 
     public static function createRecords($arTypes, $projectId)
     {
-        foreach ($arTypes['service_type_id'] as $typeId) {
+        foreach ($arTypes as $typeId) {
             self::createRecord($typeId, $projectId);
         }
     }

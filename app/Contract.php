@@ -64,4 +64,9 @@ class Contract extends Model
     {
         return $this->hasOne('App\FinancialStatus', 'contract_id');
     }
+
+    public function lopFile()
+    {
+        return $this->belongsTo('App\File', 'lop');
+    }
 }

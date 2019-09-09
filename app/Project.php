@@ -55,4 +55,9 @@ class Project extends Model
 
         return $this;
     }
+
+    public function products()
+    {
+        return $this->hasMany('App\ProjectProductCount');
+    }
 }

@@ -120,12 +120,16 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Регион</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="Region[]">
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="Region[id][]">
                                         @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Количество адресов</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" name="Region[address_count][]">
                                 </div>
                             </div>
 
