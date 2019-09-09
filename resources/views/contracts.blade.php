@@ -59,80 +59,75 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>ABCD</td>
-                                    <td><span class="label label-secondary">СЗФО</span></td>
-                                    <td>Иванов И.</td>
-                                    <td>Северо-Запад</td>
-                                    <td>Текст</td>
-                                    <td>ООО "Рога и Копыта"</td>
+                                @foreach ($projects as $project)
+                                    <tr>
+                                        <td>{{$project->id}}</td>
+                                        <td>{{$project->code}}</td>
+                                        <td>
+                                            @foreach ($project->countries as $country)
+                                                <span class="label label-secondary">{{$country->country->name}}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>{{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}</td>
+                                        <td>
+                                            @foreach ($project->regions as $region)
+                                                {{$region->region->name}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>{{$project->name}}</td>
+                                        <td>{{$project->contract->customer}}</td>
 
-                                    <td><span class="label label-secondary">Электронный</span></td>
-                                    <td>123</td>
-                                    <td>12345</td>
-                                    <td>12.12.2018</td>
-                                    <td>16.12.2018</td>
-                                    <td>Подписан</td>
-                                    <td><span class="label label-secondary">Оригинален</span></td>
-                                    <td>Есть</td>
-                                    <td>Есть</td>
+                                        <td><span class="label label-secondary">{{$project->type}}</span></td>
+                                        <td>{{$project->contract->article}}</td>
+                                        <td>{{$project->contract->number}}</td>
+                                        <td>{{$project->contract->date_start}}</td>
+                                        <td>{{$project->contract->date_end}}</td>
+                                        <td>{{$project->contract->sign_status}}</td>
+                                        <td><span class="label label-secondary">{{$project->contract->original_status}}</span></td>
+                                        <td>{{$project->contract->original_status === 'Отсутствует' ?: 'Есть'}}</td>
+                                        <td>{{$project->contract->service_terms}}</td>
 
-                                    <td>1234</td>
-                                    <td>12345</td>
-                                    <td>12.12.2018</td>
-                                    <td>100500.00</td>
-                                    <td><a href="#">Скан 1</a></td>
+                                        @if ($project->contract->documentsServiceStatus)
+                                            @if ($project->contract->documentsServiceStatus[0]->is_documents)
+                                                {{-- Статус выставленных документов --}}
+                                                <td>{{$project->contract->documentsServiceStatus[0]->payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->number_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->date_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->count_payment_document}}</td>
+                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[0]->scan->path, strripos($project->contract->documentsServiceStatus[0]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[0]->scan->file_name}}">{{$project->contract->documentsServiceStatus[0]->scan->file_name}}</a></td>
 
-                                    <td>2345</td>
-                                    <td>23456</td>
-                                    <td>16.12.2018</td>
-                                    <td>100600.00</td>
-                                    <td><a href="#">Скан 2</a></td>
+                                                {{-- Статус обслуживания --}}
+                                                <td>{{$project->contract->documentsServiceStatus[1]->payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->number_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->date_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->count_payment_document}}</td>
+                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[1]->scan->path, strripos($project->contract->documentsServiceStatus[1]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[1]->scan->file_name}}">{{$project->contract->documentsServiceStatus[1]->scan->file_name}}</a></td>
+                                            @else
+                                                {{-- Статус выставленных документов --}}
+                                                <td>{{$project->contract->documentsServiceStatus[1]->payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->number_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->date_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[1]->count_payment_document}}</td>
+                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[1]->scan->path, strripos($project->contract->documentsServiceStatus[1]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[1]->scan->file_name}}">{{$project->contract->documentsServiceStatus[1]->scan->file_name}}</a></td>
 
-                                    <td>2560.00</td>
-                                    <td>12560.00</td>
-                                    <td>1678.00</td>
-                                    <td>5673.00</td>
-                                    <td>234789.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>BCDE</td>
-                                    <td><span class="label label-secondary">ЦФО</span></td>
-                                    <td>Петров П.</td>
-                                    <td>Центральный</td>
-                                    <td>Текст</td>
-                                    <td>ООО "Рога и Копыта"</td>
+                                                {{-- Статус обслуживания --}}
+                                                <td>{{$project->contract->documentsServiceStatus[0]->payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->number_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->date_payment_document}}</td>
+                                                <td>{{$project->contract->documentsServiceStatus[0]->count_payment_document}}</td>
+                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[0]->scan->path, strripos($project->contract->documentsServiceStatus[0]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[0]->scan->file_name}}">{{$project->contract->documentsServiceStatus[0]->scan->file_name}}</a></td>
+                                            @endif
+                                        @endif
 
-                                    <td><span class="label label-secondary">Бумажный</span></td>
-                                    <td>456</td>
-                                    <td>456789</td>
-                                    <td>08.01.2019</td>
-                                    <td>01.09.2019</td>
-                                    <td>Не подписан</td>
-                                    <td><span class="label label-secondary">Не оригинален</span></td>
-                                    <td>Нет</td>
-                                    <td>Нет</td>
-
-                                    <td>4567</td>
-                                    <td>23451</td>
-                                    <td>01.01.2019</td>
-                                    <td>7675.00</td>
-                                    <td><a href="#">Скан 3</a></td>
-
-                                    <td>6536</td>
-                                    <td>58798</td>
-                                    <td>01.07.2019</td>
-                                    <td>8765.00</td>
-                                    <td><a href="#">Скан 4</a></td>
-
-                                    <td>58787.00</td>
-                                    <td>76576.00</td>
-                                    <td>3554.00</td>
-                                    <td>5464.00</td>
-                                    <td>656898.00</td>
-                                </tr>
+                                        @if ($project->contract->financialStatus)
+                                            <td>{{$project->contract->financialStatus->contract_amount}}</td>
+                                            <td>{{$project->contract->financialStatus->fulfilled_obligations}}</td>
+                                            <td>{{$project->contract->financialStatus->amount_of_paid_work}}</td>
+                                            <td>{{$project->contract->financialStatus->amount_revenue_contract}}</td>
+                                            <td>{{$project->contract->financialStatus->project_costs}}</td>
+                                        @endif
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -23,4 +23,9 @@ class DocumentServiceStatus extends Model
     {
         return $this->belongsTo('App\Contract');
     }
+
+    public function scan()
+    {
+        return $this->belongsTo('App\File', 'scan_payment_document');
+    }
 }

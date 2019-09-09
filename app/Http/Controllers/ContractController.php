@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contract;
+use App\Project;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -14,7 +15,10 @@ class ContractController extends Controller
      */
     public function index()
     {
-        return view('contracts');
+        $projects = Project::all();
+        return view('contracts', [
+            'projects' => $projects
+        ]);
     }
 
     /**

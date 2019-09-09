@@ -36,6 +36,11 @@ class Project extends Model
         return $this->hasOne('App\Contract');
     }
 
+    public function countries()
+    {
+        return $this->hasMany('App\ProjectCountry', 'project_id');
+    }
+
     public function createRecord()
     {
         $this->code = 'somecode';
