@@ -11,11 +11,11 @@
                     <div class="ibox-content">
                         <h4>
                             <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="64px" />
-                            Кочкин Павел
+                            {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
                         </h4>
-                        <h4>Код проекта: ABCDEFGH</h4>
-                        <h1>Алтай</h1>
-                        <h4>Статус проекта: Реализация</h4>
+                        <h4>Код проекта: {{$project->code}}</h4>
+                        <h1>{{$project->name}}</h1>
+                        <h4>Статус проекта: {{$project->status}}</h4>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         <h5>Сумма контракта</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">400 000 000</h1>
+                        <h1 class="no-margins">{{$project->contract->amount}}</h1>
                         <div class="progress progress-mini">
                             <div style="width: 83%;" class="progress-bar"></div>
                         </div>
@@ -58,12 +58,12 @@
                         <h5>Дедлайн</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">143 дня</h1>
+                        <h1 class="no-margins">{{$dateDiff}} дней</h1>
                         <div class="progress progress-mini">
-                            <div style="width: 75%;" class="progress-bar progress-bar-warning"></div>
+                            <div style="width: {{round($datePercent)}}%;" class="progress-bar progress-bar-warning"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">75%</div>
-                        <small>01.01.2019 - 01.07.2019</small>
+                        <div class="stat-percent font-bold text-success">{{round($datePercent)}}%</div>
+                        <small>{{$project->contract->date_start}} - {{$project->contract->date_end}}</small>
                     </div>
                 </div>
             </div>
@@ -88,9 +88,9 @@
             <div class="col-lg-12">
                 <div class="ibox">
                     <div class="ibox-content">
-                        <button class="btn btn-outline btn-default">Дагестан</button>
-                        <button class="btn btn-outline btn-default">Астрахань</button>
-                        <button class="btn btn-outline btn-default">Калмыкия</button>
+                        @foreach ($projectRegions as $region)
+                            <button class="btn btn-outline btn-default">{{$region->region->name}}</button>
+                        @endForeach
 
                         <p>Здесь должен быть прогресс-лайн "Статус реализации".</p>
 
@@ -241,14 +241,18 @@
                             </table>
                         </div>
                         <br>
-                        <button class="btn btn-outline btn-info">ДДС по контракту</button>
-                        <button class="btn btn-outline btn-info">Письма</button>
+                        <a class="btn btn-outline btn-info" href="/funds">ДДС по контракту</a>
+                        <a class="btn btn-outline btn-info" href="/letters">Письма</a>
                         <button class="btn btn-outline btn-info">Передать в эксплуатацию</button>
-                        <button class="btn btn-outline btn-info">Завершить проект</button>
-                        <button class="btn btn-outline btn-info">Сводная по проектам</button>
-                        <button class="btn btn-outline btn-info">Реестр договоров</button>
-                        <button class="btn btn-outline btn-info">Контакты</button>
-                        <button class="btn btn-outline btn-info">План производства</button>
+                        @if ($project->status !== 'Завершен')
+                            <a class="btn btn-outline btn-info">Завершить проект</a>
+                        @else
+                                <a class="btn btn-outline btn-info">Возобновить</a>
+                        @endif
+                        <a class="btn btn-outline btn-info" href="/summary">Сводная по проектам</a>
+                        <a class="btn btn-outline btn-info" href="/contracts">Реестр договоров</a>
+                        <a class="btn btn-outline btn-info" href="/contacts">Контакты</a>
+                        <a class="btn btn-outline btn-info" href="/production_plan">План производства</a>
                         <button class="btn btn-outline btn-info">Схема передачи данных</button>
                         <button class="btn btn-outline btn-info">Дислокации и направления</button>
                         <button class="btn btn-outline btn-info">Коллажи</button>
@@ -259,7 +263,7 @@
                         <button class="btn btn-outline btn-info">Устав проекта</button>
                         <button class="btn btn-outline btn-info">Контракт</button>
                         <button class="btn btn-outline btn-info">Тех. задание</button>
-                        <button class="btn btn-outline btn-info">Документы по проекту</button>
+                        <a class="btn btn-outline btn-info" href="#">Документы по проекту</a>
                     </div>
                 </div>
             </div>

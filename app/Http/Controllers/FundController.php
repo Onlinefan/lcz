@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\CostPlan;
 use App\Fund;
+use App\IncomePlan;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
@@ -14,7 +16,12 @@ class FundController extends Controller
      */
     public function index()
     {
-        return view('funds');
+        $incomePlans = IncomePlan::all();
+        $costPlans = CostPlan::all();
+        return view('funds', [
+            'incomePlans' => $incomePlans,
+            'costPlans' => $costPlans
+        ]);
     }
 
     /**
