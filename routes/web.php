@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/projects', 'ProjectController@index')->name('projects');
-Route::match(['get', 'post'], '/accounts', 'AccountController@index')->name('accounts');
+Route::get('/accounts', 'AccountController@index')->name('accounts');
 Route::get('/summary', 'SummaryController@index')->name('summary');
 Route::get('/statuses', 'StatusController@index')->name('statuses');
 Route::get('/contracts', 'ContractController@index')->name('contracts');
@@ -38,3 +38,11 @@ Route::match(['get', 'post'], '/add_production_plan', 'ProductionPlanController@
 Route::match(['get', 'post'], '/add_production_plan_to_table', 'ProductionPlanController@create')->name('add_production_plan');
 Route::match(['get', 'post'], '/add-project', 'ProjectController@add')->name('add-project');
 Route::get('/download', 'DownloadController@index')->name('download');
+Route::match(['get', 'post'], '/add-income-plan', 'FundController@addIncomePlan')->name('add-income-plan');
+Route::post('/create-income-plan', 'FundController@createIncomePlan')->name('create-income-plan');
+Route::match(['get', 'post'], '/add-cost-plan', 'FundController@addCostPlan')->name('add-cost-plan');
+Route::post('/create-cost-plan', 'FundController@createCostPlan')->name('create-cost-plan');
+Route::match(['get', 'post'], '/add-other-document', 'FundController@addOtherContract')->name('add-other-document');
+Route::post('/create-other-document', 'FundController@createOtherContract')->name('create-other-document');
+Route::match(['get', 'post'], '/add-income', 'FundController@addIncome')->name('add-income');
+Route::post('/create-income', 'FundController@createIncome')->name('create-income');

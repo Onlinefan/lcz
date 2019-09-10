@@ -23,4 +23,9 @@ class Income extends Model
     {
         return $this->belongsTo('App\IncomePlan');
     }
+
+    public function documentFile()
+    {
+        return $this->belongsTo('App\File', 'document');
+    }
 }

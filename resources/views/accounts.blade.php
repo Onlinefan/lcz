@@ -3,8 +3,7 @@
     Аккаунты
 @endsection
 @section('content')
-    <form method="POST" action="/accounts">
-        {{csrf_field()}}
+    <form method="get" action="/accounts">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="row">

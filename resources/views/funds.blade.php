@@ -7,11 +7,11 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="tabs-container">
             <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a class="nav-link active" data-toggle="tab" href="#tab-1">Поступления</a></li>
-                <li><a class="nav-link" data-toggle="tab" href="#tab-2">Загрузить план затрат</a></li>
-                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Загрузить иные договоры</a></li>
-                <li><a class="nav-link" data-toggle="tab" href="#tab-4">Добавить платежный документ</a></li>
-                <li><a class="nav-link" data-toggle="tab" href="#tab-5">Зафиксировать затраты</a></li>
+                <li class="active"><a class="nav-link active" data-toggle="tab" href="#tab-1">План поступлений</a></li>
+                <li><a class="nav-link" data-toggle="tab" href="#tab-2">План затрат</a></li>
+                <li><a class="nav-link" data-toggle="tab" href="#tab-3">Иные договоры</a></li>
+                <li><a class="nav-link" data-toggle="tab" href="#tab-4">Фактические поступления</a></li>
+                <li><a class="nav-link" data-toggle="tab" href="#tab-5">Фактические затраты</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" id="tab-1" class="tab-pane active">
@@ -32,6 +32,7 @@
                                                         <th>Выставлено (сумма)</th>
                                                         <th>Оплачено (сумма)</th>
                                                         <th>Остаток (сумма)</th>
+                                                        <th>Проект</th>
                                                     </tr>
                                                     </thead>
 
@@ -45,6 +46,7 @@
                                                                 <td>{{$plan->count}}</td>
                                                                 <td>{{$plan->payed}}</td>
                                                                 <td>{{intval($plan->count) - intval($plan->payed)}}</td>
+                                                                <td>{{$plan->project->name}}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -54,59 +56,209 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add-income-plan">Добавить план поступлений</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-2" class="tab-pane">
                     <div class="panel-body">
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>План (сумма)</th>
+                                                        <th>Статья</th>
+                                                        <th>Дата</th>
+                                                        <th>Сумма затрат</th>
+                                                        <th>Комментарий</th>
+                                                        <th>Способ оплаты</th>
+                                                        <th>Остаток (сумма)</th>
+                                                        <th>Проект</th>
+                                                    </tr>
+                                                    </thead>
 
+                                                    <tbody>
+                                                    @foreach ($costPlans as $plan)
+                                                        <tr>
+                                                            <td>{{$plan->plan}}</td>
+                                                            <td>{{$plan->article}}</td>
+                                                            <td>{{$plan->date_cost}}</td>
+                                                            <td>{{$plan->count}}</td>
+                                                            <td>{{$plan->comment}}</td>
+                                                            <td>{{$plan->payment_method}}</td>
+                                                            <td>{{intval($plan->plan) - intval($plan->count)}}</td>
+                                                            <td>{{$plan->project->name}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add-cost-plan">Добавить план затрат</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-3" class="tab-pane">
                     <div class="panel-body">
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Дата</th>
+                                                        <th>Тип договора</th>
+                                                        <th>Номер договора</th>
+                                                        <th>Основание</th>
+                                                        <th>Контрагент</th>
+                                                        <th>Договор</th>
+                                                        <th>Проект</th>
+                                                    </tr>
+                                                    </thead>
 
+                                                    <tbody>
+                                                    @foreach ($otherDocuments as $document)
+                                                        <tr>
+                                                            <td>{{$document->date_contract}}</td>
+                                                            <td>{{$document->type}}</td>
+                                                            <td>{{$document->number}}</td>
+                                                            <td>{{$document->base}}</td>
+                                                            <td>{{$document->contractor}}</td>
+                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Проекты/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
+                                                            <td>{{$document->project->name}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add-other-document">Добавить документ</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-4" class="tab-pane">
                     <div class="panel-body">
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Платежный документ</th>
+                                                        <th>Сумма платежного документа</th>
+                                                        <th>№ договора</th>
+                                                        <th>№ платежного документа</th>
+                                                        <th>Этап, основание платежа</th>
+                                                        <th>Дата платежного документа</th>
+                                                        <th>Скан</th>
+                                                    </tr>
+                                                    </thead>
 
+                                                    <tbody>
+                                                    @foreach ($incomes as $income)
+                                                        <tr>
+                                                            <td>{{$income->payment_document}}</td>
+                                                            <td>{{$income->count}}</td>
+                                                            <td>{{$income->number}}</td>
+                                                            <td>{{$income->number_payment}}</td>
+                                                            <td>{{$income->plan->name}}/{{$income->plan->stage}}</td>
+                                                            <td>{{$income->date_payment}}</td>
+                                                            <td><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a></td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-5" class="tab-pane">
                     <div class="panel-body">
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Платежный документ</th>
+                                                        <th>Сумма платежного документа</th>
+                                                        <th>№ договора</th>
+                                                        <th>№ платежного документа</th>
+                                                        <th>Этап, основание платежа</th>
+                                                        <th>Дата платежного документа</th>
+                                                        <th>Скан</th>
+                                                    </tr>
+                                                    </thead>
 
+                                                    <tbody>
+                                                    @foreach ($incomes as $income)
+                                                        <tr>
+                                                            <td>{{$income->payment_document}}</td>
+                                                            <td>{{$income->count}}</td>
+                                                            <td>{{$income->number}}</td>
+                                                            <td>{{$income->number_payment}}</td>
+                                                            <td>{{$income->plan->name}}/{{$income->plan->stage}}</td>
+                                                            <td>{{$income->date_payment}}</td>
+                                                            <td><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a></td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page-Level Scripts -->
-    <script>
-        window.addEventListener('DOMContentLoaded', function(){
-            $(document).ready(function(){
-                $('.dataTables-example').DataTable({
-                    pageLength: 25,
-                    responsive: true,
-                    dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        { extend: 'copy'},
-                        {extend: 'csv'},
-                        {extend: 'excel', title: 'Contacts'},
-                        //{extend: 'pdf', title: 'Contacts'},
-
-                        {extend: 'print',
-                            customize: function (win){
-                                $(win.document.body).addClass('white-bg');
-                                $(win.document.body).css('font-size', '10px');
-
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            }
-                        }
-                    ]
-                });
-            });
-        });
-    </script>
 @endsection

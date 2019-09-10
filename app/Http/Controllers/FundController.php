@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Cost;
 use App\CostPlan;
+use App\File;
 use App\Fund;
+use App\Income;
 use App\IncomePlan;
+use App\OtherContract;
+use App\PaymentDocumentType;
+use App\Project;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
@@ -18,9 +24,15 @@ class FundController extends Controller
     {
         $incomePlans = IncomePlan::all();
         $costPlans = CostPlan::all();
+        $otherDocuments = OtherContract::all();
+        $incomes = Income::all();
+        $costs = Cost::all();
         return view('funds', [
             'incomePlans' => $incomePlans,
-            'costPlans' => $costPlans
+            'costPlans' => $costPlans,
+            'otherDocuments' => $otherDocuments,
+            'incomes' => $incomes,
+            'costs' => $costs
         ]);
     }
 
@@ -29,9 +41,83 @@ class FundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createIncomePlan(Request $request)
     {
-        //
+        $incomePlan = new IncomePlan($request->all());
+        $incomePlan->save();
+        return redirect('/funds');
+    }
+
+    public function addIncomePlan()
+    {
+        $projects = Project::all();
+        return view('add-income-plan', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function addCostPlan()
+    {
+        $projects = Project::all();
+        return view('add-cost-plan', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createCostPlan(Request $request)
+    {
+        $costPlan = new CostPlan($request->all());
+        $costPlan->save();
+        return redirect('/funds');
+    }
+
+    public function addOtherContract()
+    {
+        $projects = Project::all();
+        return view('add-other-document', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createOtherContract(Request $request)
+    {
+        $otherContract = new OtherContract($request->all());
+        $project = Project::find($request->get('project_id'));
+        $file = new File();
+        $fileName = File::createName($project->name);
+        $file->createFile($request->file('contract'),
+            public_path('Проекты/' . $project->code . '/Договоры (иные)/' . $request->get('base') . '/' . $request->get('number') . ' ' . $request->get('contractor') . '/'),
+            $fileName);
+        $otherContract->contract = $file->id;
+        $otherContract->save();
+        return redirect('/funds');
+    }
+
+    public function addIncome()
+    {
+        $documentTypes = PaymentDocumentType::all();
+        $incomePlans = IncomePlan::all();
+        return view('add-income', [
+            'documentTypes' => $documentTypes,
+            'incomePlans' => $incomePlans
+        ]);
+    }
+
+    public function createIncome(Request $request)
+    {
+        $income = new Income($request->all());
+        $incomePlan = IncomePlan::find($request->get('plan_id'));
+        $incomePlan->payed = floatval($incomePlan->payed) + floatval($request->get('count'));
+        $project = $incomePlan->project;
+        $file = new File();
+        $fileName = File::createName($project->name);
+        $file->createFile($request->file('document'),
+            public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $request->get('payment_document') . '/'),
+            $fileName);
+        $income->document = $file->id;
+        $income->save();
+        $incomePlan->save();
+        return redirect('/funds');
     }
 
     /**

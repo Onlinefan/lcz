@@ -811,7 +811,7 @@
     <!-- Page-Level Scripts -->
 
     <script>
-        window.addEventListener('DOMContentLoaded', function(){;
+        window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function() {
 
 
