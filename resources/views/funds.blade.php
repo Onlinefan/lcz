@@ -228,19 +228,23 @@
                                                         <th>Этап, основание платежа</th>
                                                         <th>Дата платежного документа</th>
                                                         <th>Скан</th>
+                                                        <th>Способ оплаты</th>
+                                                        <th>Комментарий</th>
                                                     </tr>
                                                     </thead>
 
                                                     <tbody>
-                                                    @foreach ($incomes as $income)
+                                                    @foreach ($costs as $cost)
                                                         <tr>
-                                                            <td>{{$income->payment_document}}</td>
-                                                            <td>{{$income->count}}</td>
-                                                            <td>{{$income->number}}</td>
-                                                            <td>{{$income->number_payment}}</td>
-                                                            <td>{{$income->plan->name}}/{{$income->plan->stage}}</td>
-                                                            <td>{{$income->date_payment}}</td>
-                                                            <td><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a></td>
+                                                            <td>{{$cost->payment_document}}</td>
+                                                            <td>{{$cost->count}}</td>
+                                                            <td>{{$cost->number}}</td>
+                                                            <td>{{$cost->number_payment}}</td>
+                                                            <td>{{$cost->plan->project->name}}/{{$cost->plan->article}}</td>
+                                                            <td>{{$cost->date_payment}}</td>
+                                                            <td><a href="/download?path={{substr($cost->documentFile->path, strripos($cost->documentFile->path, 'Проекты/')) . $cost->documentFile->file_name}}">{{$cost->documentFile->file_name}}</a></td>
+                                                            <td>{{$cost->payment_method}}</td>
+                                                            <td>{{$cost->comment}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -252,7 +256,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>
+                                    <a class="btn btn-primary btn-sm" href="/add-cost">Добавить затраты</a>
                                 </div>
                             </div>
                         </div>

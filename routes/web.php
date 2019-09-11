@@ -46,3 +46,5 @@ Route::match(['get', 'post'], '/add-other-document', 'FundController@addOtherCon
 Route::post('/create-other-document', 'FundController@createOtherContract')->name('create-other-document');
 Route::match(['get', 'post'], '/add-income', 'FundController@addIncome')->name('add-income');
 Route::post('/create-income', 'FundController@createIncome')->name('create-income');
+Route::match(['get', 'post'], '/add-cost', 'FundController@addCost')->name('add-cost');
+Route::post('/create-cost', 'FundController@createCost')->name('create-cost');

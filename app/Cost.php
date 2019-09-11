@@ -20,4 +20,9 @@ class Cost extends Model
     {
         return $this->belongsTo('App\CostPlan');
     }
+
+    public function documentFile()
+    {
+        return $this->belongsTo('App\File', 'document');
+    }
 }

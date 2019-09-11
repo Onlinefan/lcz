@@ -120,6 +120,33 @@ class FundController extends Controller
         return redirect('/funds');
     }
 
+    public function addCost()
+    {
+        $documentTypes = PaymentDocumentType::all();
+        $costPlans = CostPlan::all();
+        return view('add-cost', [
+            'documentTypes' => $documentTypes,
+            'costPlans' => $costPlans
+        ]);
+    }
+
+    public function createCost(Request $request)
+    {
+        $cost = new Cost($request->all());
+        $costPlan = CostPlan::find($request->get('plan_id'));
+        $costPlan->count = floatval($costPlan->count) + floatval($request->get('count'));
+        $project = $costPlan->project;
+        $file = new File();
+        $fileName = File::createName($project->name);
+        $file->createFile($request->file('document'),
+            public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (затраты)/' . $request->get('payment_document') . '/'),
+            $fileName);
+        $cost->document = $file->id;
+        $cost->save();
+        $costPlan->save();
+        return redirect('/funds');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
