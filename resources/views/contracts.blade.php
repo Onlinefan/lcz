@@ -84,39 +84,35 @@
                                         <td>{{$project->contract->date_end}}</td>
                                         <td>{{$project->contract->sign_status}}</td>
                                         <td><span class="label label-secondary">{{$project->contract->original_status}}</span></td>
-                                        <td>{{$project->contract->original_status === 'Отсутствует' ?: 'Есть'}}</td>
+                                        <td>{{$project->contract->original_status === 'Отсутствует' ? 'Отсутствует' : 'Есть'}}</td>
                                         <td>{{$project->contract->service_terms}}</td>
 
-                                        @if (!$project->contract->documentsServiceStatus->isEmpty())
-                                            @if ($project->contract->documentsServiceStatus[0]->is_documents)
-                                                {{-- Статус выставленных документов --}}
-                                                <td>{{$project->contract->documentsServiceStatus[0]->payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->number_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->date_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->count_payment_document}}</td>
-                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[0]->scan->path, strripos($project->contract->documentsServiceStatus[0]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[0]->scan->file_name}}">{{$project->contract->documentsServiceStatus[0]->scan->file_name}}</a></td>
+                                        @if ($project->contract->documentStatus)
+                                            <td>{{$project->contract->documentStatus->payment_document}}</td>
+                                            <td>{{$project->contract->documentStatus->number_payment_document}}</td>
+                                            <td>{{$project->contract->documentStatus->date_payment_document}}</td>
+                                            <td>{{$project->contract->documentStatus->count_payment_document}}</td>
+                                            <td><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Проекты/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        @endif
 
-                                                {{-- Статус обслуживания --}}
-                                                <td>{{$project->contract->documentsServiceStatus[1]->payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->number_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->date_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->count_payment_document}}</td>
-                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[1]->scan->path, strripos($project->contract->documentsServiceStatus[1]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[1]->scan->file_name}}">{{$project->contract->documentsServiceStatus[1]->scan->file_name}}</a></td>
-                                            @else
-                                                {{-- Статус выставленных документов --}}
-                                                <td>{{$project->contract->documentsServiceStatus[1]->payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->number_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->date_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[1]->count_payment_document}}</td>
-                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[1]->scan->path, strripos($project->contract->documentsServiceStatus[1]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[1]->scan->file_name}}">{{$project->contract->documentsServiceStatus[1]->scan->file_name}}</a></td>
-
-                                                {{-- Статус обслуживания --}}
-                                                <td>{{$project->contract->documentsServiceStatus[0]->payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->number_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->date_payment_document}}</td>
-                                                <td>{{$project->contract->documentsServiceStatus[0]->count_payment_document}}</td>
-                                                <td><a href="/download?path={{substr($project->contract->documentsServiceStatus[0]->scan->path, strripos($project->contract->documentsServiceStatus[0]->scan->path, 'Проекты/')) . $project->contract->documentsServiceStatus[0]->scan->file_name}}">{{$project->contract->documentsServiceStatus[0]->scan->file_name}}</a></td>
-                                            @endif
+                                        @if ($project->contract->serviceStatus)
+                                            <td>{{$project->contract->serviceStatus->payment_document}}</td>
+                                            <td>{{$project->contract->serviceStatus->number_payment_document}}</td>
+                                            <td>{{$project->contract->serviceStatus->date_payment_document}}</td>
+                                            <td>{{$project->contract->serviceStatus->count_payment_document}}</td>
+                                            <td><a href="/download?path={{substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Проекты/')) . $project->contract->serviceStatus->scan->file_name}}">{{$project->contract->serviceStatus->scan->file_name}}</a></td>
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         @endif
 
                                         @if ($project->contract->financialStatus)
@@ -125,6 +121,12 @@
                                             <td>{{$project->contract->financialStatus->amount_of_paid_work}}</td>
                                             <td>{{$project->contract->financialStatus->amount_revenue_contract}}</td>
                                             <td>{{$project->contract->financialStatus->project_costs}}</td>
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         @endif
                                     </tr>
                                 @endforeach
@@ -133,6 +135,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-7 col-sm-offset-2">
+                <a class="btn btn-primary btn-sm" href="/add-document-status">Добавить статус документов</a>
+                <a class="btn btn-danger btn-sm" href="/add-service-status">Добавить статус обслуживания</a>
+                <a class="btn btn-white btn-sm" href="/add-financial-status">Добавить финансовый статус</a>
             </div>
         </div>
     </div>

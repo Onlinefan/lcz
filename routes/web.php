@@ -48,3 +48,9 @@ Route::match(['get', 'post'], '/add-income', 'FundController@addIncome')->name('
 Route::post('/create-income', 'FundController@createIncome')->name('create-income');
 Route::match(['get', 'post'], '/add-cost', 'FundController@addCost')->name('add-cost');
 Route::post('/create-cost', 'FundController@createCost')->name('create-cost');
+Route::match(['get', 'post'], '/add-document-status', 'ContractController@addDocumentStatus')->name('add-document-status');
+Route::post('/create-document-status', 'ContractController@createDocumentStatus')->name('create-document-status');
+Route::match(['get', 'post'], '/add-service-status', 'ContractController@addServiceStatus')->name('add-service-status');
+Route::post('/create-service-status', 'ContractController@createServiceStatus')->name('create-service-status');
+Route::match(['get', 'post'], '/add-financial-status', 'ContractController@addFinancialStatus')->name('add-financial-status');
+Route::post('/create-financial-status', 'ContractController@createFinancialStatus')->name('create-financial-status');

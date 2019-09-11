@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Contract;
+use App\DocumentStatus;
+use App\File;
+use App\FinancialStatus;
 use App\Project;
+use App\ServiceStatus;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -29,6 +33,65 @@ class ContractController extends Controller
     public function create()
     {
         //
+    }
+
+    public function addDocumentStatus()
+    {
+        $projects = Project::all();
+        return view('add-document-status', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createDocumentStatus(Request $request)
+    {
+        $documentStatus = new DocumentStatus($request->all());
+        $project = Contract::find($request->get('contract_id'))->project;
+        $file = new File();
+        $fileName = File::createName($project->name);
+        $file->createFile($request->file('scan_payment_document'),
+            public_path('Проекты/' . $project->code . '/Управление проектом/Статус выставленных документов/' . $request->get('payment_document') . '/'),
+            $fileName);
+        $documentStatus->scan_payment_document = $file->id;
+        $documentStatus->save();
+        return redirect('/contracts');
+    }
+
+    public function addServiceStatus()
+    {
+        $projects = Project::all();
+        return view('add-service-status', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createServiceStatus(Request $request)
+    {
+        $serviceStatus = new ServiceStatus($request->all());
+        $project = Contract::find($request->get('contract_id'))->project;
+        $file = new File();
+        $fileName = File::createName($project->name);
+        $file->createFile($request->file('scan_payment_document'),
+            public_path('Проекты/' . $project->code . '/Управление проектом/Статус обслуживания/' . $request->get('payment_document') . '/'),
+            $fileName);
+        $serviceStatus->scan_payment_document = $file->id;
+        $serviceStatus->save();
+        return redirect('/contracts');
+    }
+
+    public function addFinancialStatus()
+    {
+        $projects = Project::all();
+        return view('add-financial-status', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createFinancialStatus(Request $request)
+    {
+        $financialStatus = new FinancialStatus($request->all());
+        $financialStatus->save();
+        return redirect('/contracts');
     }
 
     /**

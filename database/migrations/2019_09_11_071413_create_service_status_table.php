@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDocumentsStatusTable extends Migration
+class CreateServiceStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateDocumentsStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents_service_status', function (Blueprint $table) {
+        Schema::create('service_status', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('payment_document');
-            $table->integer('number_payment_document');
-            $table->date('date_payment_document');
-            $table->float('count_payment_document');
-            $table->string('scan_payment_document');
+            $table->string('number_payment_document');
+            $table->float('count_payment_document', 15, 2);
+            $table->integer('scan_payment_document');
             $table->integer('contract_id');
+            $table->foreign('scan_payment_document')->references('id')->on('files')->onDelete('cascade');
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
-            $table->boolean('is_documents');
             $table->timestamps();
         });
     }
@@ -34,6 +33,10 @@ class CreateDocumentsStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents_service_status');
+        Schema::table('service_status', function (Blueprint $table) {
+            $table->dropForeign(['scan_payment_document']);
+            $table->dropForeign(['contract_id']);
+        });
+        Schema::dropIfExists('service_status');
     }
 }

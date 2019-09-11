@@ -66,7 +66,7 @@ class AccountController extends Controller
     public function edit(Request $request, $id)
     {
         $user = User::find($id);
-        if (!empty($request)) {
+        if (!empty($request) && $request->method() === 'POST') {
             $user->first_name = $request['first_name'] ?: $user->first_name;
             $user->second_name = $request['second_name'] ?: $user->second_name;
             $user->patronymic = $request['patronymic'] ?: $user->patronymic;
@@ -74,6 +74,7 @@ class AccountController extends Controller
             $user->role = $request['role'] ?: $user->role;
             $user->status = $request['status'] ?: $user->status;
             $user->save();
+            return redirect('/accounts');
         }
 
         return view('account_edit', [

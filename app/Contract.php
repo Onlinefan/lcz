@@ -55,9 +55,14 @@ class Contract extends Model
         return $this->belongsTo('App\File', 'lpp');
     }
 
-    public function documentsServiceStatus()
+    public function documentStatus()
     {
-        return $this->hasMany('App\DocumentServiceStatus', 'contract_id');
+        return $this->hasOne('App\DocumentStatus', 'contract_id');
+    }
+
+    public function serviceStatus()
+    {
+        return $this->hasOne('App\ServiceStatus', 'contract_id');
     }
 
     public function financialStatus()
