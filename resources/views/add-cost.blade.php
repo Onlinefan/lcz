@@ -71,12 +71,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата платежного документа</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label" for="comment">Комментарий</label>
                         <div class="col-sm-10">
                             <input type="text" id="comment" name="comment" value="" placeholder="Введите комментарий" class="form-control">

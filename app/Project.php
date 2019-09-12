@@ -60,4 +60,14 @@ class Project extends Model
     {
         return $this->hasMany('App\ProjectProductCount');
     }
+
+    public function incomePlans()
+    {
+        return $this->hasMany('App\IncomePlan', 'project_id');
+    }
+
+    public function costPlans()
+    {
+        return $this->hasMany('App\CostPlan', 'project_id');
+    }
 }

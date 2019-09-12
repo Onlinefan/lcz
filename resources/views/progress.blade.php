@@ -30,9 +30,9 @@
                     <div class="ibox-content">
                         <h1 class="no-margins">{{$project->contract->amount}}</h1>
                         <div class="progress progress-mini">
-                            <div style="width: 83%;" class="progress-bar"></div>
+                            <div style="width: {{round($income/$project->contract->amount*100)}}%;" class="progress-bar"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">83%</div>
+                        <div class="stat-percent font-bold text-success">{{round($income/$project->contract->amount*100)}}%</div>
                         <small>Поступления</small>
                     </div>
                 </div>
@@ -43,11 +43,11 @@
                         <h5>Выставлено счетов</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">120 654 000</h1>
+                        <h1 class="no-margins">{{$countPlan}}</h1>
                         <div class="progress progress-mini">
-                            <div style="width: 56%;" class="progress-bar progress-bar-danger"></div>
+                            <div style="width: {{$countPlan ? round($cost/$countPlan*100) : 0}}%;" class="progress-bar progress-bar-danger"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">56%</div>
+                        <div class="stat-percent font-bold text-success">{{$countPlan ? round($cost/$countPlan*100) : 0}}%</div>
                         <small>Затраты</small>
                     </div>
                 </div>
@@ -73,11 +73,11 @@
                         <h5>Проектов в реализации</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">3</h1>
+                        <h1 class="no-margins">{{$realizationCount}}</h1>
                         <div class="progress progress-mini">
-                            <div style="width: 66%;" class="progress-bar progress-bar-info"></div>
+                            <div style="width: {{$realizationCount ? round($finishCount/$realizationCount*100) : 0}}%;" class="progress-bar progress-bar-info"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">2</div>
+                        <div class="stat-percent font-bold text-success">{{$finishCount}}</div>
                         <small>Завершено</small>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ use App\RoadType;
 use App\SmrInstallation;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProgressController extends Controller
 {
@@ -27,6 +28,32 @@ class ProgressController extends Controller
     public function index($id = 34)
     {
         $project = Project::find($id);
+        $countStatuses = Project::select(DB::raw('status, count(*) as status_count'))
+            ->where(['head_id' => auth()->user()->id])
+            ->groupBy(['status'])->get();
+        $income = 0;
+        $cost = 0;
+        $countPlan = 0;
+        $realizationCount = 0;
+        $finishCount = 0;
+
+        foreach ($countStatuses as $status) {
+            if ($status->status === 'Реализация') {
+                $realizationCount = $status->status_count;
+            } else if ($status->status === 'Завершен') {
+                $finishCount = $status->status_count;
+            }
+        }
+
+        foreach ($project->incomePlans as $incomePlan) {
+            $income += floatval($incomePlan->payed);
+        }
+
+        foreach ($project->costPlans as $costPlan) {
+            $cost += floatval($costPlan->count);
+            $countPlan += floatval($costPlan->plan);
+        }
+
         $projectStatus = ProjectStatus::where(['project_id' => $id])->get();
         $initialData = InitialData::where(['project_id' => $id])->get();
         $pir = Pir::where(['project_id' => $id])->get();
@@ -55,7 +82,12 @@ class ProgressController extends Controller
             'datePercent' =>$datePercent,
             'projectRegions' => $projectRegions,
             'product' => $products,
-            'roadTypes' => $roadTypes
+            'roadTypes' => $roadTypes,
+            'income' => $income,
+            'cost' => $cost,
+            'countPlan' => $countPlan,
+            'realizationCount' => $realizationCount,
+            'finishCount' => $finishCount
         ]);
     }
 
