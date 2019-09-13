@@ -50,6 +50,24 @@ class Contract extends Model
         $this->save();
     }
 
+    public function updateRecord($files, $project)
+    {
+        $original = $this->getOriginal();
+        foreach (self::$contractFiles as $column => $path) {
+            if (isset($files[$column])) {
+                $file = File::find($original[$column]);
+                unlink(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                $newFile = new File();
+                $fileName = File::createName($project->name);
+                $newFile->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $this->$column = $newFile->id;
+                $file->delete();
+            }
+        }
+
+        $this->save();
+    }
+
     public function lppFile()
     {
         return $this->belongsTo('App\File', 'lpp');
@@ -73,5 +91,40 @@ class Contract extends Model
     public function lopFile()
     {
         return $this->belongsTo('App\File', 'lop');
+    }
+
+    public function decreeScan()
+    {
+        return $this->belongsTo('App\File', 'decree_scan');
+    }
+
+    public function projectCharter()
+    {
+        return $this->belongsTo('App\File', 'project_charter');
+    }
+
+    public function planChart()
+    {
+        return $this->belongsTo('App\File', 'plan_chart');
+    }
+
+    public function lppListFile()
+    {
+        return $this->belongsTo('App\File', 'decision_sheet');
+    }
+
+    public function contractFile()
+    {
+        return $this->belongsTo('App\File', 'file');
+    }
+
+    public function technicalTask()
+    {
+        return $this->belongsTo('App\File', 'technical_task');
+    }
+
+    public function riskFile()
+    {
+        return $this->belongsTo('App\File', 'risks');
     }
 }

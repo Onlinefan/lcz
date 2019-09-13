@@ -65,4 +65,27 @@ class ProductionPlan extends Model
             $productionPlan->save();
         }
     }
+
+    public static function updateRecords($arProductionPlan, $arProductionFiles, $project)
+    {
+        $oldProductionPlan = ProductionPlan::where(['project_id' => $project->id])->get();
+        foreach ($oldProductionPlan as $plan) {
+            unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $plan->preliminaryCalculation->file_name));
+            unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $plan->finalCalculation->file_name));
+            $plan->preliminaryCalculation->delete();
+            $plan->finalCalculation->delete();
+            $plan->delete();
+        }
+        self::createRecords($arProductionPlan, $arProductionFiles, $project);
+    }
+
+    public function preliminaryCalculation()
+    {
+        return $this->belongsTo('App\File', 'preliminary_calculation_equipment');
+    }
+
+    public function finalCalculation()
+    {
+        return $this->belongsTo('App\File', 'final_calculation_equipment');
+    }
 }

@@ -44,4 +44,10 @@ class ProjectRoad extends Model
         $projectRoad = new ProjectRoad(['project_id' => $projectId, 'road_id' => $roadId, 'count' => $count]);
         $projectRoad->save();
     }
+
+    public static function updateRecords($arRoads, $projectId)
+    {
+        ProjectRoad::where(['project_id' => $projectId])->delete();
+        self::createRecords($arRoads, $projectId);
+    }
 }

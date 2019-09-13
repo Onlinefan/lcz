@@ -44,4 +44,10 @@ class CafapRegion extends Model
         $cafapRegion = new CafapRegion(['region_id' => $regionId, 'cafap_id' => $cafapId]);
         $cafapRegion->save();
     }
+
+    public static function updateRecords($arRegions, $cafapId)
+    {
+        CafapRegion::where(['cafap_id' => $cafapId])->delete();
+        self::createRecords($arRegions, $cafapId);
+    }
 }

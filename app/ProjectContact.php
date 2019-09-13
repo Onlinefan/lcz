@@ -52,4 +52,10 @@ class ProjectContact extends Model
             $projectContacts->save();
         }
     }
+
+    public static function updateRecords($arContacts, $projectId)
+    {
+        ProjectContact::where(['project_id' => $projectId])->delete();
+        self::createRecords($arContacts, $projectId);
+    }
 }

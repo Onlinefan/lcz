@@ -34,4 +34,10 @@ class ProjectServiceType extends Model
     {
         return $this->belongsTo('App\ServiceType', 'service_type_id');
     }
+
+    public static function updateRecords($arTypes, $projectId)
+    {
+        ProjectServiceType::where(['project_id' => $projectId])->delete();
+        self::createRecords($arTypes, $projectId);
+    }
 }

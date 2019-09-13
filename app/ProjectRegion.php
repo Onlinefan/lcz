@@ -45,4 +45,10 @@ class ProjectRegion extends Model
         $projectRegion->country_id = $projectRegion->region->country_id;
         $projectRegion->save();
     }
+
+    public static function updateRecords($arRegions, $projectId)
+    {
+        ProjectRegion::where(['project_id' => $projectId])->delete();
+        self::createRecords($arRegions, $projectId);
+    }
 }

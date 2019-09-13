@@ -44,4 +44,10 @@ class ProjectCountry extends Model
         $projectCountry = new ProjectCountry(['project_id' => $projectId, 'country_id' => $countryId]);
         $projectCountry->save();
     }
+
+    public static function updateRecords($arCountries, $projectId)
+    {
+        ProjectCountry::where(['project_id' => $projectId])->delete();
+        self::createRecords($arCountries, $projectId);
+    }
 }

@@ -73,9 +73,9 @@
         'name'=> 'Статус реализации проекта',
       ),
       array(
-        'route'=> 'edit-project',
+        'route'=> 'create-project',
         'icon'=> 'tasks',
-        'name'=> 'Создание/редактирование проекта',
+        'name'=> 'Создание проекта',
       ),
       array(
         'route'=> 'funds',

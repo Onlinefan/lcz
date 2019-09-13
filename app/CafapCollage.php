@@ -39,4 +39,22 @@ class CafapCollage extends Model
         $collage = new CafapCollage(['cafap_id' => $cafapId, 'file' => $fileId]);
         $collage->save();
     }
+
+    public static function updateRecords($arCollage, $cafapId, $project)
+    {
+        if (isset($arCollage)) {
+            $oldCollage = CafapCollage::where(['cafap_id' => $cafapId])->get();
+            foreach ($oldCollage as $collage) {
+                unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Коллаж' . $collage->collageFile->file_name));
+                $collage->collageFile->delete();
+            }
+
+            self::createRecords($arCollage, $cafapId, $project);
+        }
+    }
+
+    public function collageFile()
+    {
+        return $this->belongsTo('App\File', 'file');
+    }
 }

@@ -1,16 +1,12 @@
 @extends('layouts.app')
 @section('page-title')
-    @if (isset($_GET['id']))
-        Редактирование проекта
-    @else
-        Создание проекта
-    @endif
+    Редактирование проекта
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="tabs-container">
-            <form enctype="multipart/form-data" method="post" action="/add-project">
+            <form enctype="multipart/form-data" method="post" action="/edit-project-id">
                 {{csrf_field()}}
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a class="nav-link active" data-toggle="tab" data-tab="1" href="#tab-1">Исходные данные по контракту</a></li>
@@ -19,19 +15,21 @@
                     <li><a class="nav-link" data-toggle="tab" data-tab="4" href="#tab-4">План производства</a></li>
                     <li><a class="nav-link" data-toggle="tab" data-tab="5" href="#tab-5">Контакты</a></li>
                 </ul>
+                <input type="hidden" name="Project[id]" value="{{$project->id}}">
                 <div class="tab-content">
                     <div role="tabpanel" id="tab-1" class="tab-pane active">
                         <div class="panel-body">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Номер приказа</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[decree_number]">
+                                    <input type="text" class="form-control" name="Contract[decree_number]" value="{{$project->contract->decree_number}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Скан приказа</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->decreeScan->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[decree_scan]">
                                     </div>
@@ -42,9 +40,11 @@
                                 <label class="col-sm-2 col-form-label">Статус проекта</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Project[status]">
-                                        <option value="Реализация">Реализация</option>
-                                        <option value="Эксплуатация">Эксплуатация</option>
-                                        <option value="Завершен">Завершен</option>
+                                        <option value="Реализация" {{$project->status === 'Реализация' ? 'selected' : ''}}>Реализация</option>
+                                        <option value="Эксплуатация" {{$project->status === 'Эксплуатация' ? 'selected' : ''}}>Эксплуатация</option>
+                                        <option value="Завершен" {{$project->status === 'Завершен' ? 'selected' : ''}}>Завершен</option>
+                                        <option value="Приостановлен" {{$project->status === 'Приостановлен' ? 'selected' : ''}}>Приостановлен</option>
+                                        <option value="Прочее" {{$project->status === 'Прочее' ? 'selected' : ''}}>Прочее</option>
                                     </select>
                                 </div>
                             </div>
@@ -52,28 +52,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дата контракта</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_start]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_start]" value="{{$project->contract->date_start}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дата завершения контракта</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_end]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_end]" value="{{$project->contract->date_end}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дата подписания актов ввода в эксплуатацию</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_sign_acts]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[date_sign_acts]" value="{{$project->contract->date_sign_acts}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Номер договора</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[number]">
+                                    <input type="text" class="form-control" name="Contract[number]" value="{{$project->contract->number}}">
                                 </div>
                             </div>
 
@@ -82,7 +82,7 @@
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Project[head_id]">
                                         @foreach ($users as $user)
-                                            <option value="{{$user->id}}" {{auth()->user()->id === $user->id ? 'selected' : ''}}>{{$user->second_name . ' ' . $user->first_name . ' ' . $user->patronymic}}</option>
+                                            <option value="{{$user->id}}" {{$project->head->id === $user->id ? 'selected' : ''}}>{{$user->second_name . ' ' . $user->first_name . ' ' . $user->patronymic}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -91,57 +91,65 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Контрагент</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[customer]">
+                                    <input type="text" class="form-control" name="Contract[customer]" value="{{$project->contract->customer}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Наименование проекта</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Project[name]">
+                                    <input type="text" class="form-control" name="Project[name]" value="{{$project->name}}">
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Округ</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="Country[]">
-                                        @foreach ($countries as $country)
-                                            <option value="{{$country->id}}">{{$country->name}}</option>
-                                        @endforeach
-                                    </select>
+                            @foreach ($projectCountries as $projectCountry)
+                                <div class="form-group row" data-block="country">
+                                    <label class="col-sm-2 col-form-label">Округ</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="Country[]">
+                                            @foreach ($countries as $country)
+                                                <option value="{{$country->id}}" {{intval($projectCountry->country_id) === intval($country->id) ? 'selected' : ''}}>{{$country->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
 
                             <button type="button" id="countyButtonAdd" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="countyButtonDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="countyButtonDelete" class="btn btn-white btn-sm {{$projectCountries->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Регион</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="Region[id][]">
-                                        @foreach ($regions as $region)
-                                            <option value="{{$region->id}}">{{$region->name}}</option>
-                                        @endforeach
-                                    </select>
+                            @foreach ($projectRegions as $projectRegion)
+                                <div class="form-group row" data-block="region">
+                                    <label class="col-sm-2 col-form-label">Регион</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="Region[id][]">
+                                            @foreach ($regions as $region)
+                                                <option value="{{$region->id}}" {{$projectRegion->region_id === $region->id ? 'selected' : ''}}>{{$region->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label">Количество адресов</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" name="Region[address_count][]" value="{{$projectRegion->address_count}}">
+                                    </div>
                                 </div>
-                                <label class="col-sm-2 col-form-label">Количество адресов</label>
-                                <div class="col-sm-4">
-                                    <input type="number" class="form-control" name="Region[address_count][]">
-                                </div>
-                            </div>
+                            @endforeach
 
                             <button type="button" id="regionButtonAdd" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="regionButtonDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="regionButtonDelete" class="btn btn-white btn-sm {{$projectRegions->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
+
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Тип услуги</label>
                                 <div class="col-sm-10">
                                     @foreach ($serviceTypes as $serviceType)
-                                        <div><label><input type="checkbox" name="ProjectServiceTypes[]" value="{{$serviceType->id}}"> {{$serviceType->name}}</label></div>
+                                        <div><label><input type="checkbox" name="ProjectServiceTypes[]" value="{{$serviceType->id}}"
+                                                @foreach ($projectServiceTypes as $projectServiceType)
+                                                    {{intval($projectServiceType->service_type_id) === $serviceType->id ? 'checked' : ''}}
+                                                @endforeach> {{$serviceType->name}}</label></div>
                                     @endforeach
                                 </div>
                             </div>
@@ -149,7 +157,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Ссылка на закупку</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[purchase_reference]">
+                                    <input type="text" class="form-control" name="Contract[purchase_reference]" value="{{$project->contract->purchase_reference}}">
                                 </div>
                             </div>
 
@@ -157,10 +165,10 @@
                                 <label class="col-sm-2 col-form-label">Условия обслуживания</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Contract[service_terms]">
-                                        <option value="Гарантийное">Гарантийное</option>
-                                        <option value="Аренда">Аренда</option>
-                                        <option value="Тех. обслуживание">Тех. обслуживание</option>
-                                        <option value="От постановлений">От постановлений</option>
+                                        <option value="Гарантийное" {{$project->contract->service_terms === 'Гарантийное' ? 'selected' : ''}}>Гарантийное</option>
+                                        <option value="Аренда" {{$project->contract->service_terms === 'Аренда' ? 'selected' : ''}}>Аренда</option>
+                                        <option value="Тех. обслуживание" {{$project->contract->service_terms === 'Тех. обслуживание' ? 'selected' : ''}}>Тех. обслуживание</option>
+                                        <option value="От постановлений" {{$project->contract->service_terms === 'От постановлений' ? 'selected' : ''}}>От постановлений</option>
                                     </select>
                                 </div>
                             </div>
@@ -169,9 +177,9 @@
                                 <label class="col-sm-2 col-form-label">Роль ЛЦЗ по контракту</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Contract[lcz_role]">
-                                        <option value="Генподряд">Генподряд</option>
-                                        <option value="Субподряд">Субподряд</option>
-                                        <option value="Заказчик">Заказчик</option>
+                                        <option value="Генподряд" {{$project->contract->lcz_role === 'Генподряд' ? 'selected' : ''}}>Генподряд</option>
+                                        <option value="Субподряд" {{$project->contract->lcz_role === 'Субподряд' ? 'selected' : ''}}>Субподряд</option>
+                                        <option value="Заказчик" {{$project->contract->lcz_role === 'Заказчик' ? 'selected' : ''}}>Заказчик</option>
                                     </select>
                                 </div>
                             </div>
@@ -180,11 +188,11 @@
                                 <label class="col-sm-2 col-form-label">Тип договора</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Project[type]">
-                                        <option value="Гос. контракт">Гос. контракт</option>
-                                        <option value="Договор">Договор</option>
-                                        <option value="ДС">ДС</option>
-                                        <option value="Рамочный">Рамочный</option>
-                                        <option value="Пилот">Пилот</option>
+                                        <option value="Гос. контракт" {{$project->type === 'Гос. контракт' ? 'selected' : ''}}>Гос. контракт</option>
+                                        <option value="Договор" {{$project->type === 'Договор' ? 'selected' : ''}}>Договор</option>
+                                        <option value="ДС" {{$project->type === 'ДС' ? 'selected' : ''}}>ДС</option>
+                                        <option value="Рамочный" {{$project->type === 'Рамочный' ? 'selected' : ''}}>Рамочный</option>
+                                        <option value="Пилот" {{$project->type === 'Пилот' ? 'selected' : ''}}>Пилот</option>
                                     </select>
                                 </div>
                             </div>
@@ -193,9 +201,9 @@
                                 <label class="col-sm-2 col-form-label">Статья договора</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Contract[article]">
-                                        <option value="Доходный">Доходный</option>
-                                        <option value="Расходный">Расходный</option>
-                                        <option value="Нулевой">Нулевой</option>
+                                        <option value="Доходный" {{$project->type === 'Доходный' ? 'selected' : ''}}>Доходный</option>
+                                        <option value="Расходный" {{$project->type === 'Расходный' ? 'selected' : ''}}>Расходный</option>
+                                        <option value="Нулевой" {{$project->type === 'Нулевой' ? 'selected' : ''}}>Нулевой</option>
                                     </select>
                                 </div>
                             </div>
@@ -203,7 +211,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Сумма договора</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[amount]">
+                                    <input type="text" class="form-control" name="Contract[amount]" value="{{$project->contract->amount}}">
                                 </div>
                             </div>
 
@@ -211,10 +219,10 @@
                                 <label class="col-sm-2 col-form-label">Статус подписания договора</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Contract[sign_status]">
-                                        <option value="Подписан от ЛЦЗ">Подписан от ЛЦЗ</option>
-                                        <option value="Подписан от Заказчика">Подписан от Заказчика</option>
-                                        <option value="Подписан с обеих сторон">Подписан с обеих сторон</option>
-                                        <option value="Не подписан">Не подписан</option>
+                                        <option value="Подписан от ЛЦЗ" {{$project->contract->sign_status === 'Подписан от ЛЦЗ' ? 'selected' : ''}}>Подписан от ЛЦЗ</option>
+                                        <option value="Подписан от Заказчика" {{$project->contract->sign_status === 'Подписан от Заказчика' ? 'selected' : ''}}>Подписан от Заказчика</option>
+                                        <option value="Подписан с обеих сторон" {{$project->contract->sign_status === 'Подписан с обеих сторон' ? 'selected' : ''}}>Подписан с обеих сторон</option>
+                                        <option value="Не подписан" {{$project->contract->sign_status === 'Не подписан' ? 'selected' : ''}}>Не подписан</option>
                                     </select>
                                 </div>
                             </div>
@@ -223,15 +231,16 @@
                                 <label class="col-sm-2 col-form-label">Статус оригинала</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Contract[original_status]">
-                                        <option value="Отсутствует">Отсутствует</option>
-                                        <option value="Передан в бухгалтерию">Передан в бухгалтерию</option>
+                                        <option value="Отсутствует" {{$project->contract->original_status === 'Отсутствует' ? 'selected' : ''}}>Отсутствует</option>
+                                        <option value="Передан в бухгалтерию" {{$project->contract->original_status === 'Передан в бухгалтерию' ? 'selected' : ''}}>Передан в бухгалтерию</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Устав проекта</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->projectCharter->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[project_charter]">
                                     </div>
@@ -240,7 +249,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">План-график</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->planChart->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[plan_chart]">
                                     </div>
@@ -249,7 +259,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛОП</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->lopFile->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lop]">
                                     </div>
@@ -258,7 +269,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛПП</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->lppFile->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lpp]">
                                     </div>
@@ -267,7 +279,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛПП - Лист решений</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->lppListFile->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[decision_sheet]">
                                     </div>
@@ -276,7 +289,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Контракт</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->contractFile->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[file]">
                                     </div>
@@ -285,7 +299,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Тех. задание</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->technicalTask->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[technical_task]">
                                     </div>
@@ -294,7 +309,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Анализ и управление рисками</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->contract->riskFile->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[risks]">
                                     </div>
@@ -308,48 +324,48 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Произвести оборудование до</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[equipment_produce]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[equipment_produce]" value="{{$project->contract->equipment_produce}}">
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Крайняя дата поставки</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[equipment_supply]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[equipment_supply]" value="{{$project->contract->equipment_supply}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">СМР начать не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[smr_start]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[smr_start]" value="{{$project->contract->smr_start}}">
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">СМР завершить не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[smr_end]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[smr_end]" value="{{$project->contract->smr_end}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Монтаж начать не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[installation_start]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[installation_start]" value="{{$project->contract->installation_start}}">
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Монтаж завершить не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[installation_end]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[installation_end]" value="{{$project->contract->installation_end}}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ПНР начать не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[pnr_start]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[pnr_start]" value="{{$project->contract->pnr_start}}">
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">ПНР завершить не позднее</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[pnr_end]">
+                                    <input type="text" class="form-control fromto__datetime-input" name="Contract[pnr_end]" value="{{$project->contract->pnr_end}}">
                                 </div>
                             </div>
 
@@ -371,24 +387,26 @@
                             <h2>Тип дорог и количество</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row" id="road-group1">
-                                <label class="col-sm-2 col-form-label">Тип дороги</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="ProjectRoad[road_id][]">
-                                        @foreach ($roadTypes as $roadType)
-                                            <option value="{{$roadType->id}}">{{$roadType->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            @foreach ($projectRoads as $projectRoad)
+                                <div class="form-group row" data-block="road">
+                                    <label class="col-sm-2 col-form-label">Тип дороги</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="ProjectRoad[road_id][]">
+                                            @foreach ($roadTypes as $roadType)
+                                                <option value="{{$roadType->id}}" {{intval($projectRoad->road_id) === intval($roadType->id) ? 'selected' : ''}}>{{$roadType->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                <label class="col-sm-2 col-form-label">Количество</label>
-                                <div class="col-sm-4">
-                                    <input type="number" class="form-control" name="ProjectRoad[count][]">
+                                    <label class="col-sm-2 col-form-label">Количество</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" name="ProjectRoad[count][]" value="{{$projectRoad->count}}"}}>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
 
                             <button type="button" id="roadButtonAdd" class="btn btn-white btn-sm col-sm-offset-2">Добавить еще</button>
-                            <button type="button" id="roadButtonDelete" class="btn btn-white btn-sm col-sm-offset-2 hidden">Удалить</button>
+                            <button type="button" id="roadButtonDelete" class="btn btn-white btn-sm col-sm-offset-2 {{$projectRoads->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
                             <h2>Оборудование на РК</h2>
@@ -398,7 +416,12 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">{{$product->name}}</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ProjectProduct[count][]" value="0">
+                                        <input type="text" class="form-control" name="ProjectProduct[count][]"
+                                               @foreach ($projectProducts as $projectProduct)
+                                                        @if (intval($projectProduct->product_id) === intval($product->id))
+                                                            value="{{$projectProduct->count}}"
+                                                        @endif
+                                                   @endforeach>
                                         <input type="hidden" name="ProjectProduct[product_id][]" value="{{$product->id}}">
                                     </div>
                                 </div>
@@ -412,16 +435,22 @@
                                 <label class="col-sm-2 col-form-label">Обследование</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[examination_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->examination === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->examination === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->examination === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->examination === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[examination_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[examination_other]"
+                                        @if ($project->responsibilityArea->examination !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->examination !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->examination !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->examination !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->examination}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -429,16 +458,22 @@
                                 <label class="col-sm-2 col-form-label">СМР</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[smr_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
-                                     </select>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->smr === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->smr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->smr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->smr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                    </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[smr_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[smr_other]"
+                                        @if ($project->responsibilityArea->smr !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->smr !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->smr !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->smr}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -446,16 +481,22 @@
                                 <label class="col-sm-2 col-form-label">Монтаж</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[installation_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->installation === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->installation === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->installation === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->installation === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[installation_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[installation_other]"
+                                        @if ($project->responsibilityArea->installation !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->installation !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->installation !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->installation}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -463,16 +504,22 @@
                                 <label class="col-sm-2 col-form-label">ПНР</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[pnr_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->pnr === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->pnr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->pnr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->pnr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]"
+                                        @if ($project->responsibilityArea->pnr !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->pnr !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->pnr}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -480,16 +527,22 @@
                                 <label class="col-sm-2 col-form-label">Разрешение на опору</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[support_permission_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->support_permission === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->support_permission === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->support_permission === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->support_permission === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]"
+                                        @if ($project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->support_permission !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->support_permission}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -497,16 +550,22 @@
                                 <label class="col-sm-2 col-form-label">Получение ТУ - 220 В</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[tu_220_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->tu_220 === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->tu_220 === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_220 === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_220 === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]"
+                                        @if ($project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->tu_220 !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->tu_220}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -514,16 +573,22 @@
                                 <label class="col-sm-2 col-form-label">Получение ТУ - связь</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[tu_communication_main]">
-                                        <option value="ЛЦЗ">ЛЦЗ</option>
-                                        <option value="Гос.заказчик">Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="ЛЦЗ" {{$project->responsibilityArea->tu_communication === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" {{$project->responsibilityArea->tu_communication === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_communication === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_communication === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
                                     </select>
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Иное</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]">
+                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]"
+                                        @if ($project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->tu_communication !== 'Подрядчик ЛЦЗ')
+                                            value="{{$project->responsibilityArea->tu_communication}}"
+                                        @endif>
                                 </div>
                             </div>
 
@@ -542,7 +607,8 @@
                         <div class="panel-body">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Схема передачи данных</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->cafap->dataTransfer->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[data_transfer_scheme]">
                                     </div>
@@ -551,7 +617,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дислокация и направления</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->cafap->locationDirections->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[location_directions]">
                                     </div>
@@ -560,7 +627,8 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Скоростной режим</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-2 col-form-label">{{$project->cafap->speedMode->file_name}}</label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[speed_mode]">
                                     </div>
@@ -575,7 +643,13 @@
                                 <label class="col-sm-2 col-form-label">Согласованный коллаж<br>
                                     <small class="text-navy">Ctrl для множественного выбора</small>
                                 </label>
-                                <div class="col-sm-10">
+
+                                <label class="col-sm-2 col-form-label">
+                                    @foreach ($project->cafap->cafapCollage as $collage)
+                                        <small class="text-navy">{{$collage->collageFile->file_name}}</small>
+                                    @endforeach
+                                </label>
+                                <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" multiple name="CafapCollage[]">
                                     </div>
@@ -586,43 +660,47 @@
                             <h2>ПО в ЦАФАП</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Регион</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="CafapRegion[]">
-                                        @foreach ($regions as $region)
-                                            <option value="{{$region->id}}">{{$region->name}}</option>
-                                        @endforeach
-                                    </select>
+                            @foreach ($project->cafap->cafapRegions as $cafapRegion)
+                                <div class="form-group row" data-block="cafap-region">
+                                    <label class="col-sm-2 col-form-label">Регион</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="CafapRegion[]">
+                                            @foreach ($regions as $region)
+                                                <option value="{{$region->id}}" {{intval($cafapRegion->region_id) === intval($region->id) ? 'selected' : ''}}>{{$region->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
 
                             <button type="button" id="cafap-region" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="cafap-regionDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="cafap-regionDelete" class="btn btn-white btn-sm {{$project->cafap->cafapRegions->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
                             <h2>Наличие Андромеды</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Регион</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="CafapAndromedaExist[region_id][]">
-                                        @foreach ($regions as $region)
-                                            <option value="{{$region->id}}">{{$region->name}}</option>
-                                        @endforeach
-                                    </select>
+                            @foreach ($project->cafap->cafapAndromeda as $andromeda)
+                                <div class="form-group row" data-block="cafap-andromeda">
+                                    <label class="col-sm-2 col-form-label">Регион</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="CafapAndromedaExist[region_id][]">
+                                            @foreach ($regions as $region)
+                                                <option value="{{$region->id}}" {{intval($andromeda->region_id) === intval($region->id) ? 'selected' : ''}}>{{$region->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label">Наличие</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="CafapAndromedaExist[exist][]">
+                                            <option value="0" {{intval($andromeda->exist) === 0 ? 'selected' : ''}}>Отсутствует</option>
+                                            <option value="1" {{intval($andromeda->exist) === 1 ? 'selected' : ''}}>Имеется</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <label class="col-sm-2 col-form-label">Наличие</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="CafapAndromedaExist[exist][]">
-                                        <option value="0">Отсутствует</option>
-                                        <option value="1">Имеется</option>
-                                    </select>
-                                </div>
-                            </div>
+                            @endforeach
                             <button type="button" id="andromeda-region" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="andromeda-regionDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="andromeda-regionDelete" class="btn btn-white btn-sm {{$project->cafap->cafapAndromeda->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
 
@@ -637,97 +715,101 @@
 
                     <div role="tabpanel" id="tab-4" class="tab-pane">
                         <div class="panel-body">
-                            <div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Месяц</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="ProductionPlan[month][]">
-                                            <option>Январь</option>
-                                            <option>Февраль</option>
-                                            <option>Март</option>
-                                            <option>Апрель</option>
-                                            <option>Май</option>
-                                            <option>Июнь</option>
-                                            <option>Июль</option>
-                                            <option>Август</option>
-                                            <option>Сентябрь</option>
-                                            <option>Октябрь</option>
-                                            <option>Ноябрь</option>
-                                            <option>Декабрь</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Регион</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="ProductionPlan[region_id][]">
-                                            @foreach ($regions as $region)
-                                                <option value="{{$region->id}}">{{$region->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Оборудование</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="ProductionPlan[product_id][]">
-                                            @foreach ($products as $product)
-                                                <option value="{{$product->id}}">{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Количество РК</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ProductionPlan[rk_count][]">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Дата отгрузки</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control fromto__datetime-input" name="ProductionPlan[date_shipping][]">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Приоритет</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="ProductionPlan[priority][]">
-                                            @for ($priority = 1; $priority <= 10; $priority++)
-                                                <option value="{{$priority}}">{{$priority}}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Загрузить предварительный расчет оборудования </label>
-                                    <div class="col-sm-10">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="ProductionPlan[preliminary_calculation_equipment][]">
+                            @foreach ($project->productionPlan as $plan)
+                                <div data-block="production-plan">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Месяц</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="ProductionPlan[month][]">
+                                                <option {{$plan->month === 'Январь' ? 'selected' : ''}}>Январь</option>
+                                                <option {{$plan->month === 'Февраль' ? 'selected' : ''}}>Февраль</option>
+                                                <option {{$plan->month === 'Март' ? 'selected' : ''}}>Март</option>
+                                                <option {{$plan->month === 'Апрель' ? 'selected' : ''}}>Апрель</option>
+                                                <option {{$plan->month === 'Май' ? 'selected' : ''}}>Май</option>
+                                                <option {{$plan->month === 'Июнь' ? 'selected' : ''}}>Июнь</option>
+                                                <option {{$plan->month === 'Июль' ? 'selected' : ''}}>Июль</option>
+                                                <option {{$plan->month === 'Август' ? 'selected' : ''}}>Август</option>
+                                                <option {{$plan->month === 'Сентябрь' ? 'selected' : ''}}>Сентябрь</option>
+                                                <option {{$plan->month === 'Октябрь' ? 'selected' : ''}}>Октябрь</option>
+                                                <option {{$plan->month === 'Ноябрь' ? 'selected' : ''}}>Ноябрь</option>
+                                                <option {{$plan->month === 'Декабрь' ? 'selected' : ''}}>Декабрь</option>
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Загрузить окончательный расчет оборудования</label>
-                                    <div class="col-sm-10">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="ProductionPlan[final_equipment_calculation][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Регион</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="ProductionPlan[region_id][]">
+                                                @foreach ($regions as $region)
+                                                    <option value="{{$region->id}}" {{intval($plan->region_id) === intval($region->id) ? 'selected' : ''}}>{{$region->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="hr-line-dashed"></div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Оборудование</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="ProductionPlan[product_id][]">
+                                                @foreach ($products as $product)
+                                                    <option value="{{$product->id}}" {{intval($plan->product_id) === intval($product->id) ? 'selected' : ''}}>{{$product->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Количество РК</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="ProductionPlan[rk_count][]" value="{{$plan->rk_count}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Дата отгрузки</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control fromto__datetime-input" name="ProductionPlan[date_shipping][]" value="{{$plan->date_shipping}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Приоритет</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="ProductionPlan[priority][]">
+                                                @for ($priority = 1; $priority <= 10; $priority++)
+                                                    <option value="{{$priority}}" {{intval($plan->priority) === intval($priority) ? 'selected' : ''}}>{{$priority}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Загрузить предварительный расчет оборудования </label>
+                                        <label class="col-sm-2 col-form-label">{{$plan->preliminaryCalculation->file_name}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="ProductionPlan[preliminary_calculation_equipment][]">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Загрузить окончательный расчет оборудования</label>
+                                        <label class="col-sm-2 col-form-label">{{$plan->finalCalculation->file_name}}</label>
+                                        <div class="col-sm-8">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="ProductionPlan[final_equipment_calculation][]">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                </div>
+                            @endforeach
 
                             <button type="button" id="production-plan" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="production-planDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="production-planDelete" class="btn btn-white btn-sm {{$project->productionPlan->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -740,60 +822,62 @@
 
                     <div role="tabpanel" id="tab-5" class="tab-pane">
                         <div class="panel-body">
-                            <div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">ФИО</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[fio][]">
+                            @foreach ($project->contacts as $contact)
+                                <div data-block="contacts">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">ФИО</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[fio][]" value="{{$contact->contact->fio}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Должность</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[position][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Должность</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[position][]" value="{{$contact->contact->position}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Мобильный телефон</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" data-mask="+9(999)999-99-99" name="Contacts[mobile_number][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Мобильный телефон</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-mask="+9(999)999-99-99" name="Contacts[mobile_number][]" value="{{$contact->contact->mobile_number}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Рабочий телефон</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[work_number][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Рабочий телефон</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[work_number][]" value="{{$contact->contact->work_number}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">E-mail</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[email][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">E-mail</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[email][]" value="{{$contact->contact->email}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Адрес</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[address][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Адрес</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[address][]" value="{{$contact->contact->address}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Организация</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[company][]">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Организация</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="Contacts[company][]" value="{{$contact->contact->company}}">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="hr-line-dashed"></div>
-                            </div>
+                                    <div class="hr-line-dashed"></div>
+                                </div>
+                            @endforeach
                             <button type="button" id="contacts" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="contactsDelete" class="btn btn-white btn-sm hidden">Удалить</button>
+                            <button type="button" id="contactsDelete" class="btn btn-white btn-sm {{$project->contacts->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -813,12 +897,9 @@
     <script>
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function() {
-
-
                 $.getScript('/js/datetimepicker/jquery.datetimepicker.js', function () {
 
                     $.datetimepicker.setLocale('ru');
-
 
                     $('.fromto__datetime-input').datetimepicker({
                         locale:'ru',
@@ -888,6 +969,34 @@
                 var productionEl = [];
                 var contactsEl = [];
 
+                $('div[data-block="country"]').each(function (elem) {
+                    countryEl.push($(this))
+                });
+
+                $('div[data-block="region"]').each(function (elem) {
+                    regionEl.push($(this))
+                });
+
+                $('div[data-block="road"]').each(function (elem) {
+                    roadEl.push($(this))
+                });
+
+                $('div[data-block="cafap-region"]').each(function (elem) {
+                    cafapEl.push($(this))
+                });
+
+                $('div[data-block="cafap-andromeda"]').each(function (elem) {
+                    andromedaEl.push($(this))
+                });
+
+                $('div[data-block="production-plan"]').each(function (elem) {
+                    productionEl.push($(this))
+                });
+
+                $('div[data-block="contacts"]').each(function (elem) {
+                    contactsEl.push($(this))
+                });
+
                 $('#countyButtonAdd').on('click', function () {
                     countryEl.push($(this).prev().clone().val(''));
                     countryEl[countryEl.length-1].insertBefore($(this));
@@ -927,49 +1036,49 @@
                 $('#countyButtonDelete').on('click', function () {
                     $(countryEl[countryEl.length-1]).remove();
                     countryEl.pop();
-                    if (countryEl.length === 0) {
+                    if (countryEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#regionButtonDelete').on('click', function () {
                     $(regionEl[regionEl.length-1]).remove();
                     regionEl.pop();
-                    if (regionEl.length === 0) {
+                    if (regionEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#cafap-regionDelete').on('click', function () {
                     $(cafapEl[cafapEl.length-1]).remove();
                     cafapEl.pop();
-                    if (cafapEl.length === 0) {
+                    if (cafapEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#andromeda-regionDelete').on('click', function () {
                     $(andromedaEl[andromedaEl.length-1]).remove();
                     andromedaEl.pop();
-                    if (andromedaEl.length === 0) {
+                    if (andromedaEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#roadButtonDelete').on('click', function () {
                     $(roadEl[roadEl.length-1]).remove();
                     roadEl.pop();
-                    if (roadEl.length === 0) {
+                    if (roadEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#production-planDelete').on('click', function () {
                     $(productionEl[productionEl.length-1]).remove();
                     productionEl.pop();
-                    if (productionEl.length === 0) {
+                    if (productionEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#contactsDelete').on('click', function () {
                     $(contactsEl[contactsEl.length-1]).remove();
                     contactsEl.pop();
-                    if (contactsEl.length === 0) {
+                    if (contactsEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });

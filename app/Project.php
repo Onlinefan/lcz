@@ -70,4 +70,24 @@ class Project extends Model
     {
         return $this->hasMany('App\CostPlan', 'project_id');
     }
+
+    public function responsibilityArea()
+    {
+        return $this->hasOne('App\ProjectResponsibilityArea', 'project_id');
+    }
+
+    public function cafap()
+    {
+        return $this->hasOne('App\Cafap', 'project_id');
+    }
+
+    public function productionPlan()
+    {
+        return $this->hasMany('App\ProductionPlan', 'project_id');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany('App\ProjectContact');
+    }
 }

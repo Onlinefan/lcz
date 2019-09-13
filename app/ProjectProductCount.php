@@ -44,4 +44,10 @@ class ProjectProductCount extends Model
         $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count]);
         $projectProduct->save();
     }
+
+    public static function updateRecords($arProducts, $projectId)
+    {
+        ProjectProductCount::where(['project_id' => $projectId])->delete();
+        self::createRecords($arProducts, $projectId);
+    }
 }

@@ -19,6 +19,7 @@ use App\ProjectRegion;
 use App\ProjectResponsibilityArea;
 use App\ProjectRoad;
 use App\ProjectServiceType;
+use App\ProjectStatus;
 use App\Region;
 use App\RoadType;
 use App\ServiceType;
@@ -61,7 +62,7 @@ class ProjectController extends Controller
         $countries = Country::all();
         $serviceTypes = ServiceType::all();
 
-        return view('edit-project', [
+        return view('create-project', [
             'users' => $users,
             'roadTypes' => $roadTypes,
             'products' => $products,
@@ -94,7 +95,7 @@ class ProjectController extends Controller
         ProductionPlan::createRecords($request->get('ProductionPlan'), $request->file('ProductionPlan'), $project);
         ProjectContact::createRecords($request->get('Contacts'), $project->id);
 
-        return redirect('/edit-project');
+        return redirect('/create-project');
     }
 
     /**
@@ -127,9 +128,73 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $project = Project::find($id);
+        if (auth()->user()->role === 'Оператор') {
+            $users = User::where('id', auth()->user()->id)->get();
+        } else {
+            $users = User::all();
+        }
+
+        $roadTypes = RoadType::all();
+        $products = Product::all();
+        $regions = Region::all();
+        $countries = Country::all();
+        $serviceTypes = ServiceType::all();
+        $projectCountries = ProjectCountry::where(['project_id' => $id])->get();
+        $projectRegions = ProjectRegion::where(['project_id' => $id])->get();
+        $projectServiceTypes = ProjectServiceType::where(['project_id' => $id])->get();
+        $projectRoads = ProjectRoad::where(['project_id' => $id])->get();
+        $projectProducts = ProjectProductCount::where(['project_id' => $id])->get();
+
+        return view('edit-project', [
+            'users' => $users,
+            'roadTypes' => $roadTypes,
+            'products' => $products,
+            'regions' => $regions,
+            'countries' => $countries,
+            'serviceTypes' => $serviceTypes,
+            'project' => $project,
+            'projectCountries' => $projectCountries,
+            'projectRegions' => $projectRegions,
+            'projectServiceTypes' => $projectServiceTypes,
+            'projectRoads' => $projectRoads,
+            'projectProducts' => $projectProducts
+        ]);
+    }
+
+    public function editProject(Request $request)
+    {
+        $projectRequest = $request->get('Project');
+        $project = Project::find($projectRequest['id']);
+        $project->status = $projectRequest['status'];
+        $project->head_id = $projectRequest['head_id'];
+        $project->name = $projectRequest['name'];
+        $project->type = $projectRequest['type'];
+        $project->save();
+
+        /** @var Contract $contract */
+        $contract = $project->contract;
+        $contract->setRawAttributes($request->get('Contract'));
+        $contract->updateRecord($request->file('Contract'), $project);
+
+        ProjectCountry::updateRecords($request->get('Country'), $project->id);
+        ProjectRegion::updateRecords($request->get('Region'), $project->id);
+        ProjectServiceType::updateRecords($request->get('ProjectServiceTypes'), $project->id);
+        ProjectRoad::updateRecords($request->get('ProjectRoad'), $project->id);
+        ProjectProductCount::updateRecords($request->get('ProjectProduct'), $project->id);
+        ProjectResponsibilityArea::updateRecord($request->get('ProjectResponsibility'), $project->id);
+
+        $cafap = Cafap::where(['project_id' => $project->id])->first();
+        $cafap->updateRecord($request->file('Cafap'), $project);
+
+        CafapCollage::updateRecords($request->file('CafapCollage'), $cafap->id, $project);
+        CafapRegion::updateRecords($request->get('CafapRegion'), $cafap->id);
+        CafapAndromedaExist::updateRecords($request->get('CafapAndromedaExist'), $cafap->id);
+        ProductionPlan::updateRecords($request->get('ProductionPlan'), $request->file('ProductionPlan'), $project);
+        ProjectContact::updateRecords($request->get('Contacts'), $project->id);
+        return redirect('/edit-project/' . $project->id);
     }
 
     /**

@@ -28,4 +28,10 @@ class CafapAndromedaExist extends Model
         $cafapAndromeda = new CafapAndromedaExist(['region_id' => $regionId, 'cafap_id' => $cafapId, 'exist' => $exist]);
         $cafapAndromeda->save();
     }
+
+    public static function updateRecords($arAndromeda, $cafapId)
+    {
+        CafapAndromedaExist::where(['cafap_id' => $cafapId])->delete();
+        self::createRecords($arAndromeda, $cafapId);
+    }
 }
