@@ -27,7 +27,7 @@ Route::get('/contacts', 'ContactController@index')->name('contacts');
 Route::get('/production_plan', 'ProductionPlanController@index')->name('production_plan');
 Route::get('/openings', 'OpeningController@index')->name('openings');
 Route::get('/home2', 'Home2Controller@index')->name('home2');
-Route::get('/progress', 'ProgressController@index')->name('progress');
+Route::get('/progress/{id}', 'ProgressController@index')->name('progress');
 Route::match(['get', 'post'], '/edit-project/{id}', 'ProjectController@edit')->name('edit-project');
 Route::post('/edit-project-id', 'ProjectController@editProject')->name('edit-project-id');
 Route::get('/create-project', 'ProjectController@create')->name('create-project');

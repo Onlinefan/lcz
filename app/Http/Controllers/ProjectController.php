@@ -40,7 +40,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects');
+        $projectRealization = Project::where(['status' => 'Реализация'])->orWhere(['status' => 'Приостановлено'])->get();
+        $projectExploitation = Project::where(['status' => 'Эксплуатация'])->get();
+        $projectFinished = Project::where(['status' => 'Завершен'])->get();
+        return view('projects', [
+            'realization' => $projectRealization,
+            'exploitation' => $projectExploitation,
+            'finished' => $projectFinished
+        ]);
     }
 
     /**
@@ -51,7 +58,7 @@ class ProjectController extends Controller
     public function create()
     {
         if (auth()->user()->role === 'Оператор') {
-            $users = User::where('id', auth()->user()->id)->get();
+            $users = User::where(['id' => auth()->user()->id])->get();
         } else {
             $users = User::all();
         }

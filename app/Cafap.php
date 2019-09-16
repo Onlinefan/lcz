@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class Cafap model for cafap table
@@ -51,7 +52,8 @@ class Cafap extends Model
         foreach (self::$cafapFiles as $column => $path) {
             if (isset($arCafap[$column])) {
                 $file = File::find($this->$column);
-                unlink(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                $fileSystem = new Filesystem();
+                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
                 $newFile = new File();
                 $fileName = File::createName($project->name);
                 $newFile->createFile($arCafap[$column], public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class ProductionPlan model for production_plan table
@@ -69,11 +70,12 @@ class ProductionPlan extends Model
     public static function updateRecords($arProductionPlan, $arProductionFiles, $project)
     {
         $oldProductionPlan = ProductionPlan::where(['project_id' => $project->id])->get();
+        $fileSystem = new Filesystem();
         foreach ($oldProductionPlan as $plan) {
-            unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $plan->preliminaryCalculation->file_name));
-            unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $plan->finalCalculation->file_name));
-            $plan->preliminaryCalculation->delete();
-            $plan->finalCalculation->delete();
+            $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $plan->preliminaryCalculation->file_name));
+            $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $plan->finalCalculation->file_name));
+            $plan->preliminaryCalculation()->delete();
+            $plan->finalCalculation()->delete();
             $plan->delete();
         }
         self::createRecords($arProductionPlan, $arProductionFiles, $project);

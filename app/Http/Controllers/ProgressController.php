@@ -25,7 +25,7 @@ class ProgressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id = 34)
+    public function index($id)
     {
         $project = Project::find($id);
         $countStatuses = Project::select(DB::raw('status, count(*) as status_count'))
@@ -61,6 +61,35 @@ class ProgressController extends Controller
         $smrInstallation = SmrInstallation::where(['project_id' => $id])->get();
         $pnr = Pnr::where(['project_id' => $id])->get();
         $documents = Document::where(['project_id' => $id])->get();
+        $maxSize = 0;
+        if ($projectStatus->count() > $maxSize) {
+            $maxSize = $projectStatus;
+        }
+
+        if ($initialData->count() > $maxSize) {
+            $maxSize = $initialData;
+        }
+
+        if ($pir->count() > $maxSize) {
+            $maxSize = $pir;
+        }
+
+        if ($production->count() > $maxSize) {
+            $maxSize = $production;
+        }
+
+        if ($smrInstallation->count() > $maxSize) {
+            $maxSize = $smrInstallation;
+        }
+
+        if ($pnr->count() > $maxSize) {
+            $maxSize = $pnr;
+        }
+
+        if ($documents->count() > $maxSize) {
+            $maxSize = $documents;
+        }
+
         $now = new DateTime('now');
         $contractEnd = new DateTime($project->contract->date_end);
         $contractStart = new DateTime($project->contract->date_start);
@@ -69,6 +98,9 @@ class ProgressController extends Controller
         $projectRegions = ProjectRegion::where(['project_id' => $id])->get();
         $products = Product::all();
         $roadTypes = RoadType::all();
+
+        $vu220 = '220_vu';
+
         return view('progress', [
             'project' => $project,
             'projectStatus' => $projectStatus,
@@ -87,7 +119,9 @@ class ProgressController extends Controller
             'cost' => $cost,
             'countPlan' => $countPlan,
             'realizationCount' => $realizationCount,
-            'finishCount' => $finishCount
+            'finishCount' => $finishCount,
+            'maxSize' => $maxSize,
+            'vu220' => $vu220
         ]);
     }
 

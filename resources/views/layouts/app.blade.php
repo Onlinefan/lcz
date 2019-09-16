@@ -68,11 +68,6 @@
         'name'=> 'Главная',
       ),
       array(
-        'route'=> 'progress',
-        'icon'=> 'cog',
-        'name'=> 'Статус реализации проекта',
-      ),
-      array(
         'route'=> 'create-project',
         'icon'=> 'tasks',
         'name'=> 'Создание проекта',

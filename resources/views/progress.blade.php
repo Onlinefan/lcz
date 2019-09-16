@@ -173,70 +173,87 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1234</td>
-                                    <td>1234</td>
-                                    <td>Москва</td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td>Адрес 1</td>
-                                    <td>Адрес 2</td>
 
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td>120</td>
-                                    <td>12</td>
-                                    <td>1234</td>
-                                    <td>3</td>
+                                @for ($row = 0; $row < $maxSize; $row++)
+                                    <tr>
+                                        @if (isset($projectStatus[$row]))
+                                            <td>{{$projectStatus[$row]->id}}</td>
+                                            <td>{{$projectStatus[$row]->system_id}}</td>
+                                            <td>{{$projectStatus[$row]->complex_id}}</td>
+                                            <td>{{$projectStatus[$row]->city}}</td>
+                                            <td><span class="label label-secondary">{{$projectStatus[$row]->affiliation_of_ther_road}}</span></td>
+                                            <td>{{$projectStatus[$row]->address_contract}}</td>
+                                            <td>{{$projectStatus[$row]->address_gibdd}}</td>
+                                        @endif
 
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>7</td>
-                                    <td>4</td>
-                                    <td>12000</td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
+                                        @if (isset($initialData[$row]))
+                                            <td><span class="label label-secondary">{{$initialData[$row]->equipment_type}}</span></td>
+                                            <td><span class="label label-secondary">{{$initialData[$row]->road_type}}</span></td>
+                                            <td>{{$initialData[$row]->speed_mode}}</td>
+                                            <td>{{$initialData[$row]->borders_number}}</td>
+                                            <td>{{$initialData[$row]->koap}}</td>
+                                            <td>{{$initialData[$row]->stoplines_count}}</td>
+                                        @endif
 
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td>01.01.2019</td>
-                                    <td>1234</td>
-                                    <td>1234</td>
-                                    <td>1234</td>
-                                    <td>01.01.2019</td>
+                                        @if (isset($pir[$row]))
+                                            <td><span class="label label-secondary">{{$pir[$row]->survey_status}}</span></td>
+                                            <td>{{$pir[$row]->comment}}</td>
+                                            <td><span class="label label-secondary">{{$pir[$row]->design_documentation}}</span></td>
+                                            <td>{{$pir[$row]->new_footing_fvf}}</td>
+                                            <td>{{$pir[$row]->new_footing_lep}}</td>
+                                            <td>{{$pir[$row]->rk_count}}</td>
+                                            <td>{{$pir[$row]->ok_count}}</td>
+                                            <td>{{$pir[$row]->equipment_power}}</td>
+                                            <td><span class="label label-secondary">{{$pir[$row]->request_tu}}</span></td>
+                                            <td><span class="label label-secondary">{{$pir[$row]->request_footing}}</span></td>
+                                        @endif
 
-                                    <td><a href="#">Ссылка</a></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
+                                        @if (isset($production[$row]))
+                                            <td><span class="label label-secondary">{{$production[$row]->shipment_status}}</span></td>
+                                            <td>{{$production[$row]->date_equipment_shipment}}.01.2019</td>
+                                            <td>{{$production[$row]->number_sim_internet}}</td>
+                                            <td>{{$production[$row]->number_sim_ssu}}</td>
+                                            <td>{{$production[$row]->number_verification}}</td>
+                                            <td>{{$production[$row]->date_verification_end}}</td>
+                                        @endif
 
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-secondary">Эл-т списка</span></td>
-                                    <td><span class="label label-primary">Да</span></td>
-                                    <td><span class="label label-danger">Нет</span></td>
-                                    <td><span class="label label-primary">Да</span></td>
+                                        @if (isset($smrInstallation[$row]))
+                                            <td><a href="#">{{$smrInstallation[$row]->link_root_task}}</a></td>
+                                            <td><span class="label label-secondary">{{$smrInstallation[$row]->$vu220}}</span></td>
+                                            <td><span class="label label-secondary">{{$smrInstallation[$row]->link_contract}}</span></td>
+                                            <td><span class="label label-secondary">{{$smrInstallation[$row]->dislocation_strapping}}</span></td>
+                                            <td><span class="label label-secondary">{{$smrInstallation[$row]->installation_status}}</span></td>
+                                            <td><span class="label label-secondary">{{$smrInstallation[$row]->transferred_pnr}}</span></td>
+                                        @endif
 
-                                    <td><span class="label label-danger">Отсутствует</span></td>
-                                    <td><span class="label label-danger">Не требуется</span></td>
-                                    <td><span class="label label-danger">Не требуется</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-warning">Заказчик</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-warning">Заказчик</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-danger">Отсутствует</span></td>
-                                    <td><span class="label label-danger">Отсутствует</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                    <td><span class="label label-primary">Загрузить</span></td>
-                                </tr>
+                                        @if (isset($pnr[$row]))
+                                            <td><span class="label label-secondary">{{$pnr[$row]->calibration_2000}}</span></td>
+                                            <td><span class="label label-secondary">{{$pnr[$row]->kp}}</span></td>
+                                            <td><span class="label label-secondary">{{$pnr[$row]->analysis_result}}</span></td>
+                                            <td><span class="label label-secondary">{{$pnr[$row]->complex_to_monitoring}}</span></td>
+                                            <td><span class="label label-primary">{{$pnr[$row]->andromeda_unloading}}</span></td>
+                                            <td><span class="label label-danger">{{$pnr[$row]->unloading}}</span></td>
+                                            <td><span class="label label-primary">{{$pnr[$row]->in_cafap}}</span></td>
+                                        @endif
+
+                                        @if (isset($documents[$row]))
+                                            <td><span class="label label-danger">{{$documents[$row]->examination}}</span></td>
+                                            <td><span class="label label-danger">{{$documents[$row]->project_documentation}}</span></td>
+                                            <td><span class="label label-danger">{{$documents[$row]->executive_documentation}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->verification}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->forms}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->passports}}</span></td>
+                                            <td><span class="label label-warning">{{$documents[$row]->tu_220}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->contract_220}}</span></td>
+                                            <td><span class="label label-warning">{{$documents[$row]->tu_footing}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->contract_footing}}</span></td>
+                                            <td><span class="label label-danger">{{$documents[$row]->address_plan_agreed_cafap}}</span></td>
+                                            <td><span class="label label-danger">{{$documents[$row]->data_transfer_scheme}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->inbox}}</span></td>
+                                            <td><span class="label label-primary">{{$documents[$row]->outgoing}}</span></td>
+                                        @endif
+                                    </tr>
+                                @endfor
                                 </tbody>
                             </table>
                         </div>

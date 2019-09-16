@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class CafapCollage model for cafap_collage table
@@ -44,9 +45,16 @@ class CafapCollage extends Model
     {
         if (isset($arCollage)) {
             $oldCollage = CafapCollage::where(['cafap_id' => $cafapId])->get();
+            $fileSystem = new Filesystem();
+            $fileIds = [];
             foreach ($oldCollage as $collage) {
-                unlink(public_path('Проекты/' . $project->code . '/Управление проектом/Коллаж' . $collage->collageFile->file_name));
-                $collage->collageFile->delete();
+                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Коллаж' . $collage->collageFile->file_name));
+                $fileIds[] = $collage->collageFile->id;
+                $collage->delete();
+            }
+
+            if ($fileIds) {
+                File::find($fileIds)->delete();
             }
 
             self::createRecords($arCollage, $cafapId, $project);

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -89,5 +90,28 @@ class Project extends Model
     public function contacts()
     {
         return $this->hasMany('App\ProjectContact');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany('App\ProjectMessage');
+    }
+
+    public function incomeSum()
+    {
+        $incomeSum = 0;
+        foreach ($this->incomePlans as $plan) {
+            $incomeSum += $plan->payed;
+        }
+
+        return $incomeSum;
+    }
+
+    public function deadline()
+    {
+        $now = new DateTime('now');
+        $contractEnd = new DateTime($this->contract->date_end);
+        $dateDiff = $contractEnd->diff($now)->format('%a');
+        return $dateDiff;
     }
 }

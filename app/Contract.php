@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 /**
@@ -56,7 +57,8 @@ class Contract extends Model
         foreach (self::$contractFiles as $column => $path) {
             if (isset($files[$column])) {
                 $file = File::find($original[$column]);
-                unlink(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                $fileSystem = new Filesystem();
+                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
                 $newFile = new File();
                 $fileName = File::createName($project->name);
                 $newFile->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
