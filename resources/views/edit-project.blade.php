@@ -28,7 +28,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Скан приказа</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->decreeScan->file_name}}</label>
+                                @if (isset($project->contract->decreeScan))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->decreeScan->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[decree_scan]">
@@ -239,7 +241,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Устав проекта</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->projectCharter->file_name}}</label>
+                                @if (isset($project->contract->projectCharter))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->projectCharter->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[project_charter]">
@@ -249,7 +253,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">План-график</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->planChart->file_name}}</label>
+                                @if (isset($project->contract->planChart))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->planChart->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[plan_chart]">
@@ -259,7 +265,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛОП</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->lopFile->file_name}}</label>
+                                @if (isset($project->contract->lopFile))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->lopFile->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lop]">
@@ -269,7 +277,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛПП</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->lppFile->file_name}}</label>
+                                @if (isset($project->contract->lppFile))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->lppFile->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lpp]">
@@ -279,7 +289,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ЛПП - Лист решений</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->lppListFile->file_name}}</label>
+                                @if (isset($project->contract->lppListFile))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->lppListFile->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[decision_sheet]">
@@ -289,7 +301,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Контракт</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->contractFile->file_name}}</label>
+                                @if (isset($project->contract->contractFile))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->contractFile->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[file]">
@@ -299,7 +313,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Тех. задание</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->technicalTask->file_name}}</label>
+                                @if (isset($project->contract->technicalTask))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->technicalTask->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[technical_task]">
@@ -309,7 +325,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Анализ и управление рисками</label>
-                                <label class="col-sm-2 col-form-label">{{$project->contract->riskFile->file_name}}</label>
+                                @if (isset($project->contract->riskFile))
+                                    <label class="col-sm-2 col-form-label">{{$project->contract->riskFile->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[risks]">
@@ -607,7 +625,9 @@
                         <div class="panel-body">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Схема передачи данных</label>
-                                <label class="col-sm-2 col-form-label">{{$project->cafap->dataTransfer->file_name}}</label>
+                                @if (isset($project->cafap->dataTransfer))
+                                    <label class="col-sm-2 col-form-label">{{$project->cafap->dataTransfer->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[data_transfer_scheme]">
@@ -617,7 +637,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дислокация и направления</label>
-                                <label class="col-sm-2 col-form-label">{{$project->cafap->locationDirections->file_name}}</label>
+                                @if (isset($project->cafap->locationDirections))
+                                    <label class="col-sm-2 col-form-label">{{$project->cafap->locationDirections->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[location_directions]">
@@ -627,7 +649,9 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Скоростной режим</label>
-                                <label class="col-sm-2 col-form-label">{{$project->cafap->speedMode->file_name}}</label>
+                                @if (isset($project->cafap->speedMode))
+                                    <label class="col-sm-2 col-form-label">{{$project->cafap->speedMode->file_name}}</label>
+                                @endif
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Cafap[speed_mode]">
@@ -646,7 +670,9 @@
 
                                 <label class="col-sm-2 col-form-label">
                                     @foreach ($project->cafap->cafapCollage as $collage)
-                                        <small class="text-navy">{{$collage->collageFile->file_name}}</small>
+                                        @if (isset($collage->collageFile))
+                                            <small class="text-navy">{{$collage->collageFile->file_name}}</small>
+                                        @endif
                                     @endforeach
                                 </label>
                                 <div class="col-sm-8">
@@ -786,7 +812,9 @@
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Загрузить предварительный расчет оборудования </label>
-                                        <label class="col-sm-2 col-form-label">{{$plan->preliminaryCalculation->file_name}}</label>
+                                        @if (isset($plan->preliminaryCalculation))
+                                            <label class="col-sm-2 col-form-label">{{$plan->preliminaryCalculation->file_name}}</label>
+                                        @endif
                                         <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="ProductionPlan[preliminary_calculation_equipment][]">
@@ -796,7 +824,9 @@
 
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Загрузить окончательный расчет оборудования</label>
-                                        <label class="col-sm-2 col-form-label">{{$plan->finalCalculation->file_name}}</label>
+                                        @if (isset($plan->finalCalculation))
+                                            <label class="col-sm-2 col-form-label">{{$plan->finalCalculation->file_name}}</label>
+                                        @endif
                                         <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="ProductionPlan[final_equipment_calculation][]">

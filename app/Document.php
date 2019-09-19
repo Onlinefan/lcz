@@ -16,20 +16,20 @@ class Document extends Model
     protected $guarded = [];
 
     public static $paths = [
-        'examination' => 'Обследование',
-        'project_documentation' => 'Проектная документация',
-        'executive_documentation' => 'Исполнительная документация',
-        'verification' => 'Поверка',
-        'forms' => 'Формуляры',
-        'passports' => 'Паспорта',
-        'tu_220' => 'ТУ-220',
-        'contract_220' => 'Договор 220',
-        'tu_footing' => 'ТУ на опору',
-        'contract_footing' => 'Договор на опоры',
-        'address_plan_agreed_cafap' => 'Адресный план',
-        'data_transfer_scheme' => 'Схема передачи данных',
-        'inbox' => 'Входящие',
-        'outgoing' => 'Исходящие'
+        'examination' => 'Obsledovanie',
+        'project_documentation' => 'Proektnaya documentaciya',
+        'executive_documentation' => 'Ispolnitelnaya documentaciya',
+        'verification' => 'Poverka',
+        'forms' => 'Formulyary',
+        'passports' => 'Pasporta',
+        'tu_220' => 'TU-220',
+        'contract_220' => 'Dogovor 220',
+        'tu_footing' => 'TU na oporu',
+        'contract_footing' => 'Dogovor na opory',
+        'address_plan_agreed_cafap' => 'Adresnyi plan',
+        'data_transfer_scheme' => 'Shema peredachi dannyh',
+        'inbox' => 'Vhodyashie',
+        'outgoing' => 'Ishodyashie'
     ];
 
     /**
@@ -47,11 +47,11 @@ class Document extends Model
                 $file = File::find($this->$column);
                 if ($file) {
                     $fileSystem = new Filesystem();
-                    $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                    $fileSystem->delete(public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/' . $path . $file->file_name));
                 }
                 $newFile = new File();
                 $fileName = File::createName($project->name);
-                $newFile->createFile($request->file($column), public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $newFile->createFile($request->file($column), public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/' . $path), $fileName);
                 $this->$column = $newFile->id;
                 if ($file) {
                     $file->delete();

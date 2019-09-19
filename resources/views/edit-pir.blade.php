@@ -16,7 +16,7 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="survey_status" id="survey_status">
                                 @foreach ($surveyStatuses as $status)
-                                    <option value="{{$status->id}}" {{isset($pir->survey_status) && $pir->survey_status === $status->id ? 'selected' : ''}}>{{$status->name}}</option>
+                                    <option value="{{$status->id}}" {{isset($pir->survey_status) && intval($pir->survey_status) === intval($status->id) ? 'selected' : ''}}>{{$status->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -32,7 +32,7 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="design_documentation" id="design_documentation">
                                 @foreach ($projectDocuments as $document)
-                                    <option value="{{$document->id}}" {{isset($pir->road_type) && $pir->road_type === $document->id ? 'selected' : ''}}>{{$document->name}}</option>
+                                    <option value="{{$document->id}}" {{isset($pir->design_documentation) && intval($pir->design_documentation) === intval($document->id) ? 'selected' : ''}}>{{$document->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="new_footing_lep">КоАП</label>
+                        <label class="col-sm-2 col-form-label" for="new_footing_lep">Новая опора под ЛЭП</label>
                         <div class="col-sm-10">
                             <input type="text" id="new_footing_lep" name="new_footing_lep" value="{{isset($pir->new_footing_lep) ? $pir->new_footing_lep : ''}}" placeholder="Введите ЛЭП" class="form-control">
                         </div>
@@ -73,7 +73,7 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="request_tu" id="request_tu">
                                 @foreach ($tuRequests as $tu)
-                                    <option value="{{$tu->id}}" {{isset($pir->request_tu) && $pir->request_tu === $tu->id ? 'selected' : ''}}>{{$tu->name}}</option>
+                                    <option value="{{$tu->id}}" {{isset($pir->request_tu) && intval($pir->request_tu) === intval($tu->id) ? 'selected' : ''}}>{{$tu->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -83,7 +83,7 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="request_footing" id="request_footing">
                                 @foreach ($footingRequests as $footing)
-                                    <option value="{{$footing->id}}" {{isset($pir->request_tu) && $pir->request_tu === $footing->id ? 'selected' : ''}}>{{$footing->name}}</option>
+                                    <option value="{{$footing->id}}" {{isset($pir->request_tu) && intval($pir->request_tu) === intval($footing->id) ? 'selected' : ''}}>{{$footing->name}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -16,6 +16,10 @@ class SummaryController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $query = DB::raw("SELECT `c`.name AS 'Округ/Страна', `pc1`.quantity as 'Количество', `r2`.quantity AS 'Активных', `r3`.quantity AS 'Завершенных', `r4`.quantity as 'Приостановленных',
 `r5`.quantity as 'Прочее', `r1`.quantity as 'Эксплуатация', addresses.address as 'Количество адресов', `linear_road`.linear_road as 'Лин. (тип 1)',
 `crossroad`.crossroad as 'Пер. (тип 2)', `pedestrian`.pedestrian as 'Пер. (тип 3)', `product1`.kopp as 'Коперник (передвижка)', `product2`.kops AS 'Коперник (стационар)',

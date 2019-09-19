@@ -55,7 +55,7 @@ class ContractController extends Controller
         $file = new File();
         $fileName = File::createName($project->name);
         $file->createFile($request->file('scan_payment_document'),
-            public_path('Проекты/' . $project->code . '/Управление проектом/Статус выставленных документов/' . $request->get('payment_document') . '/'),
+            public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Status vystavlennyh documentov/' . $request->get('payment_document') . '/'),
             $fileName);
         $documentStatus->scan_payment_document = $file->id;
         $documentStatus->save();
@@ -77,7 +77,7 @@ class ContractController extends Controller
         $file = new File();
         $fileName = File::createName($project->name);
         $file->createFile($request->file('scan_payment_document'),
-            public_path('Проекты/' . $project->code . '/Управление проектом/Статус обслуживания/' . $request->get('payment_document') . '/'),
+            public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Status obsluzhivaniya/' . $request->get('payment_document') . '/'),
             $fileName);
         $serviceStatus->scan_payment_document = $file->id;
         $serviceStatus->save();

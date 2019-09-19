@@ -16,14 +16,9 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <p class="small"><i class="fa fa-hand-o-up"></i> Менять статус проекта можно перетаскиванием</p>
-
-                        <form action="/projects2" class="input-group">
-                            <input type="text" name="project_name" placeholder="Новый проект" class="input form-control-sm form-control">
-                            <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-sm btn-white"> <i class="fa fa-plus"></i> Добавить проект</button>
-                                </span>
-                        </form>
+                        <span class="input-group-btn">
+                            <a class="btn btn-sm btn-white" href="/create-project"> <i class="fa fa-plus"></i> Добавить проект</a>
+                        </span>
 
                         <ul class="sortable-list connectList agile-list" id="todo">
                             @foreach ($realization as $project)
@@ -119,7 +114,6 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <p class="small"><i class="fa fa-hand-o-up"></i> Менять статус проекта можно перетаскиванием</p>
                         <ul class="sortable-list connectList agile-list" id="inprogress">
                             @foreach ($exploitation as $project)
                                 <li class="success-element" id="task1" style="background: #FFFFFF;">
@@ -214,7 +208,6 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <p class="small"><i class="fa fa-hand-o-up"></i> Менять статус проекта можно перетаскиванием</p>
                         <ul class="sortable-list connectList agile-list" id="completed">
                             @foreach ($finished as $project)
                                 <li class="info-element" id="task16">
@@ -266,18 +259,6 @@
                         },
                     });
                 });
-
-                $("#todo, #inprogress, #completed").sortable({
-                    connectWith: ".connectList",
-                    update: function( event, ui ) {
-
-                        var todo = $( "#todo" ).sortable( "toArray" );
-                        var inprogress = $( "#inprogress" ).sortable( "toArray" );
-                        var completed = $( "#completed" ).sortable( "toArray" );
-                        $('.output').html("ToDo: " + window.JSON.stringify(todo) + "<br/>" + "In Progress: " + window.JSON.stringify(inprogress) + "<br/>" + "Completed: " + window.JSON.stringify(completed));
-                    }
-                }).disableSelection();
-
             });
         });
 

@@ -15,6 +15,10 @@ class StatusController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $projects = Project::all();
         $tableHead = [];
         $tableBody = [];

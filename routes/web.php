@@ -66,3 +66,4 @@ Route::match(['get', 'post'], '/edit-smr/{projectId}-{regionId}', 'ProgressContr
 Route::match(['get', 'post'], '/edit-pnr/{projectId}-{regionId}', 'ProgressController@editPnr')->name('edit-pnr');
 Route::match(['get', 'post'], '/edit-documents/{projectId}-{regionId}', 'ProgressController@editDocuments')->name('edit-documents');
 Route::post('/create-documents', 'ProgressController@createDocuments')->name('create-documents');
+Route::get('/change-status/{id}-{status}', 'ProjectController@changeStatus')->name('change-status');

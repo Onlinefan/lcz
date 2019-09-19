@@ -143,7 +143,7 @@
                                                             <td>{{$document->number}}</td>
                                                             <td>{{$document->base}}</td>
                                                             <td>{{$document->contractor}}</td>
-                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Проекты/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
+                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Projects_files/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
                                                             <td>{{$document->project->name}}</td>
                                                         </tr>
                                                     @endforeach
@@ -192,7 +192,7 @@
                                                             <td>{{$income->number_payment}}</td>
                                                             <td>{{$income->plan->name}}/{{$income->plan->stage}}</td>
                                                             <td>{{$income->date_payment}}</td>
-                                                            <td><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a></td>
+                                                            <td><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a></td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -242,7 +242,7 @@
                                                             <td>{{$cost->number_payment}}</td>
                                                             <td>{{$cost->plan->project->name}}/{{$cost->plan->article}}</td>
                                                             <td>{{$cost->date_payment}}</td>
-                                                            <td><a href="/download?path={{substr($cost->documentFile->path, strripos($cost->documentFile->path, 'Проекты/')) . $cost->documentFile->file_name}}">{{$cost->documentFile->file_name}}</a></td>
+                                                            <td><a href="/download?path={{substr($cost->documentFile->path, strripos($cost->documentFile->path, 'Projects_files/')) . $cost->documentFile->file_name}}">{{$cost->documentFile->file_name}}</a></td>
                                                             <td>{{$cost->payment_method}}</td>
                                                             <td>{{$cost->comment}}</td>
                                                         </tr>

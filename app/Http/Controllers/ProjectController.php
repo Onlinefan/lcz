@@ -112,6 +112,15 @@ class ProjectController extends Controller
         return redirect('/create-project');
     }
 
+    public function changeStatus($id, $status)
+    {
+        $project = Project::find($id);
+        $project->status = $status;
+        $project->save();
+
+        return redirect('/progress/' . $id);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

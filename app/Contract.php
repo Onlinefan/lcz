@@ -17,15 +17,15 @@ class Contract extends Model
 
     /** @var array $contractFiles -  Correlates table columns and file location paths*/
     private static $contractFiles = [
-        'decree_scan' => 'Приказ/',
-        'project_charter' => 'Устав проекта/',
-        'plan_chart' => 'План-график/',
-        'lop' => 'ЛОП/',
-        'lpp' => 'ЛПП/',
-        'decision_sheet' => 'Лист решений/',
-        'file' => 'Контракт/',
-        'technical_task' => 'Тех.задание/',
-        'risks' => 'Риски/',
+        'decree_scan' => 'Prikaz/',
+        'project_charter' => 'Ustav proekta/',
+        'plan_chart' => 'Plan-grafik/',
+        'lop' => 'LOP/',
+        'lpp' => 'LPP/',
+        'decision_sheet' => 'List resheniy/',
+        'file' => 'Contract/',
+        'technical_task' => 'Teh.zadanie/',
+        'risks' => 'Riski/',
     ];
 
     /**
@@ -42,7 +42,7 @@ class Contract extends Model
             if (isset($files[$column])) {
                 $file = new File();
                 $fileName = File::createName($project->name);
-                $file->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $file->createFile($files[$column], public_path('Projects_files/' . $project->code . '/Upravleniye proektom/' . $path), $fileName);
                 $this->$column = $file->id;
             }
         }
@@ -58,10 +58,10 @@ class Contract extends Model
             if (isset($files[$column])) {
                 $file = File::find($original[$column]);
                 $fileSystem = new Filesystem();
-                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/' . $path . $file->file_name));
                 $newFile = new File();
                 $fileName = File::createName($project->name);
-                $newFile->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $newFile->createFile($files[$column], public_path('Projects_files/' . $project->code . '/Upravleniye proektom/' . $path), $fileName);
                 $this->$column = $newFile->id;
                 $file->delete();
             }

@@ -72,7 +72,7 @@ class HomeController extends Controller
                 'signPercent' => $signPercent[0]
             ]);
         }
-        return redirect('/projects');
+        return redirect('/home2');
 
     }
 }

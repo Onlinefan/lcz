@@ -52,8 +52,8 @@
                                         </td>
                                         <td>{{$project->contract->amount}}</td>
                                         <td>{{$project->status}}</td>
-                                        <td><a href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Проекты/')) . $project->contract->lopFile->file_name}}">{{$project->contract->lopFile->file_name}}</a></td>
-                                        <td><a href="/download?path={{substr($project->contract->lppFile->path, strripos($project->contract->lppFile->path, 'Проекты/')) . $project->contract->lppFile->file_name}}">{{$project->contract->lppFile->file_name}}</a></td>
+                                        <td><a href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/')) . $project->contract->lopFile->file_name}}">{{$project->contract->lopFile->file_name}}</a></td>
+                                        <td><a href="/download?path={{substr($project->contract->lppFile->path, strripos($project->contract->lppFile->path, 'Projects_files/')) . $project->contract->lppFile->file_name}}">{{$project->contract->lppFile->file_name}}</a></td>
                                         <td><a href="{{$project->contract->purchase_reference}}" target="_blank">Ссылка на закупку</a></td>
                                     </tr>
                                 @endforeach

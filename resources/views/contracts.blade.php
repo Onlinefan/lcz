@@ -92,7 +92,7 @@
                                             <td>{{$project->contract->documentStatus->number_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->date_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->count_payment_document}}</td>
-                                            <td><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Проекты/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
+                                            <td><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
                                         @else
                                             <td></td>
                                             <td></td>
@@ -106,7 +106,7 @@
                                             <td>{{$project->contract->serviceStatus->number_payment_document}}</td>
                                             <td>{{$project->contract->serviceStatus->date_payment_document}}</td>
                                             <td>{{$project->contract->serviceStatus->count_payment_document}}</td>
-                                            <td><a href="/download?path={{substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Проекты/')) . $project->contract->serviceStatus->scan->file_name}}">{{$project->contract->serviceStatus->scan->file_name}}</a></td>
+                                            <td><a href="/download?path={{substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Projects_files/')) . $project->contract->serviceStatus->scan->file_name}}">{{$project->contract->serviceStatus->scan->file_name}}</a></td>
                                         @else
                                             <td></td>
                                             <td></td>

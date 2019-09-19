@@ -46,11 +46,11 @@ class ProductionPlan extends Model
         foreach ($arProductionPlan['month'] as $key => $month) {
             $fileStart = new File();
             $fileStartName = File::createName($project->name);
-            $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileStartName);
+            $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/'), $fileStartName);
 
             $fileEnd = new File();
             $fileEndName = File::createName($project->name);
-            $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileEndName);
+            $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/'), $fileEndName);
 
             $productionPlan = new ProductionPlan([
                 'month' => $month,
@@ -72,8 +72,8 @@ class ProductionPlan extends Model
         $oldProductionPlan = ProductionPlan::where(['project_id' => $project->id])->get();
         $fileSystem = new Filesystem();
         foreach ($oldProductionPlan as $plan) {
-            $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $plan->preliminaryCalculation->file_name));
-            $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $plan->finalCalculation->file_name));
+            $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/' . $plan->preliminaryCalculation->file_name));
+            $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/' . $plan->finalCalculation->file_name));
             $plan->preliminaryCalculation()->delete();
             $plan->finalCalculation()->delete();
             $plan->delete();

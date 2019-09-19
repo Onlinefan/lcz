@@ -100,7 +100,57 @@
                             @foreach ($projectRegions as $key => $region)
                                 <div role="tabpanel" id="tab-{{$region->region_id}}" class="tab-pane {{intval($key) === 0 ? 'active' : ''}}">
                                     <div class="panel-body">
-                                        <p>Здесь должен быть прогресс-лайн "Статус реализации".</p>
+                                        <div class="row">
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['dataCount']/7*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">Начальные данные</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['initialDataCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">Исходные данные</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['pirCount']/10*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">ПИР</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['productionCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">Производство</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['smrCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">СМР/Монтаж</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/7*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">ПНР</h5>
+                                            </div>
+
+                                            <div class="col-lg-1">
+                                                <div class="progress progress-mini">
+                                                    <div style="width: {{round($arPercents[$key]['documentsCount']/14*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <h5 class="no-margins">Документы</h5>
+                                            </div>
+                                        </div>
+                                        <br>
 
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
@@ -155,7 +205,7 @@
                                                     <th>Статус монтажа</th>
                                                     <th>Передано в ПНР</th>
 
-                                                    <th>Колибровка 2000 проездов</th>
+                                                    <th>Калибровка 2000 проездов</th>
                                                     <th>КП</th>
                                                     <th>Результаты анализа</th>
                                                     <th>Передача комплекса в мониторинг</th>
@@ -197,7 +247,7 @@
                                                         <td>{{$region->koap}}</td>
                                                         <td>{{$region->stoplines_count}}</td>
 
-                                                        <td><span class="label label-secondary">{{$region->survey_status}}</span></td>
+                                                        <td><span class="label {{$region->survey_status === 'В работе' ? 'label-warning' : ($region->survey_status === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$region->survey_status}}</span></td>
                                                         <td>{{$region->survey_comment}}</td>
                                                         <td><span class="label label-secondary">{{$region->design_documentation}}</span></td>
                                                         <td>{{$region->new_footing_fvf}}</td>
@@ -205,7 +255,7 @@
                                                         <td>{{$region->rk_count}}</td>
                                                         <td>{{$region->ok_count}}</td>
                                                         <td>{{$region->equipment_power}}</td>
-                                                        <td><span class="label label-secondary">{{$region->request_tu}}</span></td>
+                                                        <td><span class="label {{($region->request_tu === 'Заявка подана' || $region->request_tu === 'ТУ получено') ? 'label-primary' : ($region->request_tu === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$region->request_tu}}</span></td>
                                                         <td><span class="label label-secondary">{{$region->request_footing}}</span></td>
 
                                                         <td><span class="label label-secondary">{{$region->shipment_status}}</span></td>
@@ -219,31 +269,31 @@
                                                         <td><span class="label label-secondary">{{$region->$vu220}}</span></td>
                                                         <td><span class="label label-secondary">{{$region->link_contract}}</span></td>
                                                         <td><span class="label label-secondary">{{$region->dislocation_strapping}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->installation_status}}</span></td>
+                                                        <td><span class="label {{($region->installation_status === 'Нет' || $region->installation_status === 'Украден') ? 'label-danger' : ($region->installation_status === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$region->installation_status}}</span></td>
                                                         <td><span class="label label-secondary">{{$region->transferred_pnr}}</span></td>
 
-                                                        <td><span class="label label-secondary">{{$region->calibration_2000}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->kp}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->analysis_result}}</span></td>
+                                                        <td><span class="label {{$region->calibration_2000 === 'В работе' ? 'label-warning' : 'label-danger'}}">{{$region->calibration_2000}}</span></td>
+                                                        <td><span class="label {{$region->kp === 'Нет водителя' ? 'label-danger' : ($region->kp === 'В работе' ? 'label-warning' : 'label-secondary')}}">{{$region->kp}}</span></td>
+                                                        <td><span class="label {{$region->analysis_result === 'Неудовлетворительно' ? 'label-danger' : 'label-secondary'}}">{{$region->analysis_result}}</span></td>
                                                         <td><span class="label label-secondary">{{$region->complex_to_monitoring}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->andromeda_unloading}}</span></td>
-                                                        <td><span class="label label-danger">{{$region->unloading}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->in_cafap}}</span></td>
+                                                        <td><span class="label label-secondary">{{$region->andromeda_unloading}}</span></td>
+                                                        <td><span class="label label-secondary">{{$region->unloading}}</span></td>
+                                                        <td><span class="label label-secondary">{{$region->in_cafap}}</span></td>
 
-                                                        <td><span class="label label-danger">{{$region->examination ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-danger">{{$region->project_documentation ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-danger">{{$region->executive_documentation ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->verification ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->forms ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->passports ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-warning">{{$region->tu_220 ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->contract_220 ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-warning">{{$region->tu_footing ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->contract_footing ?: 'Не требуется'}}</span></td>
-                                                        <td><span class="label label-danger">{{$region->address_plan_agreed_cafap ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-danger">{{$region->data_transfer_scheme ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->inbox ?: 'Отсутствует'}}</span></td>
-                                                        <td><span class="label label-primary">{{$region->outgoing ?: 'Отсутствует'}}</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->examination))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Obsledovanie/{{$region->examination}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->project_documentation))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Proektnaya documentaciya/{{$region->project_documentation}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->executive_documentation))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ispolnitelnaya documentaciya/{{$region->executive_documentation}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->verification))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Poverka/{{$region->verification}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->forms))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Formulyary/{{$region->forms}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->passports))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Pasporta/{{$region->passports}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->tu_220))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU-220/{{$region->tu_220}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->contract_220))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor 220/{{$region->contract_220}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->tu_footing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU na oporu/{{$region->tu_footing}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->contract_footing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor na opory/{{$region->contract_footing}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->address_plan_agreed_cafap))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Adresnyi plan/{{$region->address_plan_agreed_cafap}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->data_transfer_scheme))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Shema peredachi dannyh/{{$region->data_transfer_scheme}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->inbox))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Vhodyashie/{{$region->inbox}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($region->outgoing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ishodyashie/{{$region->outgoing}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -263,18 +313,33 @@
                         </div>
                         <br>
                         <div class="row">
-                            <button class="btn btn-outline btn-info">Схема передачи данных</button>
-                            <button class="btn btn-outline btn-info">Дислокации и направления</button>
-                            <button class="btn btn-outline btn-info">Коллажи</button>
-                            <button class="btn btn-outline btn-info">Скоростной режим</button>
+                            @if (isset($project->cafap->dataTransfer))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->dataTransfer->path, strripos($project->cafap->dataTransfer->path, 'Projects_files/')) . $project->cafap->dataTransfer->file_name}}">Схема передачи данных</a>
+                            @endif
+                            @if (isset($project->cafap->locationDirections))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->locationDirections->path, strripos($project->cafap->locationDirections->path, 'Projects_files/')) . $project->cafap->locationDirections->file_name}}">Дислокации и направления</a>
+                            @endif
+                            @if (isset($project->cafap->speedMode))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->speedMode->path, strripos($project->cafap->speedMode->path, 'Projects_files/')) . $project->cafap->speedMode->file_name}}">Скоростной режим</a>
+                            @endif
                         </div>
                         <div class="row">
-                            <button class="btn btn-outline btn-info">Ссылка на закупку</button>
-                            <button class="btn btn-outline btn-info">План-график</button>
-                            <button class="btn btn-outline btn-info">ЛОП (бюджет проекта)</button>
-                            <button class="btn btn-outline btn-info">Устав проекта</button>
-                            <button class="btn btn-outline btn-info">Контракт</button>
-                            <button class="btn btn-outline btn-info">Тех. задание</button>
+                            <a class="btn btn-outline btn-info" href="{{$project->contract->purchase_reference}}">Ссылка на закупку</a>
+                            @if (isset($project->contract->planChart))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->planChart->path, strripos($project->contract->planChart->path, 'Projects_files/')) . $project->contract->planChart->file_name}}">План-график</a>
+                            @endif
+                            @if (isset($project->contract->lopFile))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/')) . $project->contract->lopFile->file_name}}">ЛОП (бюджет проекта)</a>
+                            @endif
+                            @if (isset($project->contract->projectCharter))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->projectCharter->path, strripos($project->contract->projectCharter->path, 'Projects_files/')) . $project->contract->projectCharter->file_name}}">Устав проекта</a>
+                            @endif
+                            @if (isset($project->contract->contractFile))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->contractFile->path, strripos($project->contract->contractFile->path, 'Projects_files/')) . $project->contract->contractFile->file_name}}">Контракт</a>
+                            @endif
+                            @if (isset($project->contract->technicalTask))
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->technicalTask->path, strripos($project->contract->technicalTask->path, 'Projects_files/')) . $project->contract->technicalTask->file_name}}">Тех. задание</a>
+                            @endif
                             <a class="btn btn-outline btn-info" href="#">Документы по проекту</a>
                         </div>
                     </div>
@@ -288,13 +353,13 @@
                     <a class="btn btn-outline btn-info" href="/letters">Письма</a>
                 </div>
                 <div class="row">
-                    <button class="btn btn-outline btn-info">Передать в эксплуатацию</button>
+                    <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Эксплуатация'}}">Передать в эксплуатацию</a>
                 </div>
                 <div class="row">
                     @if ($project->status !== 'Завершен')
-                        <a class="btn btn-outline btn-info">Завершить проект</a>
+                        <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Завершен'}}">Завершить проект</a>
                     @else
-                        <a class="btn btn-outline btn-info">Возобновить</a>
+                        <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Реализация'}}">Возобновить</a>
                     @endif
                 </div>
                 <br>
@@ -318,6 +383,7 @@
     <script>
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function(){
+
                 $('.dataTables-example').DataTable({
                     pageLength: 25,
                     responsive: true,

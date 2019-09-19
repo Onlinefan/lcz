@@ -90,11 +90,6 @@
                     'name'=> 'Главная',
                 ],
                 [
-                    'route'=> 'projects',
-                    'icon'=> 'tasks',
-                    'name'=> 'Проекты',
-                ],
-                [
                     'route'=> 'contracts',
                     'icon'=> 'handshake-o',
                     'name'=> 'Реестр договоров',
