@@ -58,7 +58,7 @@
                                             <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
                                             <div class="text-right pull-right">
                                                 Дедлайн - {{$project->deadline()}} дней
-                                                <a href="/progress/{{$project->id}}" class="btn btn-xs btn-primary" style="margin-left: 20px;">Просмотр</a>
+                                                <a href="/progress/{{$project->id}}" class="btn btn-xs btn-white" style="margin-left: 20px;">Просмотр</a>
                                                 <a href="/edit-project/{{$project->id}}" class="btn btn-xs btn-primary" style="margin-left: 10px;">Редактировать</a>
                                             </div>
                                         </div>
@@ -93,10 +93,10 @@
 
                                                 <div class="form-chat">
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" id="{{$project->id}}">
                                                         <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="button">Отправить</button>
-                                                </span>
+                                                            <button class="btn btn-primary send-message" type="button" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}">Отправить</button>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,7 +153,7 @@
                                             <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
                                             <div class="text-right pull-right">
                                                 Дедлайн - {{$project->deadline()}} дней
-                                                <a href="/progress/{{$project->id}}" class="btn btn-xs btn-primary" style="margin-left: 20px;">Просмотр</a>
+                                                <a href="/progress/{{$project->id}}" class="btn btn-xs btn-white" style="margin-left: 20px;">Просмотр</a>
                                                 <a href="/edit-project/{{$project->id}}" class="btn btn-xs btn-primary" style="margin-left: 10px;">Редактировать</a>
                                             </div>
                                         </div>
@@ -188,10 +188,10 @@
 
                                                 <div class="form-chat">
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" id="{{$project->id}}">
                                                         <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="button">Отправить</button>
-                                                </span>
+                                                            <button class="btn btn-primary send-message" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}" type="button">Отправить</button>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -243,6 +243,29 @@
     <script>
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function(){
+
+                $('button.send-message').on('click', function () {
+                    var input = $('#' + $(this).data('project'));
+                    var userId = $(this).data('user');
+                    $.ajax({
+                        url: '/send-message',
+                        type: "POST",
+                        data: {
+                            message: $(input).val(),
+                            project_id: $(input).attr('id'),
+                            user_id: userId
+                        },
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error : function (msg) {
+                            console.log(msg);
+                        },
+                    });
+                });
 
                 $("#todo, #inprogress, #completed").sortable({
                     connectWith: ".connectList",

@@ -38,11 +38,13 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <a class="btn btn-primary btn-sm" href="/add_production_plan">Добавить</a>
+                        @if (auth()->user()->role !== 'Оператор')
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <a class="btn btn-primary btn-sm" href="/add_production_plan">Добавить</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

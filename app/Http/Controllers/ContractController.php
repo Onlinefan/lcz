@@ -19,7 +19,12 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        if (auth()->user()->role !== 'Оператор') {
+            $projects = Project::all();
+        } else {
+            $projects = Project::where(['head_id' => auth()->user()->id])->get();
+        }
+
         return view('contracts', [
             'projects' => $projects
         ]);

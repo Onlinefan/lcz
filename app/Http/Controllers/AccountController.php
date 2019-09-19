@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +21,22 @@ class AccountController extends Controller
      */
     public function index(Request $request)
     {
-        if (empty($request)) {
-            $users = DB::table('users')->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->get();
+        if (auth()->user()->role !== 'Оператор') {
+
+            if (empty($request)) {
+                $users = DB::table('users')->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->get();
+            } else {
+                $user = new User;
+                $users = $user->findUsers($request);
+            }
+
+            return view('accounts', [
+                'users' => $users,
+                'request' => $request
+            ]);
         }
-        else {
-            $user = new User;
-            $users = $user->findUsers($request);
-        }
-        return view('accounts', [
-            'users' => $users,
-            'request' => $request
-        ]);
+
+        return redirect('/projects');
     }
 
     /**

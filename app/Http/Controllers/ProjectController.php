@@ -40,9 +40,16 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projectRealization = Project::where(['status' => 'Реализация'])->orWhere(['status' => 'Приостановлено'])->get();
-        $projectExploitation = Project::where(['status' => 'Эксплуатация'])->get();
-        $projectFinished = Project::where(['status' => 'Завершен'])->get();
+        if (auth()->user()->role === 'Оператор') {
+            $projectRealization = Project::where([['status', '=', 'Реализация'], ['head_id', '=', auth()->user()->id]])->get();
+            $projectExploitation = Project::where([['status', '=', 'Эксплуатация'], ['head_id', '=', auth()->user()->id]])->get();
+            $projectFinished = Project::where([['status', '=', 'Завершен'], ['head_id', '=', auth()->user()->id]])->get();
+        } else {
+            $projectRealization = Project::where(['status' => 'Реализация'])->get();
+            $projectExploitation = Project::where(['status' => 'Эксплуатация'])->get();
+            $projectFinished = Project::where(['status' => 'Завершен'])->get();
+        }
+
         return view('projects', [
             'realization' => $projectRealization,
             'exploitation' => $projectExploitation,

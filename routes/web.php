@@ -56,3 +56,13 @@ Route::match(['get', 'post'], '/add-service-status', 'ContractController@addServ
 Route::post('/create-service-status', 'ContractController@createServiceStatus')->name('create-service-status');
 Route::match(['get', 'post'], '/add-financial-status', 'ContractController@addFinancialStatus')->name('add-financial-status');
 Route::post('/create-financial-status', 'ContractController@createFinancialStatus')->name('create-financial-status');
+Route::post('/send-message', 'MessageController@send')->name('send-message');
+Route::match(['get', 'post'], '/edit-data/{projectId}-{regionId}', 'ProgressController@editData')->name('edit-data');
+Route::post('/create-data', 'ProgressController@createData')->name('create-data');
+Route::match(['get', 'post'], '/edit-initial-data/{projectId}-{regionId}', 'ProgressController@editInitialData')->name('edit-initial-data');
+Route::match(['get', 'post'], '/edit-pir/{projectId}-{regionId}', 'ProgressController@editPir')->name('edit-pir');
+Route::match(['get', 'post'], '/edit-production/{projectId}-{regionId}', 'ProgressController@editProduction')->name('edit-production');
+Route::match(['get', 'post'], '/edit-smr/{projectId}-{regionId}', 'ProgressController@editSmr')->name('edit-smr');
+Route::match(['get', 'post'], '/edit-pnr/{projectId}-{regionId}', 'ProgressController@editPnr')->name('edit-pnr');
+Route::match(['get', 'post'], '/edit-documents/{projectId}-{regionId}', 'ProgressController@editDocuments')->name('edit-documents');
+Route::post('/create-documents', 'ProgressController@createDocuments')->name('create-documents');
