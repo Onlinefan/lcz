@@ -75,4 +75,9 @@ class User extends Authenticatable
 
         return $this->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->where($query)->get();
     }
+
+    public function avatarFile()
+    {
+        return $this->belongsTo('App\File', 'avatar');
+    }
 }

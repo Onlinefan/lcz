@@ -10,7 +10,7 @@
                     <div class="ibox-content">
                         <h4>
                             <img src="{{ asset('storage/img/logo_rus_g.png') }}" alt="">
-                            <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="64px" />
+                            <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="64px" />
                             {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
                         </h4>
                     </div>
@@ -39,7 +39,7 @@
                             @foreach ($projectsRealization as $realization)
                                 <li class="success-element" id="task1" style="background: #FFFFFF;">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="32px">
+                                        <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="32px">
                                         {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
                                         <span class="label badge-info pull-right">{{$realization->status}}</span>
                                     </h4>
@@ -133,7 +133,7 @@
                             @foreach ($projectsFinished as $project)
                                 <li class="info-element" id="task16">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="32px">
+                                        <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
@@ -173,6 +173,7 @@
                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function (data) {
+                            location.reload();
                             console.log(data);
                         },
                         error : function (msg) {

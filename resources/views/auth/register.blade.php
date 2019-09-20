@@ -6,7 +6,7 @@
         <div> <h1 class="logo-name">ЛЦЗ</h1></div>
         <h3>Регистрация</h3>
         <p>Создайте аккаунт</p>
-        <form class="m-t" role="form"  method="POST" action="{{ route('register') }}">
+        <form class="m-t" role="form"  method="POST" enctype="multipart/form-data" action="{{ route('register') }}">
             {{ csrf_field() }}
             <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                 <input type="text" class="form-control" placeholder="Введите имя" name="first_name" value="{{ old('first_name') }}" required autofocus>
@@ -66,6 +66,15 @@
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="Введите пароль еще раз" name="password_confirmation" required>
+            </div>
+            <div class="form-group{{ $errors->has('avatar') ? ' has-error' : '' }}">
+                <label class="col-sm-2 col-form-label">Аватар</label>
+                <input type="file" class="custom-file" name="avatar" required>
+                @if ($errors->has('avatar'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('avatar') }}</strong>
+                    </span>
+                @endif
             </div>
             <div class="form-group">
                 <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Согласен с политикой и условиями </label></div>

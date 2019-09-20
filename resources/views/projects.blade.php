@@ -24,7 +24,7 @@
                             @foreach ($realization as $project)
                                 <li class="success-element" id="task1" style="background: #FFFFFF;">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="32px">
+                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
@@ -118,7 +118,7 @@
                             @foreach ($exploitation as $project)
                                 <li class="success-element" id="task1" style="background: #FFFFFF;">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="32px">
+                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
@@ -212,7 +212,7 @@
                             @foreach ($finished as $project)
                                 <li class="info-element" id="task16">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="32px">
+                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
@@ -253,6 +253,7 @@
                         },
                         success: function (data) {
                             console.log(data);
+                            location.reload();
                         },
                         error : function (msg) {
                             console.log(msg);

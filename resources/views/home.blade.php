@@ -234,7 +234,6 @@
                             <a class="btn btn-info " href="/contacts"><i class="fa fa-phone"></i>&nbsp;Контакты</a>
                             <a class="btn btn-primary " href="/production"><i class="fa fa-warning"></i>&nbsp;План производства</a>
                             <a class="btn btn-white" href="/openings"> Реестр ЛОП</a>
-                            <a class="btn btn-white"> Архив АКТов</a>
                         </p>
                     </div>
                 </div>

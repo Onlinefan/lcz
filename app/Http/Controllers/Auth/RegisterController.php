@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\File;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +67,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'second_name' => $data['second_name'],
             'patronymic' => $data['patronymic'],
@@ -75,5 +76,14 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if (isset($data['avatar'])) {
+            $file = new File();
+            $file->createFile($data['avatar'], public_path('User_files/avatars/' . $user->id . '/'), 'avatar');
+            $user->avatar = $file->id;
+            $user->save();
+        }
+
+        return $user;
     }
 }
