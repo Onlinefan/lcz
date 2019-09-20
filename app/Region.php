@@ -14,10 +14,10 @@ class Region extends Model
     protected $guarded = [];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function country()
     {
-        return $this->hasOne('App\Country');
+        return $this->belongsTo('App\Country', 'country_id');
     }
 }

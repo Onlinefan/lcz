@@ -79,6 +79,11 @@
                     'icon'=> 'envelope-o',
                     'name'=> 'Письма',
                 ],
+                [
+                    'route' => 'admin-page',
+                    'icon' => 'tasks',
+                    'name' => 'Администрирование',
+                ],
             ] as $menu_item)
                 <li class="{{ (request()->is($menu_item['route'])) ? 'active' : '' }}">
                     <a href="{{ route($menu_item['route']) }}"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span

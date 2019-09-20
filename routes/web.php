@@ -68,4 +68,15 @@ Route::match(['get', 'post'], '/edit-documents/{projectId}-{regionId}', 'Progres
 Route::post('/create-documents', 'ProgressController@createDocuments')->name('create-documents');
 Route::get('/change-status/{id}-{status}', 'ProjectController@changeStatus')->name('change-status');
 Route::post('/get-map', 'SummaryController@getMap')->name('get-map');
-Route::match(['get', 'post'], 'get-month', 'SummaryController@getMonthDynamic')->name('get-month');
+Route::match(['get', 'post'], '/get-month', 'SummaryController@getMonthDynamic')->name('get-month');
+Route::match(['get', 'post'], '/admin-page', 'AdminController@index')->name('admin-page');
+Route::match(['get', 'post'], '/countries', 'AdminController@countries')->name('countries');
+Route::match(['get', 'post'], '/add-country', 'AdminController@addCountry')->name('add-country');
+Route::match(['get', 'post'], '/edit-country/{id}', 'AdminController@editCountry')->name('edit-country');
+Route::post('/submit-country/{id}', 'AdminController@submitCountry')->name('submit-country');
+Route::post('/create-country', 'AdminController@createCountry')->name('create-country');
+Route::match(['get', 'post'], '/regions', 'AdminController@regions')->name('regions');
+Route::match(['get', 'post'], '/add-region', 'AdminController@addRegion')->name('add-region');
+Route::match(['get', 'post'], '/edit-region/{id}', 'AdminController@editRegion')->name('edit-region');
+Route::post('/submit-region/{id}', 'AdminController@submitRegion')->name('submit-region');
+Route::post('/create-region', 'AdminController@createRegion')->name('create-region');
