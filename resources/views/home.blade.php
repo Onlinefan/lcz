@@ -3,6 +3,7 @@
     Главная
 @endsection
 @section('content')
+    {{csrf_field()}}
     <div class="row">
         <div class="col-lg-2">
             <div class="ibox ">
@@ -54,19 +55,19 @@
                 </div>
                 <div class="ibox-content">
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">15 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$contractCount}} <i class="fa fa-level-up"></i></div>
                         <small>По контракту</small>
                     </div>
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">20 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$pilotCount}} <i class="fa fa-level-up"></i></div>
                         <small>Пилотный проект</small>
                     </div>
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">40 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$exploitationCount}} <i class="fa fa-level-up"></i></div>
                         <small>Передано в эксплуатацию</small>
                     </div>
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">10 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$finishCount}} <i class="fa fa-level-up"></i></div>
                         <small>Завершено проектов</small>
                     </div>
                 </div>
@@ -80,15 +81,15 @@
                 <div class="ibox-content">
 
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">15 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$garantCount}} <i class="fa fa-level-up"></i></div>
                         <small>По гарантии</small>
                     </div>
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">5 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$rentCount}} <i class="fa fa-level-up"></i></div>
                         <small>Аренда (долгосрочные)</small>
                     </div>
                     <div class="txssd">
-                        <div class="stat-percent font-bold text-navy">5 <i class="fa fa-level-up"></i></div>
+                        <div class="stat-percent font-bold text-navy">{{$techCount}} <i class="fa fa-level-up"></i></div>
                         <small>Тех.обслуживание</small>
                     </div>
                 </div>
@@ -124,35 +125,23 @@
                             <thead>
                                 <tr>
                                     <th class="text-nowrap" scope="row">Округ/страна</th>
-                                    <th class="text-center">ДВФО</th>
-                                    <th class="text-center">СЗФО</th>
-                                    <th class="text-center">ПФО</th>
-                                    <th class="text-center">УФО</th>
-                                    <th class="text-center">ЮФО</th>
-                                    <th class="text-center">ЦФО</th>
-                                    <th class="text-center">СКФО</th>
+                                    @foreach ($regionsTable as $country)
+                                        <th class="text-center">{{$country->name}}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th class="text-nowrap" scope="row">Контрактов на сумму</th>
-                                    <td class="text-right">120 542 320</td>
-                                    <td class="text-right">254 658 123</td>
-                                    <td class="text-right">120 542 320</td>
-                                    <td class="text-right">254 658 123</td>
-                                    <td class="text-right">120 542 320</td>
-                                    <td class="text-right">254 658 123</td>
-                                    <td class="text-right">120 542 320</td>
+                                    @foreach ($regionsTable as $amount)
+                                        <td class="text-right">{{$amount->amount}}</td>
+                                    @endforeach
                                 </tr>
                                 <tr>
                                     <th class="text-nowrap" scope="row">Регионов</th>
-                                    <td class="text-right">5</td>
-                                    <td class="text-right">6</td>
-                                    <td class="text-right">5</td>
-                                    <td class="text-right">6</td>
-                                    <td class="text-right">5</td>
-                                    <td class="text-right">6</td>
-                                    <td class="text-right">5</td>
+                                    @foreach ($regionsTable as $regions)
+                                        <td class="text-right">{{$regions->regions_count}}</td>
+                                    @endforeach
                                 </tr>
                             </tbody>
                         </table>
@@ -164,38 +153,55 @@
                             window.addEventListener('DOMContentLoaded', function(){
                                 $(document).ready(function () {
 
-                                    c3.generate({
-                                        bindto: '#lineChart',
-                                        data: {
-                                            x: 'x',
-                                            columns: [
-                                                ['x', '2019-01-01', '2019-02-01', '2019-03-01', '2019-04-01', '2019-05-01', '2019-06-01', '2019-07-01'],
-                                                ['ДВФО', 120542320, 120542320*1.1, 120542320*1.15, 120542320*1.18, 120542320*1.2, 120542320*1.25, 120542320*1.25],
-                                                ['СЗФО', 254658123, 254658123*1.1, 254658123*1.25, 254658123*1.38, 254658123*1.4, 254658123*1.5, 254658123*1.5],
-                                                ['ПФО',  320542320, 320542320*1.1, 320542320*1.15, 320542320*1.18, 320542320*1.2, 320542320*1.25, 320542320*1.25],
-                                                ['УФО',  454658123, 454658123*1.1, 454658123*1.35, 454658123*1.48, 454658123*1.53, 454658123*1.67, 454658123*1.67],
-                                                ['ЮФО',  520542320, 520542320*1.1, 520542320*1.15, 520542320*1.18, 520542320*1.2, 520542320*1.25, 520542320*1.25],
-                                                ['ЦФО',  654658123, 654658123*1.1, 654658123*1.15, 654658123*1.18, 654658123*1.2, 654658123*1.25, 654658123*1.25],
-                                                ['СКФО', 720542320, 720542320*1.1, 720542320*1.15, 720542320*1.18, 720542320*1.2, 720542320*1.25, 720542320*1.25],
-                                            ],
-                                            colors: {
-                                                ДВФО: '#b3a968',
-                                                СЗФО: '#b35b7c',
-                                                ПФО:  '#5b6eb3',
-                                                УФО:  '#46b32b',
-                                                ЮФО:  '#b34b3d',
-                                                ЦФО:  '#781db3',
-                                                СКФО: '#1225b3',
-                                            }
+                                    $.ajax({
+                                        url: '/get-month',
+                                        type: 'POST',
+                                        data: {},
+                                        headers: {
+                                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                                         },
-                                        axis: {
-                                            x: {
-                                                type: 'timeseries',
-                                                tick: {
-                                                    format: '%Y-%m'
-                                                }
+                                        success: function (data) {
+                                            var result = JSON.parse(data);
+                                            data = result['data'];
+                                            var keys = result['keys'];
+                                            var colors = {};
+                                            var columns = [];
+                                            var row = ['x'];
+                                            for (var key in keys) {
+                                                row.push(keys[key] + '-01');
                                             }
-                                        }
+
+                                            columns.push(row);
+                                            for (var i in data) {
+                                                colors[data[i]['name']] = data[i]['color'] ? data[i]['color'] : '#00008b';
+                                                row = [data[i]['name']];
+                                                for (key in keys) {
+                                                    row.push(data[i][keys[key]] ? data[i][keys[key]] : 0);
+                                                }
+
+                                                columns.push(row);
+                                            }
+
+                                            c3.generate({
+                                                bindto: '#lineChart',
+                                                data: {
+                                                    x: 'x',
+                                                    columns: columns,
+                                                    colors: colors
+                                                },
+                                                axis: {
+                                                    x: {
+                                                        type: 'timeseries',
+                                                        tick: {
+                                                            format: '%Y-%m'
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        },
+                                        error : function (msg) {
+                                            console.log(msg);
+                                        },
                                     });
 
                                 });
@@ -415,43 +421,43 @@
 
                             $(document).ready(function () {
 
-                                var mapData = {
-                                    "RU-LEN": 498,
-                                    "RU-LIP": 200,
-                                    "RU-BA": 1300,
-                                    "RU-SAM": 220,
-                                    "RU-KK": 540,
-                                    "RU-MOW": 120,
-                                    "RU-RYA": 760,
-                                    "RU-VGG": 550,
-                                    "RU-DA": 200,
-                                    "RU-BRY": 120,
-                                    "RU-SMO": 2000,
-                                    "RU-KIR": 5
-                                };
+                                $.ajax({
+                                    url: '/get-map',
+                                    type: 'POST',
+                                    data: {},
+                                    headers: {
+                                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    success: function (data) {
+                                        var mapData = JSON.parse(data);
 
-                                $('#world-map').vectorMap({
-                                    map: 'ru_mill',
-                                    backgroundColor: "transparent",
-                                    regionStyle: {
-                                        initial: {
-                                            fill: '#e4e4e4',
-                                            "fill-opacity": 1,
-                                            stroke: 'none',
-                                            "stroke-width": 0,
-                                            "stroke-opacity": 0
-                                        }
+                                        $('#world-map').vectorMap({
+                                            map: 'ru_mill',
+                                            backgroundColor: "transparent",
+                                            regionStyle: {
+                                                initial: {
+                                                    fill: '#e4e4e4',
+                                                    "fill-opacity": 1,
+                                                    stroke: 'none',
+                                                    "stroke-width": 0,
+                                                    "stroke-opacity": 0
+                                                }
+                                            },
+                                            series: {
+                                                regions: [{
+                                                    values: mapData,
+                                                    scale: [ "#22d6b1", "#1ab394", ],
+                                                    normalizeFunction: 'polynomial'
+                                                }]
+                                            },
+                                            onRegionTipShow: function(e, el, code){
+                                                el.html(el.html()+(typeof mapData[code] !== 'undefined' ? ' ('+mapData[code]+')' : ''));
+                                            }
+                                        });
                                     },
-                                    series: {
-                                        regions: [{
-                                            values: mapData,
-                                            scale: [ "#22d6b1", "#1ab394", ],
-                                            normalizeFunction: 'polynomial'
-                                        }]
+                                    error : function (msg) {
+                                        console.log(msg);
                                     },
-                                    onRegionTipShow: function(e, el, code){
-                                        el.html(el.html()+(typeof mapData[code] !== 'undefined' ? ' ('+mapData[code]+')' : ''));
-                                    }
                                 });
 
                             });

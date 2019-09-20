@@ -67,3 +67,5 @@ Route::match(['get', 'post'], '/edit-pnr/{projectId}-{regionId}', 'ProgressContr
 Route::match(['get', 'post'], '/edit-documents/{projectId}-{regionId}', 'ProgressController@editDocuments')->name('edit-documents');
 Route::post('/create-documents', 'ProgressController@createDocuments')->name('create-documents');
 Route::get('/change-status/{id}-{status}', 'ProjectController@changeStatus')->name('change-status');
+Route::post('/get-map', 'SummaryController@getMap')->name('get-map');
+Route::match(['get', 'post'], 'get-month', 'SummaryController@getMonthDynamic')->name('get-month');
