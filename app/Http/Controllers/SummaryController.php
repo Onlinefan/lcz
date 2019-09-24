@@ -208,9 +208,9 @@ class SummaryController extends Controller
     {
         $codeResults = DB::select(DB::raw('SELECT countries.code, pc1.quantity FROM countries
             LEFT JOIN (
-		        SELECT `c`.id, COUNT(`p`.status) AS quantity
+		        SELECT `c`.id, SUM(`p`.count) AS quantity
 			    FROM `project_countries` AS `pc`
-                    RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
+                    RIGHT JOIN `project_products_count` AS `p` ON `pc`.project_id = `p`.project_id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc1 ON pc1.id = countries.id
@@ -218,7 +218,7 @@ class SummaryController extends Controller
 
         $mapData = [];
         foreach ($codeResults as $result) {
-            $mapData[$result->code] = $result->quantity;
+            $mapData[$result->code] = (int)$result->quantity;
         }
 
         return json_encode($mapData);

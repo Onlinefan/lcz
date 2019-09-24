@@ -124,5 +124,9 @@
                 </li>
             @endforeach
         @endif
+            <li>
+                <a href="/files"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span
+                        class="nav-label">Файловое хранилище</span></a>
+            </li>
     </ul>
 @endsection

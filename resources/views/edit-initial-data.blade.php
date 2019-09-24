@@ -50,12 +50,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="stoplines_count">Кол-во стоп-линий полос</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="stoplines_count" name="stoplines_count" value="{{isset($initialData->stoplines_count) ? $initialData->stoplines_count : ''}}" placeholder="Введите кол-во стоп-линий" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <div class="col-sm-4 col-sm-offset-2">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </div>

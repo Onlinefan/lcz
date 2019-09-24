@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\AnalysisResult;
 use App\AndromedaUnloading;
+use App\BelongingRoad;
 use App\Calibration2000;
 use App\ComplexToMonitoring;
 use App\DislocationStrapping;
@@ -414,7 +415,7 @@ class ProgressController extends Controller
     public function editData($projectId, $regionId)
     {
         $projectStatus = ProjectStatus::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
-        $roadTypes = RoadType::all();
+        $roadTypes = BelongingRoad::all();
 
         return view('edit-data', [
             'projectStatus' => $projectStatus,

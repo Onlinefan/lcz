@@ -27009,3 +27009,9 @@ img {
 .small-chat-box {
   height: 290px;
 }
+
+.hidden-url {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}

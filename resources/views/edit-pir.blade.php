@@ -39,13 +39,13 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="new_footing_fvf">Новая опора под ФВФ</label>
+                        <label class="col-sm-2 col-form-label" for="new_footing_fvf">Количество новых опор под ФВФ</label>
                         <div class="col-sm-10">
                             <input type="text" id="new_footing_fvf" name="new_footing_fvf" value="{{isset($pir->new_footing_fvf) ? $pir->new_footing_fvf : ''}}" placeholder="Введите ФВФ" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="new_footing_lep">Новая опора под ЛЭП</label>
+                        <label class="col-sm-2 col-form-label" for="new_footing_lep">Количество новых опор под ЛЭП</label>
                         <div class="col-sm-10">
                             <input type="text" id="new_footing_lep" name="new_footing_lep" value="{{isset($pir->new_footing_lep) ? $pir->new_footing_lep : ''}}" placeholder="Введите ЛЭП" class="form-control">
                         </div>

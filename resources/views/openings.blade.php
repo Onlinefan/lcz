@@ -71,6 +71,9 @@
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function(){
                 $('.dataTables-example').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json'
+                    },
                     pageLength: 25,
                     responsive: true,
                     dom: '<"html5buttons"B>lTfgitp',

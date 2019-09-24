@@ -34,14 +34,14 @@ class CafapRegion extends Model
 
     public static function createRecords($arRegions, $cafapId)
     {
-        foreach ($arRegions as $regionId) {
-            self::createRecord($regionId, $cafapId);
+        foreach ($arRegions['region_id'] as $key => $regionId) {
+            self::createRecord($regionId, $cafapId, $arRegions['cafap_po'][$key]);
         }
     }
 
-    public static function createRecord($regionId, $cafapId)
+    public static function createRecord($regionId, $cafapId, $cafapPo)
     {
-        $cafapRegion = new CafapRegion(['region_id' => $regionId, 'cafap_id' => $cafapId]);
+        $cafapRegion = new CafapRegion(['region_id' => $regionId, 'cafap_id' => $cafapId, 'cafap_po' => $cafapPo]);
         $cafapRegion->save();
     }
 

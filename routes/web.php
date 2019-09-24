@@ -80,3 +80,5 @@ Route::match(['get', 'post'], '/add-region', 'AdminController@addRegion')->name(
 Route::match(['get', 'post'], '/edit-region/{id}', 'AdminController@editRegion')->name('edit-region');
 Route::post('/submit-region/{id}', 'AdminController@submitRegion')->name('submit-region');
 Route::post('/create-region', 'AdminController@createRegion')->name('create-region');
+Route::match(['get', 'post'], '/edit-production-plan/{id}', 'ProductionPlanController@edit')->name('edit-production-plan');
+Route::post('/edit-production-plan-submit', 'ProductionPlanController@editSubmit')->name('edit-production-plan');

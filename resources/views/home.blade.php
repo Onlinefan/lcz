@@ -5,18 +5,7 @@
 @section('content')
     {{csrf_field()}}
     <div class="row">
-        <div class="col-lg-2">
-            <div class="ibox ">
-
-                <div class="ibox-title">
-                    &nbsp;
-                </div>
-                <div class="ibox-content">
-                    <img src="{{ asset('storage/img/logo_rus_g.png') }}" alt="">
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5>
@@ -33,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5>Поступления</h5>
@@ -41,7 +30,7 @@
                 <div class="ibox-content">
                     <h1 class="no-margins">{{(int)$incomes->income_sum}}</h1>
                     <div class="progress progress-mini">
-                        <div style="width: 58%;" class="progress-bar progress-bar-danger"></div>
+                        <div style="width: {{(int)$incomes->income_sum/(int)$contracts->contract_sum*100}}%;" class="progress-bar progress-bar-danger"></div>
                     </div>
                     <div class="stat-percent font-bold text-info">{{$incomes->income_count}} <i class="fa fa-level-up"></i></div>
                     <small>Выставлено счетов </small>
@@ -242,6 +231,49 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <div class="ibox-title">
+                <h5>Количество РК</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-nowrap" scope="row">Округ/страна</th>
+                            <th class="text-center">Линейники</th>
+                            <th class="text-center">Перекресток</th>
+                            <th class="text-center">Пешеход</th>
+                            <th class="text-center">Коперник (стационар)</th>
+                            <th class="text-center">Коперник (передвижка)</th>
+                            <th class="text-center">Архимед</th>
+                            <th class="text-center">Андромеда</th>
+                            <td class="text-center">Всего</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($rkTable as $row)
+                            <tr>
+                                @foreach ($row as $key => $cell)
+                                    @if ($key === 0)
+                                    <th class="text-nowrap" scope="row">
+                                        {{$cell}}
+                                    </th>
+                                    @else
+                                        <td class="text-center">{{$cell}}</td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>География бизнеса РФ</h5>

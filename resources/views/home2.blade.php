@@ -5,20 +5,6 @@
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox ">
-                    <div class="ibox-content">
-                        <h4>
-                            <img src="{{ asset('storage/img/logo_rus_g.png') }}" alt="">
-                            <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="64px" />
-                            {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
-                        </h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-lg-6">
                 <div class="ibox">
                     <div class="ibox-title">

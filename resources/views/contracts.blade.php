@@ -92,7 +92,7 @@
                                             <td>{{$project->contract->documentStatus->number_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->date_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->count_payment_document}}</td>
-                                            <td><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
+                                            <td><span class="hidden-url">http://vk.com/ </span><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
                                         @else
                                             <td></td>
                                             <td></td>
@@ -151,6 +151,9 @@
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function() {
                 $('.dataTables-example').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json'
+                    },
                     pageLength: 25,
                     responsive: true,
                     dom: '<"html5buttons"B>lTfgitp',

@@ -221,6 +221,7 @@
                                     <select class="form-control" name="Contract[original_status]">
                                         <option value="Отсутствует">Отсутствует</option>
                                         <option value="Передан в бухгалтерию">Передан в бухгалтерию</option>
+                                        <option value="Подписан на электронной площадке">Подписан на электронной площадке</option>
                                     </select>
                                 </div>
                             </div>
@@ -248,15 +249,6 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lop]">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">ЛПП</label>
-                                <div class="col-sm-10">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="Contract[lpp]">
                                     </div>
                                 </div>
                             </div>
@@ -369,36 +361,31 @@
 
                             <div class="form-group row" id="road-group1">
                                 <label class="col-sm-2 col-form-label">Тип дороги</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="ProjectRoad[road_id][]">
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="ProjectProduct[road_id][]">
                                         @foreach ($roadTypes as $roadType)
                                             <option value="{{$roadType->id}}">{{$roadType->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
+                                <label class="col-sm-2 col-form-label">Продукт</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="ProjectProduct[product_id][]">
+                                        @foreach ($products as $product)
+                                            <option value="{{$product->id}}">{{$product->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <label class="col-sm-2 col-form-label">Количество</label>
-                                <div class="col-sm-4">
-                                    <input type="number" class="form-control" name="ProjectRoad[count][]">
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="ProjectProduct[count][]">
                                 </div>
                             </div>
 
                             <button type="button" id="roadButtonAdd" class="btn btn-white btn-sm col-sm-offset-2">Добавить еще</button>
                             <button type="button" id="roadButtonDelete" class="btn btn-white btn-sm col-sm-offset-2 hidden">Удалить</button>
-
-                            <div class="hr-line-dashed"></div>
-                            <h2>Оборудование на РК</h2>
-                            <div class="hr-line-dashed"></div>
-
-                            @foreach ($products as $product)
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">{{$product->name}}</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ProjectProduct[count][]" value="0">
-                                        <input type="hidden" name="ProjectProduct[product_id][]" value="{{$product->id}}">
-                                    </div>
-                                </div>
-                            @endforeach
 
                             <div class="hr-line-dashed"></div>
                             <h2>Зона ответственности</h2>
@@ -412,12 +399,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[examination_other]">
+                                <div data-name="examination_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[examination_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -429,12 +420,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                      </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[smr_other]">
+                                <div class="hidden" data-name="smr_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[smr_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -446,12 +441,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[installation_other]">
+                                <div class="hidden" data-name="installation_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[installation_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -463,12 +462,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]">
+                                <div class="hidden" data-name="pnr_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -480,12 +483,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]">
+                                <div class="hidden" data-name="support_permission_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -497,12 +504,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]">
+                                <div class="hidden" data-name="tu_220_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -514,12 +525,16 @@
                                         <option value="Гос.заказчик">Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)">Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ">Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется">Не требуется</option>
+                                        <option value="Иное">Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]">
+                                <div class="hidden" data-name="tu_communication_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]">
+                                    </div>
                                 </div>
                             </div>
 
@@ -584,10 +599,18 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Регион</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="CafapRegion[]">
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="CafapRegion[region_id][]">
                                         @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Фирма</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="CafapRegion[cafap_po][]">
+                                        @foreach ($cafapPo as $po)
+                                            <option value="{{$po->id}}">{{$po->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -694,9 +717,9 @@
                                     <label class="col-sm-2 col-form-label">Приоритет</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" name="ProductionPlan[priority][]">
-                                            @for ($priority = 1; $priority <= 10; $priority++)
-                                                <option value="{{$priority}}">{{$priority}}</option>
-                                            @endfor
+                                            <option value="Низкий">Низкий</option>
+                                            <option value="Средний">Средний</option>
+                                            <option value="Высокий">Высокий</option>
                                         </select>
                                     </div>
                                 </div>
@@ -984,6 +1007,69 @@
                     var nextTab = $($('.nav-tabs li')[parseInt(dataTab) - 2]);
                     $(tab).removeClass('active');
                     $(nextTab).addClass('active');
+                });
+
+                $($('select[name="ProjectResponsibility[examination_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=examination_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=examination_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[examination_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[smr_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=smr_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=smr_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[smr_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[installation_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=installation_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=installation_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[installation_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[pnr_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=pnr_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=pnr_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[pnr_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[support_permission_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=support_permission_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=support_permission_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[support_permission_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[tu_220_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=tu_220_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=tu_220_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[tu_220_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[tu_communication_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=tu_communication_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=tu_communication_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[tu_communication_other]"]')[0]).val('');
+                    }
                 });
             });
         });

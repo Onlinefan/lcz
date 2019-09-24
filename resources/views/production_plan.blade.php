@@ -20,6 +20,9 @@
                                     <th>Количество РК</th>
                                     <th>Дата отгрузки</th>
                                     <th>Приоритет</th>
+                                    <th>Предварительный расчет оборудования</th>
+                                    <th>Окончательный расчет оборудования</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
 
@@ -33,6 +36,9 @@
                                         <td>{{$plan->rk_count}}</td>
                                         <td>{{$plan->date_shipping}}</td>
                                         <td>{{$plan->priority}}</td>
+                                        <td>@if (isset($plan->preliminaryCalculation))<a href="/download?path={{substr($plan->preliminaryCalculation->path, strripos($plan->preliminaryCalculation->path, 'Projects_files/')) . $plan->preliminaryCalculation->file_name}}">{{$plan->preliminaryCalculation->file_name}}</a>@endif</td>
+                                        <td>@if (isset($plan->finalCalculation))<a href="/download?path={{substr($plan->finalCalculation->path, strripos($plan->finalCalculation->path, 'Projects_files/')) . $plan->finalCalculation->file_name}}">{{$plan->finalCalculation->file_name}}</a>@endif</td>
+                                        <td><a href="/edit-production-plan/{{$plan->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -56,6 +62,9 @@
         window.addEventListener('DOMContentLoaded', function(){
             $(document).ready(function(){
                 $('.dataTables-example').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json'
+                    },
                     pageLength: 25,
                     responsive: true,
                     dom: '<"html5buttons"B>lTfgitp',

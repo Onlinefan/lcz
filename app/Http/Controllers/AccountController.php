@@ -22,13 +22,8 @@ class AccountController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->role !== 'Оператор') {
-
-            if (empty($request)) {
-                $users = DB::table('users')->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->get();
-            } else {
-                $user = new User;
-                $users = $user->findUsers($request);
-            }
+            $user = new User;
+            $users = $user->findUsers($request, auth()->user()->role);
 
             return view('accounts', [
                 'users' => $users,

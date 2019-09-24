@@ -46,7 +46,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Project');
     }
 
-    public function findUsers(Request $request)
+    public function findUsers(Request $request, $role)
     {
         $query = [];
         if ($request['first_name']) {
@@ -71,6 +71,10 @@ class User extends Authenticatable
 
         if ($request['status']) {
             $query = $query + ['status' => $request['status']];
+        }
+
+        if ($role !== 'Суперпользователь') {
+            $query = $query + ['role' => 'Оператор'];
         }
 
         return $this->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->where($query)->get();

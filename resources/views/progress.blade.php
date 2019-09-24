@@ -10,8 +10,8 @@
                 <div class="ibox">
                     <div class="ibox-content">
                         <h4>
-                            <img alt="image" class="img-circle" src="http://webapplayers.com/inspinia_admin-v2.9.2/img/a4.jpg" width="64px" />
-                            {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
+                            <img alt="image" class="img-circle" src="{{'/' . stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="64px" />
+                            {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                         </h4>
                         <h4>Код проекта: {{$project->code}}</h4>
                         <h1>{{$project->name}}</h1>
@@ -94,7 +94,7 @@
                                     <a class="nav-link {{intval($key) === 0 ? 'active' : ''}}"
                                         data-toggle="tab" data-tab="{{$region->region_id}}" href="#tab-{{$region->region_id}}">{{$region->region_name}}</a>
                                 </li>
-                            @endForeach
+                            @endforeach
                         </ul>
                         <div class="tab-content">
                             @foreach ($projectRegions as $key => $region)
@@ -178,13 +178,12 @@
                                                     <th>Скоростной режим, км/ч</th>
                                                     <th>Кол-во рубежей</th>
                                                     <th>КоАП</th>
-                                                    <th>Кол-во стоп-линий полос</th>
 
                                                     <th>Статус обследования</th>
                                                     <th>Комментарий к обследованию</th>
                                                     <th>Проектная документация</th>
-                                                    <th>Новая опора под ФВФ</th>
-                                                    <th>Новая опора под ЛЭП</th>
+                                                    <th>Количество новых опор под ФВФ</th>
+                                                    <th>Количество новых опор под ЛЭП</th>
                                                     <th>Количество РК</th>
                                                     <th>Количество ОК</th>
                                                     <th>Суммарная мощность оборудования</th>
@@ -245,7 +244,6 @@
                                                         <td>{{$region->speed_mode}}</td>
                                                         <td>{{$region->borders_number}}</td>
                                                         <td>{{$region->koap}}</td>
-                                                        <td>{{$region->stoplines_count}}</td>
 
                                                         <td><span class="label {{$region->survey_status === 'В работе' ? 'label-warning' : ($region->survey_status === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$region->survey_status}}</span></td>
                                                         <td>{{$region->survey_comment}}</td>
@@ -340,7 +338,7 @@
                             @if (isset($project->contract->technicalTask))
                                 <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->technicalTask->path, strripos($project->contract->technicalTask->path, 'Projects_files/')) . $project->contract->technicalTask->file_name}}">Тех. задание</a>
                             @endif
-                            <a class="btn btn-outline btn-info" href="#">Документы по проекту</a>
+                            <a class="btn btn-outline btn-info" href="/files">Документы по проекту</a>
                         </div>
                     </div>
                 </div>

@@ -235,6 +235,7 @@
                                     <select class="form-control" name="Contract[original_status]">
                                         <option value="Отсутствует" {{$project->contract->original_status === 'Отсутствует' ? 'selected' : ''}}>Отсутствует</option>
                                         <option value="Передан в бухгалтерию" {{$project->contract->original_status === 'Передан в бухгалтерию' ? 'selected' : ''}}>Передан в бухгалтерию</option>
+                                        <option value="Подписан на электронной площадке" {{$project->contract->original_status === 'Подписан на электронной площадке' ? 'selected' : ''}}>Подписан на электронной площадке</option>
                                     </select>
                                 </div>
                             </div>
@@ -271,18 +272,6 @@
                                 <div class="col-sm-8">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="Contract[lop]">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">ЛПП</label>
-                                @if (isset($project->contract->lppFile))
-                                    <label class="col-sm-2 col-form-label">{{$project->contract->lppFile->file_name}}</label>
-                                @endif
-                                <div class="col-sm-8">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="Contract[lpp]">
                                     </div>
                                 </div>
                             </div>
@@ -405,47 +394,38 @@
                             <h2>Тип дорог и количество</h2>
                             <div class="hr-line-dashed"></div>
 
-                            @foreach ($projectRoads as $projectRoad)
+                            @foreach ($projectProducts as $projectProduct)
                                 <div class="form-group row" data-block="road">
                                     <label class="col-sm-2 col-form-label">Тип дороги</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="ProjectRoad[road_id][]">
+                                    <div class="col-sm-2">
+                                        <select class="form-control" name="ProjectProduct[road_id][]">
                                             @foreach ($roadTypes as $roadType)
-                                                <option value="{{$roadType->id}}" {{intval($projectRoad->road_id) === intval($roadType->id) ? 'selected' : ''}}>{{$roadType->name}}</option>
+                                                <option value="{{$roadType->id}}" {{intval($projectProduct->road_id) === intval($roadType->id) ? 'selected' : ''}}>{{$roadType->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <label class="col-sm-2 col-form-label">Продукт</label>
+                                    <div class="col-sm-2">
+                                        <select class="form-control" name="ProjectProduct[product_id][]">
+                                            @foreach ($products as $product)
+                                                <option value="{{$product->id}}" {{intval($projectProduct->product_id) === intval($product->id) ? 'selected' : ''}}>{{$product->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <label class="col-sm-2 col-form-label">Количество</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" name="ProjectRoad[count][]" value="{{$projectRoad->count}}"}}>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" name="ProjectProduct[count][]" value="{{$projectProduct->count}}"}}>
                                     </div>
                                 </div>
                             @endforeach
 
                             <button type="button" id="roadButtonAdd" class="btn btn-white btn-sm col-sm-offset-2">Добавить еще</button>
-                            <button type="button" id="roadButtonDelete" class="btn btn-white btn-sm col-sm-offset-2 {{$projectRoads->count() > 1 ? '' : 'hidden'}}">Удалить</button>
+                            <button type="button" id="roadButtonDelete" class="btn btn-white btn-sm col-sm-offset-2 {{$projectProducts->count() > 1 ? '' : 'hidden'}}">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
-                            <h2>Оборудование на РК</h2>
-                            <div class="hr-line-dashed"></div>
 
-                            @foreach ($products as $product)
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">{{$product->name}}</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ProjectProduct[count][]"
-                                               @foreach ($projectProducts as $projectProduct)
-                                                        @if (intval($projectProduct->product_id) === intval($product->id))
-                                                            value="{{$projectProduct->count}}"
-                                                        @endif
-                                                   @endforeach>
-                                        <input type="hidden" name="ProjectProduct[product_id][]" value="{{$product->id}}">
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <div class="hr-line-dashed"></div>
                             <h2>Зона ответственности</h2>
                             <div class="hr-line-dashed"></div>
 
@@ -457,18 +437,26 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->examination === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->examination === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->examination === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                    </select>
-                                </div>
-
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[examination_other]"
-                                        @if ($project->responsibilityArea->examination !== 'ЛЦЗ' &&
+                                        <option value="Не требуется" {{$project->responsibilityArea->examination === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->examination !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->examination !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->examination !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->examination !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->examination}}"
-                                        @endif>
+                                            $project->responsibilityArea->examination !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->examination !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                    </select>
+                                </div>
+                                <div data-name="examination_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[examination_other]"
+                                            @if ($project->responsibilityArea->examination !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->examination !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->examination !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->examination !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->examination !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->examination}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -480,18 +468,27 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->smr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->smr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->smr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->smr === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->smr !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->smr !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->smr !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->smr !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[smr_other]"
-                                        @if ($project->responsibilityArea->smr !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->smr !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->smr !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->smr}}"
-                                        @endif>
+                                <div data-name="smr_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[smr_other]"
+                                            @if ($project->responsibilityArea->smr !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->smr !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->smr !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->smr !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->smr}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -503,18 +500,27 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->installation === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->installation === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->installation === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->installation === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->installation !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->installation !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->installation !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->installation !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[installation_other]"
-                                        @if ($project->responsibilityArea->installation !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->installation !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->installation !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->installation}}"
-                                        @endif>
+                                <div data-name="installation_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[installation_other]"
+                                            @if ($project->responsibilityArea->installation !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->installation !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->installation !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->installation !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->installation}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -526,18 +532,28 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->pnr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->pnr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->pnr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->pnr === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->pnr !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->pnr !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->pnr !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                    </select>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]"
-                                        @if ($project->responsibilityArea->pnr !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->pnr !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->pnr}}"
-                                        @endif>
+                                <div data-name="pnr_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]"
+                                            @if ($project->responsibilityArea->pnr !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->pnr !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->pnr !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->pnr}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -549,18 +565,27 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->support_permission === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->support_permission === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->support_permission === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->support_permission === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->support_permission !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->support_permission !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]"
-                                        @if ($project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->support_permission !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->support_permission}}"
-                                        @endif>
+                                <div data-name="support_permission_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]"
+                                            @if ($project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->support_permission !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->support_permission !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->support_permission}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -572,18 +597,27 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->tu_220 === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_220 === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_220 === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->tu_220 === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->tu_220 !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_220 !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]"
-                                        @if ($project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->tu_220 !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->tu_220}}"
-                                        @endif>
+                                <div class="hidden" data-name="tu_220_other">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]"
+                                            @if ($project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->tu_220 !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->tu_220 !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->tu_220}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -595,18 +629,27 @@
                                         <option value="Гос.заказчик" {{$project->responsibilityArea->tu_communication === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
                                         <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_communication === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
                                         <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_communication === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" {{$project->responsibilityArea->tu_communication === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
+                                        <option value="Иное" {{$project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
+                                            $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
+                                            $project->responsibilityArea->tu_communication !== 'Подрядчик ЛЦЗ' &&
+                                            $project->responsibilityArea->tu_communication !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Иное</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]"
-                                        @if ($project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
-                                            $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
-                                            $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
-                                            $project->responsibilityArea->tu_communication !== 'Подрядчик ЛЦЗ')
-                                            value="{{$project->responsibilityArea->tu_communication}}"
-                                        @endif>
+                                <div data-name="tu_communication_other" class="hidden">
+                                    <label class="col-sm-2 col-form-label">Иное</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]"
+                                            @if ($project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
+                                                $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
+                                                $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
+                                                $project->responsibilityArea->tu_communication !== 'Подрядчик ЛЦЗ' &&
+                                                $project->responsibilityArea->tu_communication !== 'Не требуется')
+                                                value="{{$project->responsibilityArea->tu_communication}}"
+                                            @endif>
+                                    </div>
                                 </div>
                             </div>
 
@@ -689,10 +732,18 @@
                             @foreach ($project->cafap->cafapRegions as $cafapRegion)
                                 <div class="form-group row" data-block="cafap-region">
                                     <label class="col-sm-2 col-form-label">Регион</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="CafapRegion[]">
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="CafapRegion[region_id][]">
                                             @foreach ($regions as $region)
                                                 <option value="{{$region->id}}" {{intval($cafapRegion->region_id) === intval($region->id) ? 'selected' : ''}}>{{$region->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label">Фирма</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="CafapRegion[cafap_po][]">
+                                            @foreach ($cafapPo as $po)
+                                                <option value="{{$po->id}}" {{intval($cafapRegion->cafap_po) === intval($po->id) ? 'selected' : ''}}>{{$po->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -803,9 +854,9 @@
                                         <label class="col-sm-2 col-form-label">Приоритет</label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="ProductionPlan[priority][]">
-                                                @for ($priority = 1; $priority <= 10; $priority++)
-                                                    <option value="{{$priority}}" {{intval($plan->priority) === intval($priority) ? 'selected' : ''}}>{{$priority}}</option>
-                                                @endfor
+                                                <option value="Низкий" {{$plan->priority === 'Низкий' ? 'selected' : ''}}>Низкий</option>
+                                                <option value="Средний" {{$plan->priority === 'Средний' ? 'selected' : ''}}>Средний</option>
+                                                <option value="Высокий" {{$plan->priority === 'Высокий' ? 'selected' : ''}}>Высокий</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1127,6 +1178,97 @@
                     var nextTab = $($('.nav-tabs li')[parseInt(dataTab) - 2]);
                     $(tab).removeClass('active');
                     $(nextTab).addClass('active');
+                });
+
+                if ($($('select[name="ProjectResponsibility[examination_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=examination_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[smr_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=smr_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[installation_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=installation_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[pnr_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=pnr_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[support_permission_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=support_permission_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[tu_220_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=tu_220_other]')[0]).removeClass('hidden');
+                }
+
+                if ($($('select[name="ProjectResponsibility[tu_communication_main]"]')[0]).val() === 'Иное') {
+                    $($('div[data-name=tu_communication_other]')[0]).removeClass('hidden');
+                }
+
+                $($('select[name="ProjectResponsibility[examination_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=examination_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=examination_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[examination_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[smr_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=smr_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=smr_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[smr_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[installation_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=installation_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=installation_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[installation_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[pnr_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=pnr_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=pnr_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[pnr_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[support_permission_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=support_permission_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=support_permission_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[support_permission_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[tu_220_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=tu_220_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=tu_220_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[tu_220_other]"]')[0]).val('');
+                    }
+                });
+
+                $($('select[name="ProjectResponsibility[tu_communication_main]"]')[0]).on('change', function () {
+                    if ($(this).val() === 'Иное') {
+                        $($('div[data-name=tu_communication_other]')[0]).removeClass('hidden');
+                    } else {
+                        $($('div[data-name=tu_communication_other]')[0]).addClass('hidden');
+                        $($('input[name="ProjectResponsibility[tu_communication_other]"]')[0]).val('');
+                    }
                 });
             });
         });

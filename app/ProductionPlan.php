@@ -46,10 +46,12 @@ class ProductionPlan extends Model
         foreach ($arProductionPlan['month'] as $key => $month) {
             $fileStart = new File();
             $fileStartName = File::createName($project->name);
+            if (isset($arProductionFiles['preliminary_calculation_equipment'][$key]))
             $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/'), $fileStartName);
 
             $fileEnd = new File();
             $fileEndName = File::createName($project->name);
+            if (isset($arProductionFiles['final_equipment_calculation'][$key]))
             $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/'), $fileEndName);
 
             $productionPlan = new ProductionPlan([

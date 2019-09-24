@@ -35,13 +35,13 @@ class ProjectProductCount extends Model
     public static function createRecords($arProducts, $projectId)
     {
         foreach ($arProducts['product_id'] as $key => $productId) {
-            self::createRecord($productId, $arProducts['count'][$key], $projectId);
+            self::createRecord($productId, $arProducts['count'][$key], $projectId, $arProducts['road_id'][$key]);
         }
     }
 
-    public static function createRecord($productId, $count, $projectId)
+    public static function createRecord($productId, $count, $projectId, $roadId)
     {
-        $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count]);
+        $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count, 'road_id' => $roadId]);
         $projectProduct->save();
     }
 

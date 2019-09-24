@@ -12,8 +12,21 @@ use Illuminate\Http\Request;
  */
 class Contract extends Model
 {
+    const notNeed = 'Не требуется';
+
     /** @var array $guarded - limitation on mass assignment */
     protected $guarded = [];
+
+    protected $attributes = [
+        'equipment_produce' => self::notNeed,
+        'equipment_supply' => self::notNeed,
+        'smr_start' => self::notNeed,
+        'smr_end' => self::notNeed,
+        'installation_start' => self::notNeed,
+        'installation_end' => self::notNeed,
+        'pnr_start' => self::notNeed,
+        'pnr_end' => self::notNeed,
+    ];
 
     /** @var array $contractFiles -  Correlates table columns and file location paths*/
     private static $contractFiles = [

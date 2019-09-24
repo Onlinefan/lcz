@@ -6,6 +6,7 @@ use App\Cafap;
 use App\CafapAndromedaExist;
 use App\CafapCollage;
 use App\CafapRegion;
+use App\CafapRegionPo;
 use App\Contact;
 use App\Contract;
 use App\Country;
@@ -75,6 +76,7 @@ class ProjectController extends Controller
         $regions = Region::all();
         $countries = Country::all();
         $serviceTypes = ServiceType::all();
+        $cafapPo = CafapRegionPo::all();
 
         return view('create-project', [
             'users' => $users,
@@ -82,7 +84,8 @@ class ProjectController extends Controller
             'products' => $products,
             'regions' => $regions,
             'countries' => $countries,
-            'serviceTypes' => $serviceTypes
+            'serviceTypes' => $serviceTypes,
+            'cafapPo' => $cafapPo
         ]);
     }
 
@@ -96,7 +99,6 @@ class ProjectController extends Controller
         ProjectCountry::createRecords($request->get('Country'), $project->id);
         ProjectRegion::createRecords($request->get('Region'), $project->id);
         ProjectServiceType::createRecords($request->get('ProjectServiceTypes'), $project->id);
-        ProjectRoad::createRecords($request->get('ProjectRoad'), $project->id);
         ProjectProductCount::createRecords($request->get('ProjectProduct'), $project->id);
         ProjectResponsibilityArea::createRecord($request->get('ProjectResponsibility'), $project->id);
 
@@ -168,8 +170,8 @@ class ProjectController extends Controller
         $projectCountries = ProjectCountry::where(['project_id' => $id])->get();
         $projectRegions = ProjectRegion::where(['project_id' => $id])->get();
         $projectServiceTypes = ProjectServiceType::where(['project_id' => $id])->get();
-        $projectRoads = ProjectRoad::where(['project_id' => $id])->get();
         $projectProducts = ProjectProductCount::where(['project_id' => $id])->get();
+        $cafapPo = CafapRegionPo::all();
 
         return view('edit-project', [
             'users' => $users,
@@ -182,8 +184,8 @@ class ProjectController extends Controller
             'projectCountries' => $projectCountries,
             'projectRegions' => $projectRegions,
             'projectServiceTypes' => $projectServiceTypes,
-            'projectRoads' => $projectRoads,
-            'projectProducts' => $projectProducts
+            'projectProducts' => $projectProducts,
+            'cafapPo' => $cafapPo
         ]);
     }
 
