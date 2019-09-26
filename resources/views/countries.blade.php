@@ -32,6 +32,7 @@
                                                 <a class="btn-white btn btn-xs" href="/edit-country/{{$country->id}}">Редактировать</a>
                                             </div>
                                         </td>
+                                        <td class="text-right"><a href="/delete-country/{{$country->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

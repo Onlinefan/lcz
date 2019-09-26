@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\Product;
 use App\Region;
 use Illuminate\Http\Request;
 
@@ -90,6 +91,60 @@ class AdminController extends Controller
     {
         $region = new Region($request->all());
         $region->save();
+        return redirect('/regions');
+    }
+
+    public function products()
+    {
+        $products = Product::all();
+        return view('products', [
+            'products' => $products
+        ]);
+    }
+
+    public function editProduct($id)
+    {
+        $product = Product::find($id);
+        return view('edit-product', [
+            'product' => $product
+        ]);
+    }
+
+    public function submitProduct($id, Request $request)
+    {
+        $product = Product::find($id);
+        $product->name = $request->get('name');
+        $product->save();
+        return redirect('/products');
+    }
+
+    public function addProduct()
+    {
+        return view('add-product');
+    }
+
+    public function createProduct(Request $request)
+    {
+        $product = new Product($request->all());
+        $product->save();
+        return redirect('/products');
+    }
+
+    public function deleteProduct($id)
+    {
+        Product::destroy($id);
+        return redirect('/products');
+    }
+
+    public function deleteCountry($id)
+    {
+        Country::destroy($id);
+        return redirect('/countries');
+    }
+
+    public function deleteRegion($id)
+    {
+        Region::destroy($id);
         return redirect('/regions');
     }
 }

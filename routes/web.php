@@ -86,3 +86,11 @@ Route::match(['get', 'post'], '/edit-letter/{id}', 'LetterController@edit')->nam
 Route::post('/edit-letter-submit', 'LetterController@editSubmit')->name('edit-letter-submit');
 Route::match(['get', 'post'], '/add-data-row/{projectId}-{regionId}', 'ProgressController@addRow')->name('add-data-row');
 Route::match(['get', 'post'], '/delete-data-row/{id}', 'ProgressController@deleteDataRow')->name('delete-data-row');
+Route::match(['get', 'post'], '/products', 'AdminController@products')->name('products');
+Route::match(['get', 'post'], '/add-product', 'AdminController@addProduct')->name('add-product');
+Route::match(['get', 'post'], '/edit-product/{id}', 'AdminController@editProduct')->name('edit-product');
+Route::post('/submit-product/{id}', 'AdminController@submitProduct')->name('submit-product');
+Route::post('/create-product', 'AdminController@createProduct')->name('create-product');
+Route::match(['get', 'post'], '/delete-product/{id}', 'AdminController@deleteProduct')->name('delete-product');
+Route::match(['get', 'post'], '/delete-country/{id}', 'AdminController@deleteCountry')->name('delete-country');
+Route::match(['get', 'post'], '/delete-region/{id}', 'AdminController@deleteRegion')->name('delete-region');

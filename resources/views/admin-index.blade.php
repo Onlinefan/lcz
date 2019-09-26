@@ -12,6 +12,9 @@
                 <div class="form-group row">
                     <a href="/regions"><label class="col-sm-2 col-form-label" for="system_id">Регионы</label></a>
                 </div>
+                <div class="form-group row">
+                    <a href="/products"><label class="col-sm-2 col-form-label" for="system_id">Продукты</label></a>
+                </div>
             </div>
         </div>
     </div>

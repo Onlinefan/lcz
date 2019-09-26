@@ -242,7 +242,7 @@
                                                 <tbody>
                                                 @foreach ($region->projectStatus() as $row)
                                                     <tr>
-                                                        <td>{{$row->system_number}}</td>
+                                                        <td>{{$row->id}}</td>
                                                         <td>{{$row->system_id}}</td>
                                                         <td>{{$row->complex_id}}</td>
                                                         <td>{{$row->city}}</td>
