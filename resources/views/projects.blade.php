@@ -22,8 +22,11 @@
 
                         <ul class="sortable-list connectList agile-list" id="todo">
                             @foreach ($realization as $project)
-                                <li class="success-element" id="task1" style="background: #FFFFFF;">
+                                <li class="{{$project->deadline() <= 10 ? 'warning-element' : 'success-element'}}" id="task1" style="background: #FFFFFF;">
                                     <h4>
+                                        @if ($project->deadline() <= 10)
+                                        <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
+                                        @endif
                                         <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
@@ -116,8 +119,11 @@
                     <div class="ibox-content">
                         <ul class="sortable-list connectList agile-list" id="inprogress">
                             @foreach ($exploitation as $project)
-                                <li class="success-element" id="task1" style="background: #FFFFFF;">
+                                <li class="{{$project->deadline() <= 10 ? 'warning-element' : 'success-element'}}" id="task1" style="background: #FFFFFF;">
                                     <h4>
+                                        @if ($project->deadline() <= 10)
+                                            <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
+                                        @endif
                                         <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
@@ -222,7 +228,7 @@
                                         </h3>
                                     </div>
                                     <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
+                                        <a href="/progress/{{$project->id}}" class="pull-right btn btn-xs btn-white">Просмотр</a>
                                         <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
                                     </div>
                                 </li>

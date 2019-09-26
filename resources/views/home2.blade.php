@@ -23,8 +23,11 @@
                         </div>
                         <ul class="sortable-list connectList agile-list" id="todo">
                             @foreach ($projectsRealization as $realization)
-                                <li class="success-element" id="task1" style="background: #FFFFFF;">
+                                <li class="{{$project->deadline() <= 10 ? 'warning-element' : 'success-element'}}" id="task1" style="background: #FFFFFF;">
                                     <h4>
+                                        @if ($project->deadline() <= 10)
+                                            <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
+                                        @endif
                                         <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="32px">
                                         {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
                                         <span class="label badge-info pull-right">{{$realization->status}}</span>

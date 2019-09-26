@@ -26,9 +26,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="name">Наименование</label>
+                        <label class="col-sm-2 col-form-label" for="name">Назначение платежа</label>
                         <div class="col-sm-10">
-                            <input type="text" id="name" name="name" value="" placeholder="Введите наименование" class="form-control">
+                            <input type="text" id="name" name="name" value="" placeholder="Введите назначения" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

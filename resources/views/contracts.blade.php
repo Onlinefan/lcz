@@ -63,17 +63,9 @@
                                     <tr>
                                         <td>{{$project->id}}</td>
                                         <td>{{$project->code}}</td>
-                                        <td>
-                                            @foreach ($project->countries as $country)
-                                                <span class="label label-secondary">{{$country->country->name}}</span>
-                                            @endforeach
-                                        </td>
+                                        <td>@foreach ($project->countries as $country)<span class="label label-secondary">{{$country->country->name}}; </span><br>@endforeach</td>
                                         <td>{{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}</td>
-                                        <td>
-                                            @foreach ($project->regions as $region)
-                                                {{$region->region->name}}<br>
-                                            @endforeach
-                                        </td>
+                                        <td>@foreach ($project->regions as $region){{$region->region->name}}; <br>@endforeach</td>
                                         <td>{{$project->name}}</td>
                                         <td>{{$project->contract->customer}}</td>
 
@@ -92,7 +84,7 @@
                                             <td>{{$project->contract->documentStatus->number_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->date_payment_document}}</td>
                                             <td>{{$project->contract->documentStatus->count_payment_document}}</td>
-                                            <td><span class="hidden-url">http://vk.com/ </span><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
+                                            <td><span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($project->contract->documentStatus->scan->path, strripos($project->contract->documentStatus->scan->path, 'Projects_files/')) . $project->contract->documentStatus->scan->file_name}}">{{$project->contract->documentStatus->scan->file_name}}</a></td>
                                         @else
                                             <td></td>
                                             <td></td>
@@ -106,7 +98,7 @@
                                             <td>{{$project->contract->serviceStatus->number_payment_document}}</td>
                                             <td>{{$project->contract->serviceStatus->date_payment_document}}</td>
                                             <td>{{$project->contract->serviceStatus->count_payment_document}}</td>
-                                            <td><a href="/download?path={{substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Projects_files/')) . $project->contract->serviceStatus->scan->file_name}}">{{$project->contract->serviceStatus->scan->file_name}}</a></td>
+                                            <td><span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($project->contract->serviceStatus->scan->path, strripos($project->contract->serviceStatus->scan->path, 'Projects_files/')) . $project->contract->serviceStatus->scan->file_name}}">{{$project->contract->serviceStatus->scan->file_name}}</a></td>
                                         @else
                                             <td></td>
                                             <td></td>

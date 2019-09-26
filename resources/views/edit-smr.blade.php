@@ -5,8 +5,8 @@
 @section('content')
 <form method="POST" action="/create-data">
     {{csrf_field()}}
-    <input type="hidden" name="project_id" value="{{$projectId}}">
-    <input type="hidden" name="region_id" value="{{$regionId}}">
+    <input type="hidden" name="complex_id" value="{{$smr->complex_id}}">
+    <input type="hidden" name="id" value="{{$smr->id}}">
     <input type="hidden" name="table" value="App\SmrInstallation">
     <div class="wrapper wrapper-content animated fadeInRight ecommerce">
         <div class="ibox-content m-b-sm border-bottom">
@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="link_root_task">Ссылка на корневую задачу</label>
                     <div class="col-sm-10">
-                        <input type="text" id="link_root_task" name="link_root_task" value="{{isset($initialData->speed_mode) ? $initialData->speed_mode : ''}}" placeholder="Введите ссылку" class="form-control">
+                        <input type="text" id="link_root_task" name="link_root_task" value="{{isset($smr->link_root_task) ? $smr->link_root_task : ''}}" placeholder="Введите ссылку" class="form-control">
                     </div>
                 </div>
                 <div class="form-group row">

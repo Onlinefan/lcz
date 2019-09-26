@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use App\File;
 use App\Letter;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 class LetterController extends Controller
@@ -37,6 +39,13 @@ class LetterController extends Controller
             $email->status = $request['status'];
             $email->recipient = $request['recipient'];
             $email->save();
+
+            if ($request->file('letter_file')) {
+                $file = new File();
+                $file->createFile($request->file('letter_file'), public_path('/Mails/' . $email->status . '/' . $email->id . '/'), 'id'.uniqid());
+                $email->letter_file = $file->id;
+                $email->save();
+            }
         }
 
         return redirect('/letters');
@@ -66,15 +75,39 @@ class LetterController extends Controller
         return $letters;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Letter  $letter
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Letter $letter)
+    public function edit($id)
     {
-        //
+        $letter = Email::find($id);
+
+        return view('edit-letter', [
+            'letter' => $letter
+        ]);
+    }
+
+    public function editSubmit(Request $request)
+    {
+        $letter = Email::find($request->get('id'));
+        $letter->type = $request['type'] ?: $letter->type;
+        $letter->number = $request['number'] ?: $letter->number;
+        $letter->email_date = date('Y-m-d', strtotime($request['email_date'])) ?: $letter->email_date;
+        $letter->theme = $request['theme'] ?: $letter->theme;
+        $letter->status = $request['status'] ?: $letter->status;
+        $letter->recipient = $request['recipient'] ?: $letter->recipient;
+
+        if ($request->file('letter_file')) {
+            if (isset($letter->letterFile)) {
+                $oldFile = File::find($letter->letter_file);
+                $fileSystem = new Filesystem();
+                $fileSystem->delete(public_path('/Mails/' . $letter->status . '/' . $letter->id . '/' . $oldFile->file_name));
+                $oldFile->delete();
+            }
+            $file = new File();
+            $file->createFile($request->file('letter_file'), public_path('/Mails/' . $letter->status . '/' . $letter->id . '/'), 'id'.uniqid());
+            $letter->letter_file = $file->id;
+        }
+
+        $letter->save();
+        return redirect('/letters');
     }
 
     /**

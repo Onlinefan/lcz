@@ -156,6 +156,10 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = Project::find($id);
+        if ($project->status === 'Завершен' && auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         if (auth()->user()->role === 'Оператор') {
             $users = User::where('id', auth()->user()->id)->get();
         } else {

@@ -6,8 +6,8 @@
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
     <form method="POST" action="/create-data">
         {{csrf_field()}}
-        <input type="hidden" name="project_id" value="{{$projectId}}">
-        <input type="hidden" name="region_id" value="{{$regionId}}">
+        <input type="hidden" name="complex_id" value="{{$production->complex_id}}">
+        <input type="hidden" name="id" value="{{$production->id}}">
         <input type="hidden" name="table" value="App\Production">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">

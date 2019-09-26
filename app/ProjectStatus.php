@@ -23,4 +23,39 @@ class ProjectStatus extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function initialData()
+    {
+        return $this->hasOne('App\InitialData', 'complex_id');
+    }
+
+    public function pir()
+    {
+        return $this->hasOne('App\Pir', 'complex_id');
+    }
+
+    public function production()
+    {
+        return $this->hasOne('App\Production', 'complex_id');
+    }
+
+    public function smr()
+    {
+        return $this->hasOne('App\SmrInstallation', 'complex_id');
+    }
+
+    public function pnr()
+    {
+        return $this->hasOne('App\Pnr', 'complex_id');
+    }
+
+    public function document()
+    {
+        return $this->hasOne('App\Document', 'complex_id');
+    }
+
+    public function affiliationRoad()
+    {
+        return $this->belongsTo('App\BelongingRoad', 'affiliation_of_the_road');
+    }
 }

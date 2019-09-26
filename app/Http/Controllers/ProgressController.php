@@ -83,231 +83,81 @@ class ProgressController extends Controller
         $dateDiff = $contractEnd->diff($now)->format('%a');
         $datePercent = $now->diff($contractStart)->format('%a')/($contractEnd->diff($contractStart)->format('%a') ?: 1)*100;
 
-        $projectRegionsQuery = DB::raw("SELECT regions.id AS region_id, regions.name AS region_name, `ps`.id AS system_number, `ps`.system_id, `ps`.complex_id, `ps`.city,
-            `ps`.affiliation_of_the_road, `ps`.address_contract, `ps`.address_gibdd, `id`.equipment_type, `id`.road_type, `id`.speed_mode, `id`.borders_number, `id`.koap,
-            `id`.stoplines_count, pir.survey_status, pir.survey_comment, pir.design_documentation, pir.new_footing_fvf, pir.new_footing_lep, pir.rk_count, pir.ok_count,
-            pir.equipment_power, pir.request_tu, pir.request_footing, pd.shipment_status, pd.date_equipment_shipment, pd.number_sim_internet, pd.number_sim_ssu, pd.number_verification,
-            pd.date_verification_end, `si`.link_root_task, `si`.`220_vu`, `si`.link_contract, `si`.dislocation_strapping, `si`.installation_status, `si`.transferred_pnr,
-            pnr.calibration_2000, pnr.kp, pnr.analysis_result, pnr.complex_to_monitoring, pnr.andromeda_unloading, pnr.unloading, pnr.in_cafap, doc1.examination, doc2.project_documentation,
-            doc3.executive_documentation, doc4.verification, doc5.forms, doc6.passports, doc7.tu_220, doc8.contract_220, doc9.tu_footing, doc10.contract_footing,
-            doc11.address_plan_agreed_cafap, doc12.data_transfer_scheme, doc13.inbox, doc14.outgoing FROM regions
-            LEFT JOIN (
-                SELECT regions.id, `ps`.id AS system_number, system_id, complex_id, city, belonging_road.name as affiliation_of_the_road, address_contract, address_gibdd
-                FROM project_status AS `ps`
-                    RIGHT JOIN regions ON `ps`.region_id = regions.id
-                    RIGHT JOIN belonging_road ON `ps`.affiliation_of_the_road = belonging_road.id
-                    where `ps`.project_id = $id
-            ) `ps` ON `ps`.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, products.name as equipment_type,road_types.name as road_type, speed_mode, borders_number, koap, stoplines_count
-                FROM initial_data AS `ps`
-                    RIGHT JOIN regions ON `ps`.region_id = regions.id
-                    RIGHT JOIN products ON `ps`.equipment_type = products.id
-                    RIGHT JOIN road_types ON `ps`.road_type = road_types.id
-                    where `ps`.project_id = $id
-            ) `id` ON `id`.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, survey_statuses.name as survey_status, survey_comment, project_documents.name as design_documentation, new_footing_fvf, new_footing_lep, rk_count,
-                equipment_power, ok_count, tu_requests.name as request_tu, footing_requests.name as request_footing
-                FROM pir
-                    RIGHT JOIN regions ON pir.region_id = regions.id
-                    RIGHT JOIN survey_statuses ON pir.survey_status = survey_statuses.id
-                    RIGHT JOIN project_documents ON pir.design_documentation = project_documents.id
-                    RIGHT JOIN tu_requests ON pir.request_tu = tu_requests.id
-                    RIGHT JOIN footing_requests ON pir.request_footing = footing_requests.id
-                    where pir.project_id = $id
-            ) pir ON pir.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, shipment_statuses.name shipment_status, date_equipment_shipment, number_sim_internet, number_sim_ssu, number_verification, date_verification_end
-                FROM production AS pd
-                    RIGHT JOIN regions ON pd.region_id = regions.id
-                    RIGHT JOIN shipment_statuses ON pd.shipment_status = shipment_statuses.id
-                    where `pd`.project_id = $id
-            ) pd ON pd.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, link_root_task, vu_200.name as 220_vu, link_contract.name as link_contract, dislocation_strapping.name as dislocation_strapping,
-                installation_status.name as installation_status, transferred_pnr.name as transferred_pnr
-                FROM smr_installation AS `si`
-                    RIGHT JOIN regions ON `si`.region_id = regions.id
-                    RIGHT JOIN vu_200 ON `si`.`220_vu` = vu_200.id
-                    RIGHT JOIN link_contract ON `si`.link_contract = link_contract.id
-                    RIGHT JOIN dislocation_strapping ON `si`.dislocation_strapping = dislocation_strapping.id
-                    RIGHT JOIN installation_status ON `si`.installation_status = installation_status.id
-                    RIGHT JOIN transferred_pnr ON `si`.transferred_pnr = transferred_pnr.id
-                    where `si`.project_id = $id
-            ) `si` ON `si`.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, calibration_2000.name as calibration_2000, kp.name as kp, analysis_result.name as analysis_result, complex_to_monitoring.name as complex_to_monitoring,
-                andromeda_unloading.name as andromeda_unloading, unloading, in_cafap.name as in_cafap
-                FROM pnr
-                    RIGHT JOIN regions ON pnr.region_id = regions.id
-                    RIGHT JOIN calibration_2000 ON pnr.calibration_2000 = calibration_2000.id
-                    RIGHT JOIN kp ON pnr.kp = kp.id
-                    RIGHT JOIN analysis_result ON pnr.analysis_result = analysis_result.id
-                    RIGHT JOIN complex_to_monitoring ON pnr.complex_to_monitoring = complex_to_monitoring.id
-                    RIGHT JOIN andromeda_unloading ON pnr.andromeda_unloading = andromeda_unloading.id
-                    RIGHT JOIN in_cafap ON pnr.in_cafap = in_cafap.id
-                    where `pnr`.project_id = $id
-            ) pnr ON pnr.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as examination FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.examination = files.id
-                    where doc.project_id = $id
-            ) doc1 ON doc1.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as project_documentation FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.project_documentation = files.id
-                    where doc.project_id = $id
-            ) doc2 ON doc2.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as executive_documentation FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.executive_documentation = files.id
-                    where doc.project_id = $id
-            ) doc3 ON doc3.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as verification FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.verification = files.id
-                    where doc.project_id = $id
-            ) doc4 ON doc4.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as forms FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.forms = files.id
-                    where doc.project_id = $id
-            ) doc5 ON doc5.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as passports FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.passports = files.id
-                    where doc.project_id = $id
-            ) doc6 ON doc6.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as tu_220 FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.tu_220 = files.id
-                    where doc.project_id = $id
-            ) doc7 ON doc7.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as contract_220 FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.contract_220 = files.id
-                    where doc.project_id = $id
-            ) doc8 ON doc8.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as tu_footing FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.tu_footing = files.id
-                    where doc.project_id = $id
-            ) doc9 ON doc9.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as contract_footing FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.contract_footing = files.id
-                    where doc.project_id = $id
-            ) doc10 ON doc10.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as address_plan_agreed_cafap FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.address_plan_agreed_cafap = files.id
-                    where doc.project_id = $id
-            ) doc11 ON doc11.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as data_transfer_scheme FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.data_transfer_scheme = files.id
-                    where doc.project_id = $id
-            ) doc12 ON doc12.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as inbox FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.inbox = files.id
-                    where doc.project_id = $id
-            ) doc13 ON doc13.id = regions.id
-            LEFT JOIN (
-                SELECT regions.id, files.file_name as outgoing FROM documents AS doc
-                    RIGHT JOIN regions ON doc.region_id = regions.id
-                    RIGHT JOIN files ON doc.outgoing = files.id
-                    where doc.project_id = $id
-            ) doc14 ON doc14.id = regions.id
-            WHERE regions.id IN (SELECT region_id FROM project_regions WHERE project_id = $id)");
-
-        $projectRegions = DB::select($projectRegionsQuery);
         $arPercents = [];
         $vu220 = '220_vu';
+
+        $projectRegions = ProjectRegion::where(['project_id' => $id])->get();
         foreach ($projectRegions as $region) {
             $dataCount = 0;
-            $dataCount += isset($region->system_number);
-            $dataCount += isset($region->system_id);
-            $dataCount += isset($region->complex_id);
-            $dataCount += isset($region->city);
-            $dataCount += isset($region->affiliation_of_the_road);
-            $dataCount += isset($region->address_contract);
-            $dataCount += isset($region->address_gibdd);
-
             $initialDataCount = 0;
-            $initialDataCount += isset($region->equipment_type);
-            $initialDataCount += isset($region->road_type);
-            $initialDataCount += isset($region->speed_mode);
-            $initialDataCount += isset($region->borders_number);
-            $initialDataCount += isset($region->koap);
-            $initialDataCount += isset($region->stoplines_count);
-
             $pirCount = 0;
-            $pirCount += isset($region->survey_status);
-            $pirCount += isset($region->survey_comment);
-            $pirCount += isset($region->design_documentation);
-            $pirCount += isset($region->new_footing_fvf);
-            $pirCount += isset($region->new_footing_lep);
-            $pirCount += isset($region->rk_count);
-            $pirCount += isset($region->ok_count);
-            $pirCount += isset($region->equipment_power);
-            $pirCount += isset($region->request_tu);
-            $pirCount += isset($region->request_footing);
-
             $productionCount = 0;
-            $productionCount += isset($region->shipment_status);
-            $productionCount += isset($region->date_equipment_shipment);
-            $productionCount += isset($region->number_sim_internet);
-            $productionCount += isset($region->number_sim_ssu);
-            $productionCount += isset($region->number_verification);
-            $productionCount += isset($region->date_verification_end);
-
             $smrCount = 0;
-            $smrCount += isset($region->link_root_task);
-            $smrCount += isset($region->$vu220);
-            $smrCount += isset($region->link_contract);
-            $smrCount += isset($region->dislocation_strapping);
-            $smrCount += isset($region->installation_status);
-            $smrCount += isset($region->transferred_pnr);
-
             $pnrCount = 0;
-            $pnrCount += isset($region->calibration_2000);
-            $pnrCount += isset($region->kp);
-            $pnrCount += isset($region->analysis_result);
-            $pnrCount += isset($region->complex_to_monitoring);
-            $pnrCount += isset($region->andromeda_unloading);
-            $pnrCount += isset($region->unloading);
-            $pnrCount += isset($region->in_cafap);
-
             $documentsCount = 0;
-            $documentsCount += isset($region->examination);
-            $documentsCount += isset($region->project_documentation);
-            $documentsCount += isset($region->executive_documentation);
-            $documentsCount += isset($region->verification);
-            $documentsCount += isset($region->forms);
-            $documentsCount += isset($region->passports);
-            $documentsCount += isset($region->tu_220);
-            $documentsCount += isset($region->contract_220);
-            $documentsCount += isset($region->tu_footing);
-            $documentsCount += isset($region->contract_footing);
-            $documentsCount += isset($region->address_plan_agreed_cafap);
-            $documentsCount += isset($region->data_transfer_scheme);
-            $documentsCount += isset($region->inbox);
-            $documentsCount += isset($region->outgoing);
+            foreach ($region->projectStatus() as $projectStatus) {
+                $dataCount += isset($projectStatus->system_number);
+                $dataCount += isset($projectStatus->system_id);
+                $dataCount += isset($projectStatus->complex_id);
+                $dataCount += isset($projectStatus->city);
+                $dataCount += isset($projectStatus->affiliation_of_the_road);
+                $dataCount += isset($projectStatus->address_contract);
+                $dataCount += isset($projectStatus->address_gibdd);
+
+                $initialDataCount += isset($projectStatus->initialData->equipment_type);
+                $initialDataCount += isset($projectStatus->initialData->road_type);
+                $initialDataCount += isset($projectStatus->initialData->speed_mode);
+                $initialDataCount += isset($projectStatus->initialData->borders_number);
+                $initialDataCount += isset($projectStatus->initialData->koap);
+
+                $pirCount += isset($projectStatus->pir->survey_status);
+                $pirCount += isset($projectStatus->pir->survey_comment);
+                $pirCount += isset($projectStatus->pir->design_documentation);
+                $pirCount += isset($projectStatus->pir->new_footing_fvf);
+                $pirCount += isset($projectStatus->pir->new_footing_lep);
+                $pirCount += isset($projectStatus->pir->rk_count);
+                $pirCount += isset($projectStatus->pir->ok_count);
+                $pirCount += isset($projectStatus->pir->equipment_power);
+                $pirCount += isset($projectStatus->pir->request_tu);
+                $pirCount += isset($projectStatus->pir->request_footing);
+
+                $productionCount += isset($projectStatus->production->shipment_status);
+                $productionCount += isset($projectStatus->production->date_equipment_shipment);
+                $productionCount += isset($projectStatus->production->number_sim_internet);
+                $productionCount += isset($projectStatus->production->number_sim_ssu);
+                $productionCount += isset($projectStatus->production->number_verification);
+                $productionCount += isset($projectStatus->production->date_verification_end);
+
+                $smrCount += isset($projectStatus->smr->link_root_task);
+                $smrCount += isset($projectStatus->smr->$vu220);
+                $smrCount += isset($projectStatus->smr->link_contract);
+                $smrCount += isset($projectStatus->smr->dislocation_strapping);
+                $smrCount += isset($projectStatus->smr->installation_status);
+                $smrCount += isset($projectStatus->smr->transferred_pnr);
+
+                $pnrCount += isset($projectStatus->pnr->calibration_2000);
+                $pnrCount += isset($projectStatus->pnr->kp);
+                $pnrCount += isset($projectStatus->pnr->analysis_result);
+                $pnrCount += isset($projectStatus->pnr->complex_to_monitoring);
+                $pnrCount += isset($projectStatus->pnr->andromeda_unloading);
+                $pnrCount += isset($projectStatus->pnr->unloading);
+                $pnrCount += isset($projectStatus->pnr->in_cafap);
+
+                $documentsCount += isset($projectStatus->document->examinationFile);
+                $documentsCount += isset($projectStatus->document->projectDocumentationFile);
+                $documentsCount += isset($projectStatus->document->executiveDocumentationFile);
+                $documentsCount += isset($projectStatus->document->verificationFile);
+                $documentsCount += isset($projectStatus->document->formsFile);
+                $documentsCount += isset($projectStatus->document->passportsFile);
+                $documentsCount += isset($projectStatus->document->tu220File);
+                $documentsCount += isset($projectStatus->document->contract220File);
+                $documentsCount += isset($projectStatus->document->tuFootingFile);
+                $documentsCount += isset($projectStatus->document->contractFootingFile);
+                $documentsCount += isset($projectStatus->document->addressPlanAgreedCafapFile);
+                $documentsCount += isset($projectStatus->document->dataTransferSchemeFile);
+                $documentsCount += isset($projectStatus->document->inboxFile);
+                $documentsCount += isset($projectStatus->document->outgoingFile);
+            }
 
             $arPercents[] = [
                 'dataCount' => $dataCount,
@@ -412,16 +262,14 @@ class ProgressController extends Controller
         }
     }
 
-    public function editData($projectId, $regionId)
+    public function editData($id)
     {
-        $projectStatus = ProjectStatus::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $projectStatus = ProjectStatus::find($id);
         $roadTypes = BelongingRoad::all();
 
         return view('edit-data', [
             'projectStatus' => $projectStatus,
             'roadTypes' => $roadTypes,
-            'projectId' => $projectId,
-            'regionId' => $regionId
         ]);
     }
 
@@ -430,23 +278,28 @@ class ProgressController extends Controller
         $class = $request->get('table');
 
         /** @var Model $object */
-        $object = $class::where([['project_id', '=', $request->get('project_id')], ['region_id', '=', $request->get('region_id')]])->first();
-        if (!isset($object)) {
-            $object = new $class;
-        }
+        $object = $class::find($request->get('id'));
 
         $arRequest = $request->all();
         unset($arRequest['_token']);
         unset($arRequest['table']);
+        unset($arRequest['id']);
 
         $object->setRawAttributes($arRequest);
         $object->save();
-        return redirect('/progress/' . $request->get('project_id'));
+
+        if ($request->get('project_id')) {
+            return redirect('/progress/' . $request->get('project_id'));
+        } else {
+            $projectStatus = ProjectStatus::find($request->get('complex_id'));
+            return redirect('/progress/' . $projectStatus->project_id);
+        }
+
     }
 
-    public function editInitialData($projectId, $regionId)
+    public function editInitialData($id)
     {
-        $initialData = InitialData::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $initialData = InitialData::find($id);
         $roadTypes = RoadType::all();
         $products = Product::all();
 
@@ -454,14 +307,12 @@ class ProgressController extends Controller
             'initialData' => $initialData,
             'roadTypes' => $roadTypes,
             'products' => $products,
-            'projectId' => $projectId,
-            'regionId' => $regionId
         ]);
     }
 
-    public function editPir($projectId, $regionId)
+    public function editPir($id)
     {
-        $pir = Pir::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $pir = Pir::find($id);
         $surveyStatuses = SurveyStatus::all();
         $projectDocuments = ProjectDocument::all();
         $tuRequests = TuRequest::all();
@@ -472,27 +323,23 @@ class ProgressController extends Controller
             'projectDocuments' => $projectDocuments,
             'tuRequests' => $tuRequests,
             'footingRequests' => $footingRequests,
-            'projectId' => $projectId,
-            'regionId' => $regionId
         ]);
     }
 
-    public function editProduction($projectId, $regionId)
+    public function editProduction($id)
     {
-        $production = Production::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $production = Production::find($id);
         $shipmentStatuses = ShipmentStatus::all();
 
         return view('edit-production', [
-            'projectId' => $projectId,
-            'regionId' => $regionId,
             'production' => $production,
             'shipmentStatuses' => $shipmentStatuses
         ]);
     }
 
-    public function editSmr($projectId, $regionId)
+    public function editSmr($id)
     {
-        $smr = SmrInstallation::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $smr = SmrInstallation::find($id);
         $vu220 = Vu220::all();
         $linkContract = LinkContract::all();
         $dislocationStrapping = DislocationStrapping::all();
@@ -500,8 +347,6 @@ class ProgressController extends Controller
         $transferredPnr = TransferredPnr::all();
 
         return view('edit-smr', [
-            'projectId' => $projectId,
-            'regionId' => $regionId,
             'smr' => $smr,
             'vu220' => $vu220,
             'linkContract' => $linkContract,
@@ -512,9 +357,9 @@ class ProgressController extends Controller
         ]);
     }
 
-    public function editPnr($projectId, $regionId)
+    public function editPnr($id)
     {
-        $pnr = Pnr::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $pnr = Pnr::find($id);
         $calibration2000 = Calibration2000::all();
         $kps = Kp::all();
         $analysisResult = AnalysisResult::all();
@@ -523,8 +368,6 @@ class ProgressController extends Controller
         $inCafap = InCafap::all();
 
         return view('edit-pnr', [
-            'projectId' => $projectId,
-            'regionId' => $regionId,
             'pnr' => $pnr,
             'calibration2000' => $calibration2000,
             'kps' => $kps,
@@ -537,26 +380,57 @@ class ProgressController extends Controller
 
     public function createDocuments(Request $request)
     {
-        $documents = Document::where([['project_id', '=', $request->get('project_id')], ['region_id', '=', $request->get('region_id')]])->first();
-        $project = Project::find($request->get('project_id'));
-        if (!isset($documents)) {
-            $documents = new Document();
-        }
+        /** @var Document $documents */
+        $documents = Document::find($request->get('id'));
+        $projectStatus = ProjectStatus::find($request->get('complex_id'));
+        $project = Project::find($projectStatus->project_id);
 
-        $documents->project_id = $request->get('project_id');
-        $documents->region_id = $request->get('region_id');
+        $documents->complex_id = $request->get('complex_id');
         $documents->updateRecord($request, $project);
         return redirect('/progress/' . $project->id);
     }
 
-    public function editDocuments($projectId, $regionId)
+    public function editDocuments($id)
     {
-        $documents = Document::where([['project_id', '=', $projectId], ['region_id', '=', $regionId]])->first();
+        $documents = Document::find($id);
 
         return view('edit-documents', [
             'documents' => $documents,
-            'projectId' => $projectId,
-            'regionId' => $regionId
         ]);
+    }
+
+    public function addRow($projectId, $regionId)
+    {
+        $projectStatus = new ProjectStatus(['project_id' => $projectId, 'region_id' => $regionId]);
+        $projectStatus->save();
+        $initialData = new InitialData(['complex_id' => $projectStatus->id]);
+        $initialData->save();
+        $pnr = new Pnr(['complex_id' => $projectStatus->id]);
+        $pnr->save();
+        $pir = new Pir(['complex_id' => $projectStatus->id]);
+        $pir->save();
+        $production = new Production(['complex_id' => $projectStatus->id]);
+        $production->save();
+        $smrInstallation = new SmrInstallation(['complex_id' => $projectStatus->id]);
+        $smrInstallation->save();
+        $document = new Document(['complex_id' => $projectStatus->id]);
+        $document->save();
+
+        return redirect('/progress/' . $projectId);
+    }
+
+    public function deleteDataRow($id)
+    {
+        $projectStatus = ProjectStatus::find($id);
+        $projectId = $projectStatus->project_id;
+        $projectStatus->delete();
+        InitialData::where(['complex_id' => $id])->delete();
+        Pir::where(['complex_id' => $id])->delete();
+        Production::where(['complex_id' => $id])->delete();
+        SmrInstallation::where(['complex_id' => $id])->delete();
+        Pnr::where(['complex_id' => $id])->delete();
+        Document::where(['complex_id' => $id])->delete();
+
+        return redirect('/progress/' . $projectId);
     }
 }

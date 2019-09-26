@@ -51,4 +51,9 @@ class ProjectRegion extends Model
         ProjectRegion::where(['project_id' => $projectId])->delete();
         self::createRecords($arRegions, $projectId);
     }
+
+    public function projectStatus()
+    {
+        return ProjectStatus::where([['project_id', '=', $this->project_id], ['region_id', '=', $this->region_id]])->get();
+    }
 }

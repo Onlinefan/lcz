@@ -23,4 +23,24 @@ class Pir extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function surveyStatus()
+    {
+        return $this->belongsTo('App\SurveyStatus', 'survey_status');
+    }
+
+    public function designDocumentation()
+    {
+        return $this->belongsTo('App\ProjectDocument', 'design_documentation');
+    }
+
+    public function requestTu()
+    {
+        return $this->belongsTo('App\TuRequest', 'request_tu');
+    }
+
+    public function requestFooting()
+    {
+        return $this->belongsTo('App\FootingRequest', 'request_footing');
+    }
 }

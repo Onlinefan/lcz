@@ -23,4 +23,9 @@ class Production extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function shipmentStatus()
+    {
+        return $this->belongsTo('App\ShipmentStatus', 'shipment_status');
+    }
 }

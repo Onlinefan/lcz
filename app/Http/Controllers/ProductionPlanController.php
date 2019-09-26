@@ -20,12 +20,7 @@ class ProductionPlanController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role !== 'Оператор') {
-            $productionPlan = ProductionPlan::all();
-        } else {
-            $projects = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
-            $productionPlan = ProductionPlan::whereIn('project_id', $projects)->get();
-        }
+        $productionPlan = ProductionPlan::all();
 
         return view('production_plan', [
             'productionPlan' => $productionPlan
@@ -39,19 +34,20 @@ class ProductionPlanController extends Controller
      */
     public function createView()
     {
-        if (auth()->user()->role !== 'Оператор') {
+        if (auth()->user()->role === 'Оператор') {
+            $projects = Project::where(['head_id' => auth()->user()->id]);
+        } else {
             $projects = Project::all();
-            $regions = Region::all();
-            $products = Product::all();
-
-            return view('add_production_plan', [
-                'projects' => $projects,
-                'regions' => $regions,
-                'products' => $products
-            ]);
         }
 
-        return redirect('/production_plan');
+        $regions = Region::all();
+        $products = Product::all();
+
+        return view('add_production_plan', [
+            'projects' => $projects,
+            'regions' => $regions,
+            'products' => $products
+        ]);
     }
 
     public function create(Request $request)

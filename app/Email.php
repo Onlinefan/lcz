@@ -17,4 +17,9 @@ class Email extends Model
     {
         return array_merge(parent::getDates(), ['email_date']);
     }
+
+    public function letterFile()
+    {
+        return $this->belongsTo('App\File', 'letter_file');
+    }
 }

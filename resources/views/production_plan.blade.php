@@ -36,21 +36,19 @@
                                         <td>{{$plan->rk_count}}</td>
                                         <td>{{$plan->date_shipping}}</td>
                                         <td>{{$plan->priority}}</td>
-                                        <td>@if (isset($plan->preliminaryCalculation))<a href="/download?path={{substr($plan->preliminaryCalculation->path, strripos($plan->preliminaryCalculation->path, 'Projects_files/')) . $plan->preliminaryCalculation->file_name}}">{{$plan->preliminaryCalculation->file_name}}</a>@endif</td>
-                                        <td>@if (isset($plan->finalCalculation))<a href="/download?path={{substr($plan->finalCalculation->path, strripos($plan->finalCalculation->path, 'Projects_files/')) . $plan->finalCalculation->file_name}}">{{$plan->finalCalculation->file_name}}</a>@endif</td>
-                                        <td><a href="/edit-production-plan/{{$plan->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                        <td>@if (isset($plan->preliminaryCalculation))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($plan->preliminaryCalculation->path, strripos($plan->preliminaryCalculation->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($plan->preliminaryCalculation->path, strripos($plan->preliminaryCalculation->path, 'Projects_files/')) . $plan->preliminaryCalculation->file_name}}">{{$plan->preliminaryCalculation->file_name}}</a>@endif</td>
+                                        <td>@if (isset($plan->finalCalculation))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($plan->finalCalculation->path, strripos($plan->finalCalculation->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($plan->finalCalculation->path, strripos($plan->finalCalculation->path, 'Projects_files/')) . $plan->finalCalculation->file_name}}">{{$plan->finalCalculation->file_name}}</a>@endif</td>
+                                        <td>@if ((int)$plan->project->head_id === (int)auth()->user()->id || auth()->user()->role !== 'Оператор')<a href="/edit-production-plan/{{$plan->id}}" class="btn-white btn btn-xs">Редактировать</a>@endif</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        @if (auth()->user()->role !== 'Оператор')
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" href="/add_production_plan">Добавить</a>
-                                </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <a class="btn btn-primary btn-sm" href="/add_production_plan">Добавить</a>
                             </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>

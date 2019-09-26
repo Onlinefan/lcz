@@ -5,8 +5,9 @@
 @section('content')
     <form method="POST" action="/create-data">
         {{csrf_field()}}
-        <input type="hidden" name="project_id" value="{{$projectId}}">
-        <input type="hidden" name="region_id" value="{{$regionId}}">
+        <input type="hidden" name="project_id" value="{{$projectStatus->project_id}}">
+        <input type="hidden" name="region_id" value="{{$projectStatus->region_id}}">
+        <input type="hidden" name="id" value="{{$projectStatus->id}}">
         <input type="hidden" name="table" value="App\ProjectStatus">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">

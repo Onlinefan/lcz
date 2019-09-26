@@ -23,4 +23,34 @@ class Pnr extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function calibration2000()
+    {
+        return $this->belongsTo('App\Calibration2000', 'calibration_2000');
+    }
+
+    public function kpLink()
+    {
+        return $this->belongsTo('App\Kp', 'kp');
+    }
+
+    public function analysisResult()
+    {
+        return $this->belongsTo('App\AnalysisResult', 'analysis_result');
+    }
+
+    public function complexToMonitoring()
+    {
+        return $this->belongsTo('App\ComplexToMonitoring', 'complex_to_monitoring');
+    }
+
+    public function andromedaUnloading()
+    {
+        return $this->belongsTo('App\AndromedaUnloading', 'andromeda_unloading');
+    }
+
+    public function inCafap()
+    {
+        return $this->belongsTo('App\InCafap', 'in_cafap');
+    }
 }

@@ -61,4 +61,74 @@ class Document extends Model
 
         $this->save();
     }
+
+    public function examinationFile()
+    {
+        return $this->belongsTo('App\File', 'examination');
+    }
+
+    public function projectDocumentationFile()
+    {
+        return $this->belongsTo('App\File', 'project_documentation');
+    }
+
+    public function executiveDocumentationFile()
+    {
+        return $this->belongsTo('App\File', 'executive_documentation');
+    }
+
+    public function verificationFile()
+    {
+        return $this->belongsTo('App\File', 'verification');
+    }
+
+    public function formsFile()
+    {
+        return $this->belongsTo('App\File', 'forms');
+    }
+
+    public function passportsFile()
+    {
+        return $this->belongsTo('App\File', 'passports');
+    }
+
+    public function tu220File()
+    {
+        return $this->belongsTo('App\File', 'tu_220');
+    }
+
+    public function contract220File()
+    {
+        return $this->belongsTo('App\File', 'contract_220');
+    }
+
+    public function tuFootingFile()
+    {
+        return $this->belongsTo('App\File', 'tu_footing');
+    }
+
+    public function contractFootingFile()
+    {
+        return $this->belongsTo('App\File', 'contract_footing');
+    }
+
+    public function addressPlanAgreedCafapFile()
+    {
+        return $this->belongsTo('App\File', 'address_plan_agreed_cafap');
+    }
+
+    public function dataTransferSchemeFile()
+    {
+        return $this->belongsTo('App\File', 'data_transfer_scheme');
+    }
+
+    public function inboxFile()
+    {
+        return $this->belongsTo('App\File', 'inbox');
+    }
+
+    public function outgoingFile()
+    {
+        return $this->belongsTo('App\File', 'outgoing');
+    }
 }

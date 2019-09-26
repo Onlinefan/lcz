@@ -55,7 +55,10 @@
             <div class="col-sm-3">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Дедлайн</h5>
+
+                        <h5>@if ($dateDiff <= 10)
+                                <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 20px;"></i>
+                            @endifДедлайн</h5>
                     </div>
                     <div class="ibox-content">
                         <h1 class="no-margins">{{$dateDiff}} дней</h1>
@@ -92,7 +95,7 @@
                             @foreach ($projectRegions as $key => $region)
                                 <li class="{{intval($key) === 0 ? 'active' : ''}}">
                                     <a class="nav-link {{intval($key) === 0 ? 'active' : ''}}"
-                                        data-toggle="tab" data-tab="{{$region->region_id}}" href="#tab-{{$region->region_id}}">{{$region->region_name}}</a>
+                                        data-toggle="tab" data-tab="{{$region->region_id}}" href="#tab-{{$region->region_id}}">{{$region->region->name}}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -103,49 +106,49 @@
                                         <div class="row">
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['dataCount']/7*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['dataCount']/(7 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1)) * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Начальные данные</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['initialDataCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['initialDataCount']/(5 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1)) * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Исходные данные</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['pirCount']/10*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['pirCount']/(10  * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">ПИР</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['productionCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['productionCount']/(6  * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Производство</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['smrCount']/6*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['smrCount']/(6 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">СМР/Монтаж</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/7*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/(7 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">ПНР</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['documentsCount']/14*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['documentsCount']/(14 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Документы</h5>
                                             </div>
@@ -156,13 +159,13 @@
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                                 <thead>
                                                 <tr>
-                                                    <th colspan="7" style="text-align: center;"></th>
+                                                    <th colspan="8" style="text-align: center;"></th>
                                                     <th colspan="6" style="text-align: center;">Исходные данные</th>
-                                                    <th colspan="10" style="text-align: center;">ПИР</th>
-                                                    <th colspan="6" style="text-align: center;">Производство</th>
-                                                    <th colspan="6" style="text-align: center;">СМР/Монтаж</th>
-                                                    <th colspan="7" style="text-align: center;">ПНР</th>
-                                                    <th colspan="14" style="text-align: center;">Документы</th>
+                                                    <th colspan="11" style="text-align: center;">ПИР</th>
+                                                    <th colspan="7" style="text-align: center;">Производство</th>
+                                                    <th colspan="7" style="text-align: center;">СМР/Монтаж</th>
+                                                    <th colspan="8" style="text-align: center;">ПНР</th>
+                                                    <th colspan="15" style="text-align: center;">Документы</th>
                                                 </tr>
                                                 <tr>
                                                     <th>№</th>
@@ -172,12 +175,14 @@
                                                     <th>Принадлежность дороги</th>
                                                     <th>Адрес по контракту</th>
                                                     <th>Адрес по ГИБДД</th>
+                                                    <th></th>
 
                                                     <th>Тип оборудования</th>
                                                     <th>Тип контролируемого участка дороги</th>
                                                     <th>Скоростной режим, км/ч</th>
                                                     <th>Кол-во рубежей</th>
                                                     <th>КоАП</th>
+                                                    <th></th>
 
                                                     <th>Статус обследования</th>
                                                     <th>Комментарий к обследованию</th>
@@ -189,6 +194,7 @@
                                                     <th>Суммарная мощность оборудования</th>
                                                     <th>Запрос ТУ на 220</th>
                                                     <th>Запрос на опоры</th>
+                                                    <th></th>
 
                                                     <th>Статус отгрузки</th>
                                                     <th>Дата отгрузки оборудования</th>
@@ -196,6 +202,7 @@
                                                     <th>№ сим SSU</th>
                                                     <th>№ поверки</th>
                                                     <th>Дата окончания поверки</th>
+                                                    <th></th>
 
                                                     <th>Ссылка на корневую задачу</th>
                                                     <th>Наличие 220 на ВУ</th>
@@ -203,6 +210,7 @@
                                                     <th>Обвязка дислокации</th>
                                                     <th>Статус монтажа</th>
                                                     <th>Передано в ПНР</th>
+                                                    <th></th>
 
                                                     <th>Калибровка 2000 проездов</th>
                                                     <th>КП</th>
@@ -211,6 +219,7 @@
                                                     <th>Выгрузка в Андромеду</th>
                                                     <th>Выгрузка</th>
                                                     <th>в ЦАФАП</th>
+                                                    <th></th>
 
                                                     <th>Обследование</th>
                                                     <th>Проектная документация</th>
@@ -226,84 +235,89 @@
                                                     <th>Схема передачи данных</th>
                                                     <th>Входящие</th>
                                                     <th>Исходящие</th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
+                                                @foreach ($region->projectStatus() as $row)
                                                     <tr>
-                                                        <td>{{$region->system_number}}</td>
-                                                        <td>{{$region->system_id}}</td>
-                                                        <td>{{$region->complex_id}}</td>
-                                                        <td>{{$region->city}}</td>
-                                                        <td><span class="label label-secondary">{{$region->affiliation_of_the_road}}</span></td>
-                                                        <td>{{$region->address_contract}}</td>
-                                                        <td>{{$region->address_gibdd}}</td>
+                                                        <td>{{$row->system_number}}</td>
+                                                        <td>{{$row->system_id}}</td>
+                                                        <td>{{$row->complex_id}}</td>
+                                                        <td>{{$row->city}}</td>
+                                                        <td>@if (isset($row->affiliationRoad))<span class="label label-secondary">{{$row->affiliationRoad->name}}</span>@endif</td>
+                                                        <td>{{$row->address_contract}}</td>
+                                                        <td>{{$row->address_gibdd}}</td>
+                                                        <td><a href="/edit-data/{{$row->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label label-secondary">{{$region->equipment_type}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->road_type}}</span></td>
-                                                        <td>{{$region->speed_mode}}</td>
-                                                        <td>{{$region->borders_number}}</td>
-                                                        <td>{{$region->koap}}</td>
+                                                        <td>@if (isset($row->initialData->equipmentType))<span class="label label-secondary">{{$row->initialData->equipmentType->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->initialData->roadType))<span class="label label-secondary">{{$row->initialData->roadType->name}}</span>@endif</td>
+                                                        <td>{{$row->initialData->speed_mode}}</td>
+                                                        <td>{{$row->initialData->borders_number}}</td>
+                                                        <td>{{$row->initialData->koap}}</td>
+                                                        <td><a href="/edit-initial-data/{{$row->initialData->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label {{$region->survey_status === 'В работе' ? 'label-warning' : ($region->survey_status === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$region->survey_status}}</span></td>
-                                                        <td>{{$region->survey_comment}}</td>
-                                                        <td><span class="label label-secondary">{{$region->design_documentation}}</span></td>
-                                                        <td>{{$region->new_footing_fvf}}</td>
-                                                        <td>{{$region->new_footing_lep}}</td>
-                                                        <td>{{$region->rk_count}}</td>
-                                                        <td>{{$region->ok_count}}</td>
-                                                        <td>{{$region->equipment_power}}</td>
-                                                        <td><span class="label {{($region->request_tu === 'Заявка подана' || $region->request_tu === 'ТУ получено') ? 'label-primary' : ($region->request_tu === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$region->request_tu}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->request_footing}}</span></td>
+                                                        <td>@if (isset($row->pir->surveyStatus))<span class="label {{$row->pir->surveyStatus->name === 'В работе' ? 'label-warning' : ($row->pir->surveyStatus->name === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$row->pir->surveyStatus->name}}</span>@endif</td>
+                                                        <td>{{$row->pir->survey_comment}}</td>
+                                                        <td>@if (isset($row->pir->designDocumentation))<span class="label label-secondary">{{$row->pir->designDocumentation->name}}</span>@endif</td>
+                                                        <td>{{$row->pir->new_footing_fvf}}</td>
+                                                        <td>{{$row->pir->new_footing_lep}}</td>
+                                                        <td>{{$row->pir->rk_count}}</td>
+                                                        <td>{{$row->pir->ok_count}}</td>
+                                                        <td>{{$row->pir->equipment_power}}</td>
+                                                        <td>@if (isset($row->pir->requestTu))<span class="label {{($row->pir->requestTu->name === 'Заявка подана' || $row->pir->requestTu->name === 'ТУ получено') ? 'label-primary' : ($row->pir->requestTu->name === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$row->pir->requestTu->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pir->requestFooting))<span class="label label-secondary">{{$row->pir->requestFooting->name}}</span>@endif</td>
+                                                        <td><a href="/edit-pir/{{$row->pir->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label label-secondary">{{$region->shipment_status}}</span></td>
-                                                        <td>{{$region->date_equipment_shipment}}</td>
-                                                        <td>{{$region->number_sim_internet}}</td>
-                                                        <td>{{$region->number_sim_ssu}}</td>
-                                                        <td>{{$region->number_verification}}</td>
-                                                        <td>{{$region->date_verification_end}}</td>
+                                                        <td>@if (isset($row->production->shipmentStatus))<span class="label label-secondary">{{$row->production->shipmentStatus->name}}</span>@endif</td>
+                                                        <td>{{$row->production->date_equipment_shipment}}</td>
+                                                        <td>{{$row->production->number_sim_internet}}</td>
+                                                        <td>{{$row->production->number_sim_ssu}}</td>
+                                                        <td>{{$row->production->number_verification}}</td>
+                                                        <td>{{$row->production->date_verification_end}}</td>
+                                                        <td><a href="/edit-production/{{$row->production->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><a href="#">{{$region->link_root_task}}</a></td>
-                                                        <td><span class="label label-secondary">{{$region->$vu220}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->link_contract}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->dislocation_strapping}}</span></td>
-                                                        <td><span class="label {{($region->installation_status === 'Нет' || $region->installation_status === 'Украден') ? 'label-danger' : ($region->installation_status === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$region->installation_status}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->transferred_pnr}}</span></td>
+                                                        <td><a href="#">{{$row->smr->link_root_task}}</a></td>
+                                                        <td>@if (isset($row->smr->vu220))<span class="label label-secondary">{{$row->smr->vu220->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->linkContract))<span class="label label-secondary">{{$row->smr->linkContract->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->dislocationStrapping))<span class="label label-secondary">{{$row->smr->dislocationStrapping->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->installationStatus))<span class="label {{($row->smr->installationStatus->name === 'Нет' || $row->smr->installationStatus->name === 'Украден') ? 'label-danger' : ($row->smr->installationStatus->name === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$row->smr->installationStatus->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->transferredPnr))<span class="label label-secondary">{{$row->smr->transferredPnr->name}}</span>@endif</td>
+                                                        <td><a href="/edit-smr/{{$row->smr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label {{$region->calibration_2000 === 'В работе' ? 'label-warning' : 'label-danger'}}">{{$region->calibration_2000}}</span></td>
-                                                        <td><span class="label {{$region->kp === 'Нет водителя' ? 'label-danger' : ($region->kp === 'В работе' ? 'label-warning' : 'label-secondary')}}">{{$region->kp}}</span></td>
-                                                        <td><span class="label {{$region->analysis_result === 'Неудовлетворительно' ? 'label-danger' : 'label-secondary'}}">{{$region->analysis_result}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->complex_to_monitoring}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->andromeda_unloading}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->unloading}}</span></td>
-                                                        <td><span class="label label-secondary">{{$region->in_cafap}}</span></td>
+                                                        <td>@if (isset($row->pnr->calibration2000))<span class="label {{$row->pnr->calibration2000->name === 'В работе' ? 'label-warning' : 'label-danger'}}">{{$row->pnr->calibration2000->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->kpLink))<span class="label {{$row->pnr->kpLink->name === 'Нет водителя' ? 'label-danger' : ($row->pnr->kpLink->name === 'В работе' ? 'label-warning' : 'label-secondary')}}">{{$row->pnr->kpLink->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->analysisResult))<span class="label {{$row->pnr->analysisResult->name === 'Неудовлетворительно' ? 'label-danger' : 'label-secondary'}}">{{$row->pnr->analysisResult->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->complexToMonitoring))<span class="label label-secondary">{{$row->pnr->complexToMonitoring->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->andromedaUnloading))<span class="label label-secondary">{{$row->pnr->andromedaUnloading->name}}</span>@endif</td>
+                                                        <td><span class="label label-secondary">{{$row->pnr->unloading}}</span></td>
+                                                        <td>@if (isset($row->pnr->inCafap))<span class="label label-secondary">{{$row->pnr->inCafap->name}}</span>@endif</td>
+                                                        <td><a href="/edit-pnr/{{$row->pnr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label label-secondary">@if (isset($region->examination))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Obsledovanie/{{$region->examination}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->project_documentation))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Proektnaya documentaciya/{{$region->project_documentation}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->executive_documentation))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ispolnitelnaya documentaciya/{{$region->executive_documentation}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->verification))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Poverka/{{$region->verification}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->forms))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Formulyary/{{$region->forms}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->passports))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Pasporta/{{$region->passports}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->tu_220))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU-220/{{$region->tu_220}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->contract_220))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor 220/{{$region->contract_220}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->tu_footing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU na oporu/{{$region->tu_footing}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->contract_footing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor na opory/{{$region->contract_footing}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->address_plan_agreed_cafap))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Adresnyi plan/{{$region->address_plan_agreed_cafap}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->data_transfer_scheme))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Shema peredachi dannyh/{{$region->data_transfer_scheme}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->inbox))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Vhodyashie/{{$region->inbox}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($region->outgoing))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ishodyashie/{{$region->outgoing}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->examinationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Obsledovanie/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->projectDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Proektnaya documentaciya/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->executiveDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ispolnitelnaya documentaciya/{{$row->document->executiveDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->verificationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Poverka/{{$row->document->verificationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->formsFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Formulyary/{{$row->document->formsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->passportsFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Pasporta/{{$row->document->passportsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->tu220File))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU-220/{{$row->document->tu220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU na oporu/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor na opory/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->addressPlanAgreedCafapFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Adresnyi plan/{{$row->document->addressPlanAgreedCafapFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->dataTransferSchemeFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Shema peredachi dannyh/{{$row->document->dataTransferSchemeFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->inboxFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Vhodyashie/{{$row->document->inboxFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->outgoingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ishodyashie/{{$row->document->outgoingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><a href="/edit-documents/{{$row->document->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/delete-data-row/{{$row->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                                     </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="row">
-                                            <a class="btn btn-outline btn-info" href="/edit-data/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать данные</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-initial-data/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать исходные данные</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-pir/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать ПИР</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-production/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать производство</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-smr/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать СМР</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-pnr/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать ПНР</a>
-                                            <a class="btn btn-outline btn-info" href="/edit-documents/{{$project->id}}-{{$region->region_id}}">Добавить/редактировать документы</a>
+                                            <a class="btn btn-outline btn-info" href="/add-data-row/{{$region->project_id}}-{{$region->region_id}}">Добавить строку</a>
                                         </div>
                                     </div>
                                 </div>
@@ -359,19 +373,6 @@
                     @else
                         <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Реализация'}}">Возобновить</a>
                     @endif
-                </div>
-                <br>
-                <div class="row">
-                    <a class="btn btn-outline btn-info" href="/summary">Сводная по проектам</a>
-                </div>
-                <div class="row">
-                    <a class="btn btn-outline btn-info" href="/contracts">Реестр договоров</a>
-                </div>
-                <div class="row">
-                    <a class="btn btn-outline btn-info" href="/contacts">Контакты</a>
-                </div>
-                <div class="row">
-                    <a class="btn btn-outline btn-info" href="/production_plan">План производства</a>
                 </div>
             </div>
         </div>

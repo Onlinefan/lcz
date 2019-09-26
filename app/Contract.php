@@ -83,11 +83,6 @@ class Contract extends Model
         $this->save();
     }
 
-    public function lppFile()
-    {
-        return $this->belongsTo('App\File', 'lpp');
-    }
-
     public function documentStatus()
     {
         return $this->hasOne('App\DocumentStatus', 'contract_id');

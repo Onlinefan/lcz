@@ -23,4 +23,14 @@ class InitialData extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function equipmentType()
+    {
+        return $this->belongsTo('App\Product', 'equipment_type');
+    }
+
+    public function roadType()
+    {
+        return $this->belongsTo('App\RoadType', 'road_type');
+    }
 }

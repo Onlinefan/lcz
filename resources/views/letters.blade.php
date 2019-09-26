@@ -3,6 +3,7 @@
     Письма
 @endsection
 @section('content')
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
 {{csrf_field()}}
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="tabs-container">
@@ -13,7 +14,7 @@
             <div class="tab-content">
                 <div role="tabpanel" id="tab-1" class="tab-pane active">
                     <div class="panel-body">
-                        <form method="post" action="/add_letter">
+                        <form method="post" action="/add_letter" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Тип письма</label>
                                 <div class="col-sm-10">
@@ -34,7 +35,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дата</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="email_date" class="form-control" data-mask="99.99.9999">
+                                    <input type="text" name="email_date" class="form-control fromto__datetime-input">
                                 </div>
                             </div>
 
@@ -62,6 +63,15 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Файл</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="letter_file">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group row">
@@ -84,6 +94,8 @@
                                     <th>Номер</th>
                                     <th>Адресат</th>
                                     <th>Статус</th>
+                                    <th>Файл</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
 
@@ -96,6 +108,8 @@
                                         <td>{{$email->number}}</td>
                                         <td>{{$email->recipient}}</td>
                                         <td><span class="label {{$email->status === 'Получено' ? 'label-primary' : 'label-warning'}}">{{$email->status}}</span></td>
+                                        <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/'))}}</span><a href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
+                                        <td><a href="/edit-letter/{{$email->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -135,6 +149,71 @@
                             }
                         }
                     ]
+                });
+
+                $.getScript('/js/datetimepicker/jquery.datetimepicker.js', function () {
+
+                    $.datetimepicker.setLocale('ru');
+
+
+                    $('.fromto__datetime-input').datetimepicker({
+                        locale:'ru',
+                        timepicker: false,
+                        format:'Y-m-d',
+                        formatDate:'Y-m-d',
+                        allowTimes:[
+                            '00:00',
+                            '00:30',
+                            '01:00',
+                            '01:30',
+                            '02:00',
+                            '02:30',
+                            '03:00',
+                            '03:30',
+                            '04:00',
+                            '04:30',
+                            '05:00',
+                            '05:30',
+                            '06:00',
+                            '06:30',
+                            '07:00',
+                            '07:30',
+                            '08:00',
+                            '08:30',
+                            '09:00',
+                            '09:30',
+                            '10:00',
+                            '10:30',
+                            '11:00',
+                            '11:30',
+                            '12:00',
+                            '12:30',
+                            '13:00',
+                            '13:30',
+                            '14:00',
+                            '14:30',
+                            '15:00',
+                            '15:30',
+                            '16:00',
+                            '16:30',
+                            '17:00',
+                            '17:30',
+                            '18:00',
+                            '18:30',
+                            '19:00',
+                            '19:30',
+                            '20:00',
+                            '20:30',
+                            '21:00',
+                            '21:30',
+                            '22:00',
+                            '22:30',
+                            '23:00',
+                            '23:30',
+                            '23:59',
+                        ],
+
+                    });
                 });
             });
         });
