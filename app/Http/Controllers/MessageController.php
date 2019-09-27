@@ -18,12 +18,12 @@ class MessageController extends Controller
 
         if ((int)$project->head->id !== (int)auth()->user()->id) {
             $messageBody = auth()->user()->first_name . ' ' . auth()->user()->second_name . ' написал: ' . $message->message;
-            \Monolog\Handler\mail($project->head->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);
+            mail($project->head->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);
         } else {
             $users = User::where('role', '<>', 'Оператор')->get();
             foreach ($users as $user) {
                 $messageBody = auth()->user()->first_name . ' ' . auth()->user()->second_name . ' написал: ' . $message->message;
-                \Monolog\Handler\mail($user->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);
+                mail($user->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);
             }
         }
 

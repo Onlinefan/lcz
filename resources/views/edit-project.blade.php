@@ -433,22 +433,23 @@
                                 <label class="col-sm-2 col-form-label">Обследование</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[examination_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->examination === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->examination === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->examination === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->examination === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->examination === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->examination !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->examination !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->examination !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->examination !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->examination !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->examination !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->examination !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
                                 <div data-name="examination_other" class="hidden">
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[examination_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->examination !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->examination !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->examination !== 'Партнер (Ген.подрядчик)' &&
@@ -456,6 +457,7 @@
                                                 $project->responsibilityArea->examination !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->examination}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -464,16 +466,16 @@
                                 <label class="col-sm-2 col-form-label">СМР</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[smr_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->smr === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->smr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->smr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->smr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->smr === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->smr !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->smr !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->smr !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->smr !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->smr !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->smr !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
 
@@ -481,6 +483,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[smr_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->smr !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->smr !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->smr !== 'Партнер (Ген.подрядчик)' &&
@@ -488,6 +491,7 @@
                                                 $project->responsibilityArea->smr !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->smr}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -496,16 +500,16 @@
                                 <label class="col-sm-2 col-form-label">Монтаж</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[installation_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->installation === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->installation === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->installation === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->installation === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->installation === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->installation !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->installation !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->installation !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->installation !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->installation !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->installation !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
 
@@ -513,6 +517,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[installation_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->installation !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->installation !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->installation !== 'Партнер (Ген.подрядчик)' &&
@@ -520,6 +525,7 @@
                                                 $project->responsibilityArea->installation !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->installation}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -528,16 +534,16 @@
                                 <label class="col-sm-2 col-form-label">ПНР</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[pnr_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->pnr === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->pnr === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->pnr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->pnr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->pnr === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->pnr !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->pnr !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->pnr !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->pnr !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->pnr !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                     </select>
                                 </div>
@@ -546,6 +552,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[pnr_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->pnr !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->pnr !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->pnr !== 'Партнер (Ген.подрядчик)' &&
@@ -553,6 +560,7 @@
                                                 $project->responsibilityArea->pnr !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->pnr}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -561,16 +569,16 @@
                                 <label class="col-sm-2 col-form-label">Разрешение на опору</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[support_permission_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->support_permission === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->support_permission === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->support_permission === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->support_permission === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->support_permission === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->support_permission !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->support_permission !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->support_permission !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
 
@@ -578,6 +586,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[support_permission_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->support_permission !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->support_permission !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->support_permission !== 'Партнер (Ген.подрядчик)' &&
@@ -585,6 +594,7 @@
                                                 $project->responsibilityArea->support_permission !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->support_permission}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -593,16 +603,16 @@
                                 <label class="col-sm-2 col-form-label">Получение ТУ - 220 В</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[tu_220_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->tu_220 === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->tu_220 === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_220 === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_220 === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->tu_220 === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->tu_220 !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->tu_220 !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->tu_220 !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
 
@@ -610,6 +620,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[tu_220_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->tu_220 !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->tu_220 !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->tu_220 !== 'Партнер (Ген.подрядчик)' &&
@@ -617,6 +628,7 @@
                                                 $project->responsibilityArea->tu_220 !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->tu_220}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -625,16 +637,16 @@
                                 <label class="col-sm-2 col-form-label">Получение ТУ - связь</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="ProjectResponsibility[tu_communication_main]">
-                                        <option value="ЛЦЗ" {{$project->responsibilityArea->tu_communication === 'ЛЦЗ' ? 'selected' : ''}}>ЛЦЗ</option>
-                                        <option value="Гос.заказчик" {{$project->responsibilityArea->tu_communication === 'Гос.заказчик' ? 'selected' : ''}}>Гос.заказчик</option>
-                                        <option value="Партнер (Ген.подрядчик)" {{$project->responsibilityArea->tu_communication === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}>Партнер (Ген.подрядчик)</option>
-                                        <option value="Подрядчик ЛЦЗ" {{$project->responsibilityArea->tu_communication === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}>Подрядчик ЛЦЗ</option>
-                                        <option value="Не требуется" {{$project->responsibilityArea->tu_communication === 'Не требуется' ? 'selected' : ''}}>Не требуется</option>
-                                        <option value="Иное" {{$project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
+                                        <option value="ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication === 'ЛЦЗ' ? 'selected' : ''}}@endif>ЛЦЗ</option>
+                                        <option value="Гос.заказчик" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication === 'Гос.заказчик' ? 'selected' : ''}}@endif>Гос.заказчик</option>
+                                        <option value="Партнер (Ген.подрядчик)" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication === 'Партнер (Ген.подрядчик)' ? 'selected' : ''}}@endif>Партнер (Ген.подрядчик)</option>
+                                        <option value="Подрядчик ЛЦЗ" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication === 'Подрядчик ЛЦЗ' ? 'selected' : ''}}@endif>Подрядчик ЛЦЗ</option>
+                                        <option value="Не требуется" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication === 'Не требуется' ? 'selected' : ''}}@endif>Не требуется</option>
+                                        <option value="Иное" @if (isset($project->responsibilityArea)){{$project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
                                             $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
                                             $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
                                             $project->responsibilityArea->tu_communication !== 'Подрядчик ЛЦЗ' &&
-                                            $project->responsibilityArea->tu_communication !== 'Не требуется' ? 'selected' : ''}}>Иное</option>
+                                            $project->responsibilityArea->tu_communication !== 'Не требуется' ? 'selected' : ''}}@endif>Иное</option>
                                     </select>
                                 </div>
 
@@ -642,6 +654,7 @@
                                     <label class="col-sm-2 col-form-label">Иное</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="ProjectResponsibility[tu_communication_other]"
+                                               @if (isset($project->responsibilityArea))
                                             @if ($project->responsibilityArea->tu_communication !== 'ЛЦЗ' &&
                                                 $project->responsibilityArea->tu_communication !== 'Гос.заказчик' &&
                                                 $project->responsibilityArea->tu_communication !== 'Партнер (Ген.подрядчик)' &&
@@ -649,6 +662,7 @@
                                                 $project->responsibilityArea->tu_communication !== 'Не требуется')
                                                 value="{{$project->responsibilityArea->tu_communication}}"
                                             @endif>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

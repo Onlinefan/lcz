@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="Atnic">
 
-  <title>@yield('title', config('app.name', 'INSPINIA'))</title>
+  <title>@yield('page-title')</title>
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
