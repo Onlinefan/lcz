@@ -28,4 +28,9 @@ class Income extends Model
     {
         return $this->belongsTo('App\File', 'document');
     }
+
+    public function closedDocumentFile()
+    {
+        return $this->belongsTo('App\File', 'closed_document');
+    }
 }

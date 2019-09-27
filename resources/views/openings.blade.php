@@ -30,13 +30,13 @@
                                 <tbody>
                                 @foreach ($projects as $project)
                                     <tr>
-                                        <td>{{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}</td>
+                                        <td>@if (isset($project->head)){{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}@endif</td>
                                         <td>{{$project->name}}</td>
-                                        <td>@foreach ($project->regions as $region){{$region->region->name}}; <br>@endforeach</td>
-                                        <td>@foreach ($project->serviceType as $serviceType){{$serviceType->serviceType->name}}; <br>@endforeach</td>
+                                        <td>@foreach ($project->regions as $region)@if (isset($region->region)){{$region->region->name}}; <br>@endif @endforeach</td>
+                                        <td>@foreach ($project->serviceType as $serviceType)@if (isset($serviceType->serviceType)){{$serviceType->serviceType->name}}; <br>@endif @endforeach</td>
                                         <td>{{$project->contract->lcz_role}}</td>
-                                        <td>@foreach ($project->products as $product)@if (intval($product->count) !== 0){{$product->product->name}}; <br>@endif @endforeach</td>
-                                        <td>{{$project->contract->amount}}</td>
+                                        <td>@foreach ($project->products as $product)@if (isset($product->product)){{$product->product->name}}; <br>@endif @endforeach</td>
+                                        <td>{{number_format($project->contract->amount, 2, '.', ' ')}}</td>
                                         <td>{{$project->status}}</td>
                                         <td>@if (isset($project->contract->lopFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/')) . $project->contract->lopFile->file_name}}">{{$project->contract->lopFile->file_name}}</a>@endif</td>
                                         <td>@if (isset($project->contract->lppListFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($project->contract->lppListFile->path, strripos($project->contract->lppListFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($project->contract->lppListFile->path, strripos($project->contract->lppListFile->path, 'Projects_files/')) . $project->contract->lppListFile->file_name}}">{{$project->contract->lppListFile->file_name}}</a>@endif</td>

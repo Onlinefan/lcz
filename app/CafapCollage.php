@@ -27,11 +27,13 @@ class CafapCollage extends Model
 
     public static function createRecords($arCollage, $cafapId, $project)
     {
-        foreach ($arCollage as $collage) {
-            $file = new File();
-            $fileName = File::createName($project->name);
-            $file->createFile($collage, public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Collage/'), $fileName);
-            self::createRecord($cafapId, $file->id);
+        if ($arCollage) {
+            foreach ($arCollage as $collage) {
+                $file = new File();
+                $fileName = File::createName($project->name);
+                $file->createFile($collage, public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Collage/'), $fileName);
+                self::createRecord($cafapId, $file->id);
+            }
         }
     }
 

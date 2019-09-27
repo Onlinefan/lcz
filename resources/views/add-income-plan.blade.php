@@ -26,33 +26,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="name">Назначение платежа</label>
+                        <label class="col-sm-2 col-form-label" for="name">Наименование</label>
                         <div class="col-sm-10">
-                            <input type="text" id="name" name="name" value="" placeholder="Введите назначения" class="form-control">
+                            <input type="text" id="name" name="name" value="" placeholder="Введите наименование" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="stage">Этап</label>
+                        <label class="col-sm-2 col-form-label" for="plan">Сумма</label>
                         <div class="col-sm-10">
-                            <input type="text" id="stage" name="stage" value="" placeholder="Введите этап" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan">План (сумма)</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="plan" name="plan" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Выставлено (сумма)</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="payed">Оплачено (сумма)</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="payed" name="payed" value="" placeholder="Введите сумму" class="form-control">
+                            <input type="number" id="plan" name="plan" value="" placeholder="Введите сумму" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

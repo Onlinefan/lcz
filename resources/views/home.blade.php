@@ -13,7 +13,7 @@
                     </h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{{(int)$contracts->contract_sum}}</h1>
+                    <h1 class="no-margins">{{number_format((int)$contracts->contract_sum, 2, '.', ' ')}}</h1>
                     <div class="progress progress-mini">
                         <div style="width: {{($signPercent->count/$contracts->contract_count)*100}}%;" class="progress-bar"></div>
                     </div>
@@ -28,7 +28,7 @@
                     <h5>Поступления</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{{(int)$incomes->income_sum}}</h1>
+                    <h1 class="no-margins">{{number_format((int)$incomes->income_sum, 2, '.', ' ')}}</h1>
                     <div class="progress progress-mini">
                         <div style="width: {{(int)$incomes->income_sum/(int)$contracts->contract_sum*100}}%;" class="progress-bar progress-bar-danger"></div>
                     </div>
@@ -123,7 +123,7 @@
                                 <tr>
                                     <th class="text-nowrap" scope="row">Контрактов на сумму</th>
                                     @foreach ($regionsTable as $amount)
-                                        <td class="text-right">{{$amount->amount}}</td>
+                                        <td style="text-align:right" class="text-right">{{number_format($amount->amount, 2, '.', ' ')}}</td>
                                     @endforeach
                                 </tr>
                                 <tr>
@@ -265,7 +265,7 @@
                                         {{$cell}}
                                     </th>
                                     @else
-                                        <td class="text-center">{{$cell}}</td>
+                                        <td class="text-center">{{number_format(floatval($cell), 0, '.', ' ')}}</td>
                                     @endif
                                 @endforeach
                             </tr>

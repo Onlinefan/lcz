@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page-title')
-    Добавить документ
+    Добавить поступление
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
@@ -10,54 +10,62 @@
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Платежный документ</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="payment_document">
-                                @foreach ($documentTypes as $documentType)
-                                    <option value="{{$documentType->name}}">{{$documentType->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Сумма платежного документа</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="number">№ договора</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="number" name="number" value="" placeholder="Введите номер договора" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="number_payment">№ платежного документа</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="number_payment" name="number_payment" value="" placeholder="Введите номер документа" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan_id">Основание</label>
+                        <label class="col-sm-2 col-form-label" for="plan_id">Номер счета</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="plan_id" id="plan_id">
-                                @foreach ($incomePlans as $incomePlan)
-                                    <option value="{{$incomePlan->id}}">{{$incomePlan->name}}/{{$incomePlan->stage}}</option>
+                                @foreach ($incomePlans as $plan)
+                                    <option value="{{$plan->id}}">{{$plan->project->name}}/{{$plan->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата платежного документа</label>
+                        <label class="col-sm-2 col-form-label" for="document_number">Номер счета</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="document_number" name="document_number" value="" placeholder="Введите номер счета" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="date_document">Дата счета</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="date_document" name="date_document" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="date_payment">Дата оплаты</label>
                         <div class="col-sm-10">
                             <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document">Скан документа</label>
+                        <label class="col-sm-2 col-form-label" for="count">Сумма</label>
+                        <div class="col-sm-10">
+                            <input type="number" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="payment_status">Статус</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="payment_status" id="payment_status">
+                                <option value="Не выставлен">Не выставлен</option>
+                                <option value="Выставлен">Выставлен</option>
+                                <option value="Оплачен">Оплачен</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="document">Скан счета</label>
                         <div class="col-sm-10">
                             <div class="custom-file">
                                 <input type="file" id="document" class="custom-file-input" name="document">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="closed_document">Закрывающий документ</label>
+                        <div class="col-sm-10">
+                            <div class="custom-file">
+                                <input type="file" id="closed_document" class="custom-file-input" name="closed_document">
                             </div>
                         </div>
                     </div>

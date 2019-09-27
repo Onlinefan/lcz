@@ -56,4 +56,39 @@ class ProjectRegion extends Model
     {
         return ProjectStatus::where([['project_id', '=', $this->project_id], ['region_id', '=', $this->region_id]])->get();
     }
+
+    public function cafapPo()
+    {
+        $cafap = Cafap::where(['project_id' => $this->project_id])->first();
+        if ($cafap) {
+            $cafapRegion = CafapRegion::where([['cafap_id', '=', $cafap->id], ['region_id', '=', $this->region_id]])->first();
+            if ($cafapRegion) {
+                $cafapPo = CafapRegionPo::find($cafapRegion->cafap_po);
+                if ($cafapPo) {
+                    return $cafapPo->name;
+                } else {
+                    return '';
+                }
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    public function cafapAndromeda()
+    {
+        $cafap = Cafap::where(['project_id' => $this->project_id])->first();
+        if ($cafap) {
+            $cafapRegion = CafapAndromedaExist::where([['cafap_id', '=', $cafap->id], ['region_id', '=', $this->region_id]])->first();
+            if ($cafapRegion) {
+                return $cafapRegion->exist;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
 }

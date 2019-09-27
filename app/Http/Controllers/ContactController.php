@@ -60,9 +60,27 @@ class ContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact)
+    public function edit($id)
     {
-        //
+        $contact = Contact::find($id);
+        return view('edit-contact', [
+            'contact' => $contact
+        ]);
+    }
+
+    public function submit($id, Request $request)
+    {
+        $contact = Contact::find($id);
+        $contact->fio = $request->get('fio');
+        $contact->position = $request->get('position');
+        $contact->mobile_number = $request->get('mobile_number');
+        $contact->work_number = $request->get('work_number');
+        $contact->email = $request->get('email');
+        $contact->address = $request->get('address');
+        $contact->company = $request->get('company');
+        $contact->save();
+
+        return redirect('/contacts');
     }
 
     /**

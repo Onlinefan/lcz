@@ -28,21 +28,21 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Номер</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="number" class="form-control">
+                                    <input type="text" name="number" class="form-control" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Дата</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="email_date" class="form-control fromto__datetime-input">
+                                    <input type="text" name="email_date" class="form-control fromto__datetime-input" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Тема</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="theme" class="form-control">
+                                    <input type="text" name="theme" class="form-control" required>
                                 </div>
                             </div>
 
@@ -59,7 +59,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Адресат</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="recipient" class="form-control">
+                                    <input type="text" name="recipient" class="form-control" required>
                                 </div>
                             </div>
 

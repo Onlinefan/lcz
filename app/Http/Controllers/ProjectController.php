@@ -118,6 +118,12 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
         $project->status = $status;
+        if ($status === 'Реализация') {
+            $project->head_id = $project->realization_id ?: null;
+        } else if ($status === 'Эксплуатация') {
+            $project->head_id = $project->exploitation_id ?: null;
+        }
+
         $project->save();
 
         return redirect('/progress/' . $id);
@@ -201,6 +207,12 @@ class ProjectController extends Controller
         $project->head_id = $projectRequest['head_id'];
         $project->name = $projectRequest['name'];
         $project->type = $projectRequest['type'];
+        if ($project->status === 'Эксплуатация') {
+            $project->exploitation_id = $project->head_id;
+        } else {
+            $project->realization_id = $project->head_id;
+        }
+
         $project->save();
 
         /** @var Contract $contract */
@@ -211,7 +223,6 @@ class ProjectController extends Controller
         ProjectCountry::updateRecords($request->get('Country'), $project->id);
         ProjectRegion::updateRecords($request->get('Region'), $project->id);
         ProjectServiceType::updateRecords($request->get('ProjectServiceTypes'), $project->id);
-        ProjectRoad::updateRecords($request->get('ProjectRoad'), $project->id);
         ProjectProductCount::updateRecords($request->get('ProjectProduct'), $project->id);
         ProjectResponsibilityArea::updateRecord($request->get('ProjectResponsibility'), $project->id);
 

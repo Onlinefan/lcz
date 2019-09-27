@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page-title')
-    Добавить документ
+    Добавить затраты
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
@@ -10,35 +10,7 @@
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Платежный документ</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="payment_document">
-                                @foreach ($documentTypes as $documentType)
-                                    <option value="{{$documentType->name}}">{{$documentType->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Сумма платежного документа</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="number">№ договора</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="number" name="number" value="" placeholder="Введите номер договора" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="number_payment">№ платежного документа</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="number_payment" name="number_payment" value="" placeholder="Введите номер документа" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan_id">Основание</label>
+                        <label class="col-sm-2 col-form-label" for="plan_id">План затрат</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="plan_id" id="plan_id">
                                 @foreach ($costPlans as $costPlan)
@@ -48,17 +20,21 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата платежного документа</label>
+                        <label class="col-sm-2 col-form-label" for="date_payment">Дата</label>
                         <div class="col-sm-10">
                             <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document">Скан документа</label>
+                        <label class="col-sm-2 col-form-label" for="count">Сумма</label>
                         <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="document" class="custom-file-input" name="document">
-                            </div>
+                            <input type="number" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="comment">Комментарий</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="comment" name="comment" value="" placeholder="Введите комментарий" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -68,12 +44,6 @@
                                 <option value="Наличный">Наличный</option>
                                 <option value="Безналичный">Безналичный</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="comment">Комментарий</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="comment" name="comment" value="" placeholder="Введите комментарий" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

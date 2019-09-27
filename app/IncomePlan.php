@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,5 +23,23 @@ class IncomePlan extends Model
     public function project()
     {
         return $this->belongsTo('App\Project');
+    }
+
+    public function incomes()
+    {
+        return $this->hasMany('App\Income', 'plan_id');
+    }
+
+    public function balance()
+    {
+        $sumPlans = Income::where([['plan_id', '=', $this->id], ['payment_status', '=', 'Оплачен']])->sum('count');
+        return $this->plan - $sumPlans;
+    }
+
+    public function dateDiff()
+    {
+        $dateNow = new DateTime();
+        $datePay = new DateTime($this->income_date);
+        return date_diff($dateNow, $datePay)->format('%r%d');
     }
 }

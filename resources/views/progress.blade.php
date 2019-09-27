@@ -9,10 +9,12 @@
             <div class="col-lg-12">
                 <div class="ibox">
                     <div class="ibox-content">
-                        <h4>
-                            <img alt="image" class="img-circle" src="{{'/' . stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="64px" />
-                            {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
-                        </h4>
+                        @if (isset($project->head))
+                            <h4>
+                                <img alt="image" class="img-circle" src="{{'/' . stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="64px" />
+                                {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                            </h4>
+                        @endif
                         <h4>Код проекта: {{$project->code}}</h4>
                         <h1>{{$project->name}}</h1>
                         <h4>Статус проекта: {{$project->status}}</h4>
@@ -28,7 +30,7 @@
                         <h5>Сумма контракта</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">{{$project->contract->amount}}</h1>
+                        <h1 class="no-margins">{{number_format($project->contract->amount, 2, '.', ' ')}}</h1>
                         <div class="progress progress-mini">
                             <div style="width: {{round($income/$project->contract->amount*100)}}%;" class="progress-bar"></div>
                         </div>
@@ -43,7 +45,7 @@
                         <h5>Выставлено счетов</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">{{$countPlan}}</h1>
+                        <h1 class="no-margins">{{number_format($countPlan, 2, '.', ' ')}}</h1>
                         <div class="progress progress-mini">
                             <div style="width: {{$countPlan ? round($cost/$countPlan*100) : 0}}%;" class="progress-bar progress-bar-danger"></div>
                         </div>
@@ -365,7 +367,11 @@
                     <a class="btn btn-outline btn-info" href="/letters">Письма</a>
                 </div>
                 <div class="row">
-                    <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Эксплуатация'}}">Передать в эксплуатацию</a>
+                    @if ($project->status === 'Реализация')
+                        <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Эксплуатация'}}">Передать в эксплуатацию</a>
+                    @elseif($project->status === 'Эксплуатация')
+                        <a class="btn btn-outline btn-info" href="/change-status/{{$project->id . '-Реализация'}}">Вернуть в реализацию</a>
+                    @endif
                 </div>
                 <div class="row">
                     @if ($project->status !== 'Завершен')
@@ -377,36 +383,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Page-Level Scripts -->
-    <script>
-        window.addEventListener('DOMContentLoaded', function(){
-            $(document).ready(function(){
-
-                $('.dataTables-example').DataTable({
-                    pageLength: 25,
-                    responsive: true,
-                    dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        { extend: 'copy'},
-                        {extend: 'csv'},
-                        {extend: 'excel', title: 'Progress'},
-                        //{extend: 'pdf', title: 'Progress'},
-
-                        {extend: 'print',
-                            customize: function (win){
-                                $(win.document.body).addClass('white-bg');
-                                $(win.document.body).css('font-size', '10px');
-
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            }
-                        }
-                    ]
-                });
-            });
-        });
-    </script>
-
 @endsection

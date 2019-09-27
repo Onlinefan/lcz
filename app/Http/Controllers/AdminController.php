@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\CafapRegionPo;
 use App\Country;
+use App\CountryCode;
 use App\Product;
+use App\Project;
 use App\Region;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view('admin-index');
+        $projects = Project::whereNull('head_id')->get();
+        return view('admin-index', [
+            'projects' => $projects
+        ]);
     }
 
     public function countries()
@@ -25,8 +36,10 @@ class AdminController extends Controller
     public function editCountry($id)
     {
         $country = Country::find($id);
+        $countryCodes = CountryCode::all();
         return view('edit-country', [
-            'country' => $country
+            'country' => $country,
+            'countryCodes' => $countryCodes
         ]);
     }
 
@@ -42,7 +55,10 @@ class AdminController extends Controller
 
     public function addCountry()
     {
-        return view('add-country');
+        $countryCodes = CountryCode::all();
+        return view('add-country', [
+            'countryCodes' => $countryCodes
+        ]);
     }
 
     public function createCountry(Request $request)
@@ -146,5 +162,47 @@ class AdminController extends Controller
     {
         Region::destroy($id);
         return redirect('/regions');
+    }
+
+    public function poCafap()
+    {
+        $poCafap = CafapRegionPo::all();
+        return view('po-cafap', [
+            'poCafap' => $poCafap
+        ]);
+    }
+
+    public function editPoCafap($id)
+    {
+        $poCafap = CafapRegionPo::find($id);
+        return view('edit-po-cafap', [
+            'poCafap' => $poCafap
+        ]);
+    }
+
+    public function submitPoCafap($id, Request $request)
+    {
+        $poCafap = CafapRegionPo::find($id);
+        $poCafap->name = $request->get('name');
+        $poCafap->save();
+        return redirect('/po-cafap');
+    }
+
+    public function addPoCafap()
+    {
+        return view('add-po-cafap');
+    }
+
+    public function createPoCafap(Request $request)
+    {
+        $poCafap = new CafapRegionPo($request->all());
+        $poCafap->save();
+        return redirect('/po-cafap');
+    }
+
+    public function deletePoCafap($id)
+    {
+        CafapRegionPo::destroy($id);
+        return redirect('/po-cafap');
     }
 }

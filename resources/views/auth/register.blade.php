@@ -33,7 +33,10 @@
                 @endif
             </div>
             <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
-                <input type="text" class="form-control" placeholder="Введите отдел" name="department" value="{{ old('department') }}" required autofocus>
+                <select class="form-control" name="department" required autofocus>
+                    <option value="Реализация" {{old('department') === 'Реализация' ? 'selected' : ''}}>Реализация</option>
+                    <option value="Эксплуатация" {{old('department') === 'Эксплуатация' ? 'selected' : ''}}>Эксплуатация</option>
+                </select>
                 @if ($errors->has('department'))
                     <span class="help-block">
                         <strong>{{ $errors->first('department') }}</strong>

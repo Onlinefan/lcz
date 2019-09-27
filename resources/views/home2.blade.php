@@ -39,15 +39,15 @@
                                             </h3>
                                         </div>
                                         <div class="col-md-6 text-right">
-                                            <div class="prix-full"><span class="prix-post">{{$realization->contract->amount}}</span></div>
-                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{$realization->incomeSum()}}</span></div>
+                                            <div class="prix-full"><span class="prix-post">{{number_format($realization->contract->amount, 2, '.', ' ')}}</span></div>
+                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{number_format($realization->incomeSum(), 2, '.', ' ')}}</span></div>
                                         </div>
                                     </div>
                                     <div class="flex-row">
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
-                                            <div style="width: {{round($realization->incomeSum()/$realization->contract->amount*100)}}%;" class="progress-bar progress-bar-danger"></div>
+                                            <div style="width: @if ($realization->contract->amount){{round($realization->incomeSum()/$realization->contract->amount*100)}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">{{round($realization->incomeSum()/$realization->contract->amount*100)}}% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">@if ($realization->contract->amount){{round($realization->incomeSum()/$realization->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>
@@ -75,6 +75,14 @@
                                         <div class="ibox-content" style="border: 0; margin-bottom: 0; border-bottom: 1px solid #e7eaec;">
 
                                             <div class="small-chat-box fadeInTop animated" style="position: static; width: 100%; display: block;">
+                                                <div class="form-chat">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" id="{{$realization->id}}">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary send-message" type="button" data-user="{{auth()->user()->id}}" data-project="{{$realization->id}}">Отправить</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                                 <div class="content">
                                                     @foreach ($realization->messages as $message)
                                                         <div class="{{intval($message->user->id) === intval(auth()->user()->id) ? 'right' : 'left'}}">
@@ -88,15 +96,6 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
-                                                </div>
-
-                                                <div class="form-chat">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" id="{{$realization->id}}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-primary send-message" type="button" data-user="{{auth()->user()->id}}" data-project="{{$realization->id}}">Отправить</button>
-                                                        </span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

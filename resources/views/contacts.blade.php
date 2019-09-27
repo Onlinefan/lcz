@@ -20,6 +20,7 @@
                                     <th>E-mail</th>
                                     <th>Адрес</th>
                                     <th>Организация</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
 
@@ -33,6 +34,7 @@
                                         <td><a href="mailto:name@email.com">{{$contact->email}}</a></td>
                                         <td>{{$contact->address}}</td>
                                         <td>{{$contact->company}}</td>
+                                        <td><a href="/edit-contact/{{$contact->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

@@ -24,8 +24,11 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="code">Код</label>
                     <div class="col-sm-10">
-                        <input type="text" id="code" name="code" value=""
-                               placeholder="Код в формате RU-CODE" class="form-control">
+                        <select id="code" name="code" class="form-control">
+                            @foreach ($countryCodes as $code)
+                                <option value="{{$code->code}}">{{$code->code}}/{{$code->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">

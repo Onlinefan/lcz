@@ -19,7 +19,7 @@ class StatusController extends Controller
             return redirect('/home2');
         }
 
-        $projects = Project::all();
+        $projects = Project::whereNotNull('head_id')->get();
         $tableHead = [];
         $tableBody = [];
         $maxCountReal = 0;

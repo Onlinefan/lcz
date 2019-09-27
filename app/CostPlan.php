@@ -23,4 +23,15 @@ class CostPlan extends Model
     {
         return $this->belongsTo('App\Project');
     }
+
+    public function costs()
+    {
+        return $this->hasMany('App\Cost', 'plan_id');
+    }
+
+    public function balance()
+    {
+        $sumPlans = Cost::where(['plan_id' => $this->id])->sum('count');
+        return $this->plan - $sumPlans;
+    }
 }

@@ -84,7 +84,7 @@
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Project[head_id]">
                                         @foreach ($users as $user)
-                                            <option value="{{$user->id}}" {{$project->head->id === $user->id ? 'selected' : ''}}>{{$user->second_name . ' ' . $user->first_name . ' ' . $user->patronymic}}</option>
+                                            <option value="{{$user->id}}" @if(isset($project->head)){{$project->head->id === $user->id ? 'selected' : ''}}@endif>{{$user->second_name . ' ' . $user->first_name . ' ' . $user->patronymic}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -213,7 +213,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Сумма договора</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[amount]" value="{{$project->contract->amount}}">
+                                    <input type="number" class="form-control" name="Contract[amount]" value="{{$project->contract->amount}}">
                                 </div>
                             </div>
 
@@ -380,7 +380,7 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" data-toggle="tab" aria-expanded="false" href="#tab-2">Далее</a>
+                                    <a class="btn btn-primary btn-sm" data-toggle="tab" aria-expanded="false" href="#tab-2" id="make-cafap-region">Далее</a>
                                     <button class="btn btn-white btn-sm" type="button">Отмена</button>
                                 </div>
                             </div>
@@ -839,7 +839,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Количество РК</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="ProductionPlan[rk_count][]" value="{{$plan->rk_count}}">
+                                            <input type="number" class="form-control" name="ProductionPlan[rk_count][]" value="{{$plan->rk_count}}">
                                         </div>
                                     </div>
 
@@ -1268,6 +1268,22 @@
                     } else {
                         $($('div[data-name=tu_communication_other]')[0]).addClass('hidden');
                         $($('input[name="ProjectResponsibility[tu_communication_other]"]')[0]).val('');
+                    }
+                });
+
+                $('#make-cafap-region').on('click', function () {
+                    while (cafapEl.length > 1) {
+                        $('#cafap-regionDelete').trigger('click');
+                    }
+
+                    while (regionEl.length > cafapEl.length) {
+                        $('#cafap-region').trigger('click');
+                        $('#andromeda-region').trigger('click');
+                    }
+
+                    for (var element in regionEl) {
+                        $(cafapEl[element]).find('select[name="CafapRegion[region_id][]"]').val($(regionEl[element]).find('select[name="Region[id][]"]').val());
+                        $(andromedaEl[element]).find('select[name="CafapAndromedaExist[region_id][]"]').val($(regionEl[element]).find('select[name="Region[id][]"]').val());
                     }
                 });
             });

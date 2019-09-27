@@ -16,10 +16,11 @@ class OpeningController extends Controller
     public function index()
     {
         if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
+            $projects = Project::where(['head_id' => auth()->user()->id])->get();
+        } else {
+            $projects = Project::all();
         }
 
-        $projects = Project::all();
         return view('openings', [
             'projects' => $projects
         ]);

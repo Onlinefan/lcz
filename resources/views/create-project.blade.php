@@ -98,7 +98,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" data-block="country">
                                 <label class="col-sm-2 col-form-label">Округ</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="Country[]">
@@ -114,7 +114,7 @@
 
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" data-block="region">
                                 <label class="col-sm-2 col-form-label">Регион</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="Region[id][]">
@@ -199,7 +199,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Сумма договора</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="Contract[amount]">
+                                    <input type="number" class="form-control" name="Contract[amount]">
                                 </div>
                             </div>
 
@@ -345,7 +345,7 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" data-toggle="tab" aria-expanded="false" href="#tab-2">Далее</a>
+                                    <a class="btn btn-primary btn-sm" data-toggle="tab" id="make-cafap-region" aria-expanded="false" href="#tab-2">Далее</a>
                                     <button class="btn btn-white btn-sm" type="button">Отмена</button>
                                 </div>
                             </div>
@@ -359,7 +359,7 @@
                             <h2>Тип дорог и количество</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row" id="road-group1">
+                            <div class="form-group row" id="road-group1" data-block="road">
                                 <label class="col-sm-2 col-form-label">Тип дороги</label>
                                 <div class="col-sm-2">
                                     <select class="form-control" name="ProjectProduct[road_id][]">
@@ -597,7 +597,7 @@
                             <h2>ПО в ЦАФАП</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" data-block="cafap-region">
                                 <label class="col-sm-2 col-form-label">Регион</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="CafapRegion[region_id][]">
@@ -623,7 +623,7 @@
                             <h2>Наличие Андромеды</h2>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" data-block="cafap-andromeda">
                                 <label class="col-sm-2 col-form-label">Регион</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="CafapAndromedaExist[region_id][]">
@@ -656,7 +656,7 @@
 
                     <div role="tabpanel" id="tab-4" class="tab-pane">
                         <div class="panel-body">
-                            <div>
+                            <div data-block="production-plan">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Месяц</label>
                                     <div class="col-sm-10">
@@ -702,7 +702,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Количество РК</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ProductionPlan[rk_count][]">
+                                        <input type="number" class="form-control" name="ProductionPlan[rk_count][]">
                                     </div>
                                 </div>
 
@@ -759,7 +759,7 @@
 
                     <div role="tabpanel" id="tab-5" class="tab-pane">
                         <div class="panel-body">
-                            <div>
+                            <div data-block="contacts">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">ФИО</label>
                                     <div class="col-sm-10">
@@ -907,6 +907,34 @@
                 var productionEl = [];
                 var contactsEl = [];
 
+                $('div[data-block="country"]').each(function (elem) {
+                    countryEl.push($(this))
+                });
+
+                $('div[data-block="region"]').each(function (elem) {
+                    regionEl.push($(this))
+                });
+
+                $('div[data-block="road"]').each(function (elem) {
+                    roadEl.push($(this))
+                });
+
+                $('div[data-block="cafap-region"]').each(function (elem) {
+                    cafapEl.push($(this))
+                });
+
+                $('div[data-block="cafap-andromeda"]').each(function (elem) {
+                    andromedaEl.push($(this))
+                });
+
+                $('div[data-block="production-plan"]').each(function (elem) {
+                    productionEl.push($(this))
+                });
+
+                $('div[data-block="contacts"]').each(function (elem) {
+                    contactsEl.push($(this))
+                });
+
                 $('#countyButtonAdd').on('click', function () {
                     countryEl.push($(this).prev().clone().val(''));
                     countryEl[countryEl.length-1].insertBefore($(this));
@@ -953,42 +981,42 @@
                 $('#regionButtonDelete').on('click', function () {
                     $(regionEl[regionEl.length-1]).remove();
                     regionEl.pop();
-                    if (regionEl.length === 0) {
+                    if (regionEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#cafap-regionDelete').on('click', function () {
                     $(cafapEl[cafapEl.length-1]).remove();
                     cafapEl.pop();
-                    if (cafapEl.length === 0) {
+                    if (cafapEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#andromeda-regionDelete').on('click', function () {
                     $(andromedaEl[andromedaEl.length-1]).remove();
                     andromedaEl.pop();
-                    if (andromedaEl.length === 0) {
+                    if (andromedaEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#roadButtonDelete').on('click', function () {
                     $(roadEl[roadEl.length-1]).remove();
                     roadEl.pop();
-                    if (roadEl.length === 0) {
+                    if (roadEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#production-planDelete').on('click', function () {
                     $(productionEl[productionEl.length-1]).remove();
                     productionEl.pop();
-                    if (productionEl.length === 0) {
+                    if (productionEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
                 $('#contactsDelete').on('click', function () {
                     $(contactsEl[contactsEl.length-1]).remove();
                     contactsEl.pop();
-                    if (contactsEl.length === 0) {
+                    if (contactsEl.length === 1) {
                         $(this).addClass('hidden');
                     }
                 });
@@ -1069,6 +1097,17 @@
                     } else {
                         $($('div[data-name=tu_communication_other]')[0]).addClass('hidden');
                         $($('input[name="ProjectResponsibility[tu_communication_other]"]')[0]).val('');
+                    }
+                });
+
+                $('#make-cafap-region').on('click', function () {
+                    while (regionEl.length > cafapEl.length) {
+                        $('#cafap-region').trigger('click');
+                        $('#andromeda-region').trigger('click');
+                    }
+                    for (var element in regionEl) {
+                        $(cafapEl[element]).find('select[name="CafapRegion[region_id][]"]').val($(regionEl[element]).find('select[name="Region[id][]"]').val());
+                        $(andromedaEl[element]).find('select[name="CafapAndromedaExist[region_id][]"]').val($(regionEl[element]).find('select[name="Region[id][]"]').val());
                     }
                 });
             });

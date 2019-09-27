@@ -12,6 +12,7 @@ use App\OtherContract;
 use App\PaymentDocumentType;
 use App\Project;
 use Illuminate\Http\Request;
+use PHPExcel_IOFactory;
 
 class FundController extends Controller
 {
@@ -25,23 +26,65 @@ class FundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
+        $requestIncome = $request->get('IncomePlan');
+        $requestCost = $request->get('CostPlan');
+        if ($requestIncome) {
+            if (auth()->user()->role === 'Оператор') {
+                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+                if ($requestIncome['name']) {
+                    $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->where('name', 'LIKE', "%{$requestIncome['name']}%")->get();
+                } else {
+                    $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
+                }
+                $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
+                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
+            } else {
+                if ($requestIncome['name']) {
+                    $incomePlans = IncomePlan::where('name', 'like', "%{$requestIncome['name']}%")->get();
+                } else {
+                    $incomePlans = IncomePlan::all();
+                }
+                $costPlans = CostPlan::all();
+                $otherDocuments = OtherContract::all();
+            }
+        } elseif ($requestCost) {
+            if (auth()->user()->role === 'Оператор') {
+                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+                if ($requestCost['article']) {
+                    $costPlans = CostPlan::whereIn('project_id', $projectIds)->where('article', 'like', "%{$requestCost['article']}%")->get();
+                } else {
+                    $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
+                }
+                $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
+                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
+            } else {
+                if ($requestCost['article']) {
+                    $costPlans = CostPlan::where('article', 'like', "%{$requestCost['article']}%")->get();
+                } else {
+                    $costPlans = CostPlan::all();
+                }
+                $incomePlans = IncomePlan::all();
+                $otherDocuments = OtherContract::all();
+            }
+        } else {
+            if (auth()->user()->role === 'Оператор') {
+                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+                $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
+                $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
+                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
+            } else {
+                $incomePlans = IncomePlan::all();
+                $costPlans = CostPlan::all();
+                $otherDocuments = OtherContract::all();
+            }
         }
 
-        $incomePlans = IncomePlan::all();
-        $costPlans = CostPlan::all();
-        $otherDocuments = OtherContract::all();
-        $incomes = Income::all();
-        $costs = Cost::all();
         return view('funds', [
             'incomePlans' => $incomePlans,
             'costPlans' => $costPlans,
             'otherDocuments' => $otherDocuments,
-            'incomes' => $incomes,
-            'costs' => $costs
         ]);
     }
 
@@ -132,10 +175,8 @@ class FundController extends Controller
             return redirect('/home2');
         }
 
-        $documentTypes = PaymentDocumentType::all();
         $incomePlans = IncomePlan::all();
         return view('add-income', [
-            'documentTypes' => $documentTypes,
             'incomePlans' => $incomePlans
         ]);
     }
@@ -148,16 +189,25 @@ class FundController extends Controller
 
         $income = new Income($request->all());
         $incomePlan = IncomePlan::find($request->get('plan_id'));
-        $incomePlan->payed = floatval($incomePlan->payed) + floatval($request->get('count'));
         $project = $incomePlan->project;
-        $file = new File();
-        $fileName = File::createName($project->name);
-        $file->createFile($request->file('document'),
-            public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (postupleniya)/' . $request->get('payment_document') . '/'),
-            $fileName);
-        $income->document = $file->id;
+        if ($request->file('document')) {
+            $file = new File();
+            $fileName = File::createName($project->name);
+            $file->createFile($request->file('document'),
+                public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (postupleniya)/' . $incomePlan->name . '/'),
+                $fileName);
+            $income->document = $file->id;
+        }
+
+        if ($request->file('closed_document')) {
+            $file = new File();
+            $fileName = File::createName($project->name);
+            $file->createFile($request->file('closed_document'),
+                public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (postupleniya)/' . $incomePlan->name . '/'),
+                $fileName);
+            $income->closed_document = $file->id;
+        }
         $income->save();
-        $incomePlan->save();
         return redirect('/funds');
     }
 
@@ -167,10 +217,8 @@ class FundController extends Controller
             return redirect('/home2');
         }
 
-        $documentTypes = PaymentDocumentType::all();
         $costPlans = CostPlan::all();
         return view('add-cost', [
-            'documentTypes' => $documentTypes,
             'costPlans' => $costPlans
         ]);
     }
@@ -182,17 +230,7 @@ class FundController extends Controller
         }
 
         $cost = new Cost($request->all());
-        $costPlan = CostPlan::find($request->get('plan_id'));
-        $costPlan->count = floatval($costPlan->count) + floatval($request->get('count'));
-        $project = $costPlan->project;
-        $file = new File();
-        $fileName = File::createName($project->name);
-        $file->createFile($request->file('document'),
-            public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (zatraty)/' . $request->get('payment_document') . '/'),
-            $fileName);
-        $cost->document = $file->id;
         $cost->save();
-        $costPlan->save();
         return redirect('/funds');
     }
 
@@ -256,5 +294,30 @@ class FundController extends Controller
         if($fund->delete()){
             return true;
         }
+    }
+
+    public function addCostFile()
+    {
+        $projects = Project::all();
+        return view('add-cost-file', [
+            'projects' => $projects
+        ]);
+    }
+
+    public function createCostFile(Request $request)
+    {
+        require_once public_path('Classes/PHPExcel.php');
+
+        $fileType = PHPExcel_IOFactory::identify($request->file('file')->path());
+
+        $objReader = PHPExcel_IOFactory::createReader($fileType);
+        $objPhpExcel = $objReader->load($request->file('file')->path());
+        $result = $objPhpExcel->getActiveSheet()->toArray();
+        foreach ($result as $row) {
+            $costPlan = new CostPlan(['plan' => $row[0], 'article' => $row[1], 'project_id' => $request->get('project_id')]);
+            $costPlan->save();
+        }
+
+        return redirect('/funds');
     }
 }

@@ -74,10 +74,16 @@ class ProductionPlan extends Model
         $oldProductionPlan = ProductionPlan::where(['project_id' => $project->id])->get();
         $fileSystem = new Filesystem();
         foreach ($oldProductionPlan as $plan) {
-            $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/' . $plan->preliminaryCalculation->file_name));
-            $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/' . $plan->finalCalculation->file_name));
-            $plan->preliminaryCalculation()->delete();
-            $plan->finalCalculation()->delete();
+            if (isset($plan->preliminaryCalculation)) {
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/' . $plan->preliminaryCalculation->file_name));
+                $plan->preliminaryCalculation->delete();
+            }
+
+            if (isset($plan->finalCalculation)) {
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/' . $plan->finalCalculation->file_name));
+                $plan->finalCalculation->delete();
+            }
+
             $plan->delete();
         }
         self::createRecords($arProductionPlan, $arProductionFiles, $project);

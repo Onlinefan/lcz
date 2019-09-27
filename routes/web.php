@@ -94,3 +94,13 @@ Route::post('/create-product', 'AdminController@createProduct')->name('create-pr
 Route::match(['get', 'post'], '/delete-product/{id}', 'AdminController@deleteProduct')->name('delete-product');
 Route::match(['get', 'post'], '/delete-country/{id}', 'AdminController@deleteCountry')->name('delete-country');
 Route::match(['get', 'post'], '/delete-region/{id}', 'AdminController@deleteRegion')->name('delete-region');
+Route::match(['get', 'post'], '/add-cost-file', 'FundController@addCostFile')->name('add-cost-file');
+Route::post('/create-cost-file', 'FundController@createCostFile')->name('create-cost-file');
+Route::match(['get', 'post'], '/po-cafap', 'AdminController@poCafap')->name('po-cafap');
+Route::match(['get', 'post'], '/add-po-cafap', 'AdminController@addPoCafap')->name('add-po-cafap');
+Route::match(['get', 'post'], '/edit-po-cafap/{id}', 'AdminController@editPoCafap')->name('edit-po-cafap');
+Route::post('/submit-po-cafap/{id}', 'AdminController@submitPoCafap')->name('submit-po-cafap');
+Route::post('/create-po-cafap', 'AdminController@createPoCafap')->name('create-po-cafap');
+Route::match(['get', 'post'], '/delete-po-cafap/{id}', 'AdminController@deletePoCafap')->name('delete-po-cafap');
+Route::match(['get', 'post'], '/edit-contact/{id}', 'ContactController@edit')->name('edit-contact');
+Route::post('/submit-contact/{id}', 'ContactController@submit')->name('submit-contact');

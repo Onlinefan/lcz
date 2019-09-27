@@ -98,6 +98,11 @@
                     'name'=> 'Главная',
                 ],
                 [
+                    'route'=> 'summary',
+                    'icon'=> 'calculator',
+                    'name'=> 'Сводная по проектам',
+                ],
+                [
                     'route'=> 'contracts',
                     'icon'=> 'handshake-o',
                     'name'=> 'Реестр договоров',
@@ -113,9 +118,24 @@
                     'name'=> 'План производства',
                 ],
                 [
+                    'route'=> 'openings',
+                    'icon'=> 'address-card-o',
+                    'name'=> 'Реестр ЛОП',
+                ],
+                [
                     'route'=> 'create-project',
                     'icon'=> 'tasks',
                     'name'=> 'Создание проекта',
+                ],
+                [
+                    'route'=> 'funds',
+                    'icon'=> 'bank',
+                    'name'=> 'ДДС по контракту',
+                ],
+                [
+                    'route'=> 'letters',
+                    'icon'=> 'envelope-o',
+                    'name'=> 'Письма',
                 ],
             ] as $menu_item)
                 <li class="{{ (request()->is($menu_item['route'])) ? 'active' : '' }}">

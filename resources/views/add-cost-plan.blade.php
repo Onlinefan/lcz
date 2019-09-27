@@ -20,42 +20,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan">План (сумма)</label>
+                        <label class="col-sm-2 col-form-label" for="plan">План затрат</label>
                         <div class="col-sm-10">
-                            <input type="text" id="plan" name="plan" value="" placeholder="Введите сумму" class="form-control">
+                            <input type="number" id="plan" name="plan" value="" placeholder="Введите сумму" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="article">Статья</label>
+                        <label class="col-sm-2 col-form-label" for="article">Статья расходов</label>
                         <div class="col-sm-10">
                             <input type="text" id="article" name="article" value="" placeholder="Введите статью" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_cost">Дата</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="date_cost" name="date_cost" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Сумма затрат</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="comment">Комментарий</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="comment" name="comment" value="" placeholder="Введите комментарий" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="payed">Способ оплаты</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="payment_method">
-                                <option value="Наличный">Наличный</option>
-                                <option value="Безналичный">Безналичный</option>
-                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

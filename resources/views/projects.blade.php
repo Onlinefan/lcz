@@ -27,8 +27,10 @@
                                         @if ($project->deadline() <= 10)
                                         <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
                                         @endif
-                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
-                                        {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                        @if (isset($project->head))
+                                            <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
+                                            {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                        @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
                                     <div class="row">
@@ -38,15 +40,15 @@
                                             </h3>
                                         </div>
                                         <div class="col-md-6 text-right">
-                                            <div class="prix-full"><span class="prix-post">{{$project->contract->amount}}</span></div>
-                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{$project->incomeSum()}}</span></div>
+                                            <div class="prix-full"><span class="prix-post">{{number_format($project->contract->amount, 2, '.', ' ')}}</span></div>
+                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{number_format($project->incomeSum(), 2, '.', ' ')}}</span></div>
                                         </div>
                                     </div>
                                     <div class="flex-row">
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
-                                            <div style="width: {{round($project->incomeSum()/$project->contract->amount*100)}}%;" class="progress-bar progress-bar-danger"></div>
+                                            <div style="width: @if ($project->contract->amount > 0) {{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">{{round($project->incomeSum()/$project->contract->amount*100)}}% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>
@@ -74,6 +76,15 @@
                                         <div class="ibox-content" style="border: 0; margin-bottom: 0; border-bottom: 1px solid #e7eaec;">
 
                                             <div class="small-chat-box fadeInTop animated" style="position: static; width: 100%; display: block;">
+                                                <div class="form-chat">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" id="{{$project->id}}">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary send-message" type="button" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}">Отправить</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
                                                 <div class="content">
                                                     @foreach ($project->messages as $message)
                                                         <div class="{{intval($message->user->id) === intval(auth()->user()->id) ? 'right' : 'left'}}">
@@ -87,15 +98,6 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
-                                                </div>
-
-                                                <div class="form-chat">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" id="{{$project->id}}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-primary send-message" type="button" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}">Отправить</button>
-                                                        </span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,8 +126,10 @@
                                         @if ($project->deadline() <= 10)
                                             <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
                                         @endif
-                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
-                                        {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                        @if (isset($project->head))
+                                            <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
+                                            {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                        @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
                                     <div class="row">
@@ -135,15 +139,15 @@
                                             </h3>
                                         </div>
                                         <div class="col-md-6 text-right">
-                                            <div class="prix-full"><span class="prix-post">{{$project->contract->amount}}</span></div>
-                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{$project->incomeSum()}}</span></div>
+                                            <div class="prix-full"><span class="prix-post">{{number_format($project->contract->amount, 2, '.', ' ')}}</span></div>
+                                            <div class="prix-done"><small>Поступления </small><span class="prix-post">{{number_format($project->incomeSum(), 2, '.', ' ')}}</span></div>
                                         </div>
                                     </div>
                                     <div class="flex-row">
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
-                                            <div style="width: {{round($project->incomeSum()/$project->contract->amount*100)}}%;" class="progress-bar progress-bar-danger"></div>
+                                            <div style="width: @if ($project->contract->amount){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">{{round($project->incomeSum()/$project->contract->amount*100)}}% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>
@@ -171,6 +175,14 @@
                                         <div class="ibox-content" style="border: 0; margin-bottom: 0; border-bottom: 1px solid #e7eaec;">
 
                                             <div class="small-chat-box fadeInTop animated" style="position: static; width: 100%; display: block;">
+                                                <div class="form-chat">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" id="{{$project->id}}">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary send-message" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}" type="button">Отправить</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                                 <div class="content">
                                                     @foreach ($project->messages as $message)
                                                         <div class="{{intval($message->user->id) === intval(auth()->user()->id) ? 'right' : 'left'}}">
@@ -184,15 +196,6 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
-                                                </div>
-
-                                                <div class="form-chat">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" id="{{$project->id}}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-primary send-message" data-user="{{auth()->user()->id}}" data-project="{{$project->id}}" type="button">Отправить</button>
-                                                        </span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,8 +221,10 @@
                             @foreach ($finished as $project)
                                 <li class="info-element" id="task16">
                                     <h4>
+                                        @if (isset($project->head))
                                         <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                        @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>
                                     <div class="col-md-6">
