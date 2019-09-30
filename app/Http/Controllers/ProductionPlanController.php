@@ -64,7 +64,7 @@ class ProductionPlanController extends Controller
                 $file = new File();
                 $fileName = File::createName($project->name);
                 $file->createFile($request->file('preliminary_calculation_equipment'),
-                    public_path('/Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileName);
+                    public_path('/Projects_files/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileName);
                 $productionPlan->preliminary_calculation_equipment = $file->id;
             }
 
@@ -72,7 +72,7 @@ class ProductionPlanController extends Controller
                 $file = new File();
                 $fileName = File::createName($project->name);
                 $file->createFile($request->file('final_calculation_equipment'),
-                    public_path('/Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileName);
+                    public_path('/Projects_files/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileName);
                 $productionPlan->final_calculation_equipment = $file->id;
             }
 
@@ -141,28 +141,28 @@ class ProductionPlanController extends Controller
         if ($request->file('preliminary_calculation_equipment')) {
             if (isset($productionPlan->preliminaryCalculation)) {
                 $file = File::find($productionPlan->preliminary_calculation_equipment);
-                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $file->file_name));
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $file->file_name));
                 $file->delete();
             }
 
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('preliminary_calculation_equipment'),
-                public_path('/Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileName);
+                public_path('/Projects_files/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileName);
             $productionPlan->preliminary_calculation_equipment = $file->id;
         }
 
         if ($request->file('final_calculation_equipment')) {
             if (isset($productionPlan->final_calculation_equipment)) {
                 $file = File::find($productionPlan->final_calculation_equipment);
-                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $file->file_name));
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $file->file_name));
                 $file->delete();
             }
 
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('final_calculation_equipment'),
-                public_path('/Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileName);
+                public_path('/Projects_files/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileName);
             $productionPlan->final_calculation_equipment = $file->id;
         }
 

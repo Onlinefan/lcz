@@ -86,8 +86,8 @@
                                                                         <td>{{$income->document_number}}</td>
                                                                         <td>{{$income->created_at}}</td>
                                                                         <td>{{$income->date_payment}}</td>
-                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/'))}}</span><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
-                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Проекты/'))}}</span><a href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Проекты/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
                                                                         <td style="text-align:right">{{number_format($income->count, 2, '.', ' ')}}</td>
                                                                         <td>{{$income->payment_status}}</td>
                                                                         @if ($k === 0)
@@ -272,7 +272,7 @@
                                                             <td>{{$document->number}}</td>
                                                             <td>{{$document->base}}</td>
                                                             <td>{{$document->contractor}}</td>
-                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Проекты/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
+                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Projects_files/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
                                                             <td>{{$document->project->name}}</td>
                                                         </tr>
                                                     @endforeach

@@ -130,7 +130,7 @@ class FundController extends Controller
         $file = new File();
         $fileName = File::createName($project->name);
         $file->createFile($request->file('contract'),
-            public_path('Проекты/' . $project->code . '/Договоры (иные)/' . $request->get('base') . '/' . $request->get('number') . ' ' . $request->get('contractor') . '/'),
+            public_path('Projects_files/' . $project->code . '/Договоры (иные)/' . $request->get('base') . '/' . $request->get('number') . ' ' . $request->get('contractor') . '/'),
             $fileName);
         $otherContract->contract = $file->id;
         $otherContract->save();
@@ -162,7 +162,7 @@ class FundController extends Controller
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('document'),
-                public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
+                public_path('Projects_files/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
                 $fileName);
             $income->document = $file->id;
         }
@@ -171,7 +171,7 @@ class FundController extends Controller
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('closed_document'),
-                public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
+                public_path('Projects_files/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
                 $fileName);
             $income->closed_document = $file->id;
         }

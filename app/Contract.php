@@ -55,7 +55,7 @@ class Contract extends Model
             if (isset($files[$column])) {
                 $file = new File();
                 $fileName = File::createName($project->name);
-                $file->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $file->createFile($files[$column], public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $file->id;
             }
         }
@@ -71,10 +71,10 @@ class Contract extends Model
             if (isset($files[$column])) {
                 $file = File::find($original[$column]);
                 $fileSystem = new Filesystem();
-                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
                 $newFile = new File();
                 $fileName = File::createName($project->name);
-                $newFile->createFile($files[$column], public_path('Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $newFile->createFile($files[$column], public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $newFile->id;
                 $file->delete();
             }

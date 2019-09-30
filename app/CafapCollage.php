@@ -31,7 +31,7 @@ class CafapCollage extends Model
             foreach ($arCollage as $collage) {
                 $file = new File();
                 $fileName = File::createName($project->name);
-                $file->createFile($collage, public_path('/Проекты/' . $project->code . '/Управление проектом/Коллаж/'), $fileName);
+                $file->createFile($collage, public_path('/Projects_files/' . $project->code . '/Управление проектом/Коллаж/'), $fileName);
                 self::createRecord($cafapId, $file->id);
             }
         }
@@ -50,7 +50,7 @@ class CafapCollage extends Model
             $fileSystem = new Filesystem();
             $fileIds = [];
             foreach ($oldCollage as $collage) {
-                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Коллаж' . $collage->collageFile->file_name));
+                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/Коллаж' . $collage->collageFile->file_name));
                 $fileIds[] = $collage->collageFile->id;
                 $collage->delete();
             }

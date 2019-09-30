@@ -47,11 +47,11 @@ class Document extends Model
                 $file = File::find($this->$column);
                 if ($file) {
                     $fileSystem = new Filesystem();
-                    $fileSystem->delete(public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                    $fileSystem->delete(public_path('/Projects_files/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
                 }
                 $newFile = new File();
                 $fileName = File::createName($project->name);
-                $newFile->createFile($request->file($column), public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
+                $newFile->createFile($request->file($column), public_path('/Projects_files/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $newFile->id;
                 if ($file) {
                     $file->delete();
