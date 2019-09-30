@@ -1,7 +1,7 @@
 @extends('inspinia::layouts.main')
 @if (auth()->check())
     @if (auth()->user()->avatarFile)
-        @section('user-avatar', stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name)
+        @section('user-avatar', stristr(auth()->user()->avatarFile->path, 'Пользовательские файлы') . auth()->user()->avatarFile->file_name)
     @else
         @section('user-avatar', 'https://www.gravatar.com/avatar/' . md5(auth()->user()->email) . '?d=mm')
     @endif

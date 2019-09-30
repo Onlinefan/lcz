@@ -47,12 +47,12 @@ class ProductionPlan extends Model
             $fileStart = new File();
             $fileStartName = File::createName($project->name);
             if (isset($arProductionFiles['preliminary_calculation_equipment'][$key]))
-            $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/'), $fileStartName);
+            $fileStart->createFile($arProductionFiles['preliminary_calculation_equipment'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/'), $fileStartName);
 
             $fileEnd = new File();
             $fileEndName = File::createName($project->name);
             if (isset($arProductionFiles['final_equipment_calculation'][$key]))
-            $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/'), $fileEndName);
+            $fileEnd->createFile($arProductionFiles['final_equipment_calculation'][$key], public_path('/Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/'), $fileEndName);
 
             $productionPlan = new ProductionPlan([
                 'month' => $month,
@@ -75,12 +75,12 @@ class ProductionPlan extends Model
         $fileSystem = new Filesystem();
         foreach ($oldProductionPlan as $plan) {
             if (isset($plan->preliminaryCalculation)) {
-                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Predvaritelnyi raschet oborudovaniya/' . $plan->preliminaryCalculation->file_name));
+                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Предварительный расчет оборудования/' . $plan->preliminaryCalculation->file_name));
                 $plan->preliminaryCalculation->delete();
             }
 
             if (isset($plan->finalCalculation)) {
-                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Okonchatelnyi raschet oborudovaniya/' . $plan->finalCalculation->file_name));
+                $fileSystem->delete(public_path('Проекты/' . $project->code . '/Управление проектом/Окончательный расчет оборудования/' . $plan->finalCalculation->file_name));
                 $plan->finalCalculation->delete();
             }
 

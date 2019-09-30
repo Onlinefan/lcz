@@ -356,7 +356,7 @@
                         <div class="panel-body">
 
                             <div class="hr-line-dashed"></div>
-                            <h2>Тип дорог и количество</h2>
+                            <h2>Количество РК</h2>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group row" id="road-group1" data-block="road">
@@ -616,7 +616,7 @@
                                 </div>
                             </div>
 
-                            <button type="button" id="cafap-region" class="btn btn-white btn-sm">Добавить еще</button>
+                            <button type="button" id="cafap-region" class="btn btn-white btn-sm hidden">Добавить еще</button>
                             <button type="button" id="cafap-regionDelete" class="btn btn-white btn-sm hidden">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
@@ -640,7 +640,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" id="andromeda-region" class="btn btn-white btn-sm">Добавить еще</button>
+                            <button type="button" id="andromeda-region" class="btn btn-white btn-sm hidden">Добавить еще</button>
                             <button type="button" id="andromeda-regionDelete" class="btn btn-white btn-sm hidden">Удалить</button>
 
                             <div class="hr-line-dashed"></div>
@@ -784,7 +784,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Рабочий телефон</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="Contacts[work_number][]">
+                                        <input type="text" class="form-control" data-mask="+9(999)999-99-99" name="Contacts[work_number][]">
                                     </div>
                                 </div>
 
@@ -948,12 +948,10 @@
                 $('#cafap-region').on('click', function () {
                     cafapEl.push($(this).prev().clone().val(''));
                     cafapEl[cafapEl.length-1].insertBefore($(this));
-                    $('#cafap-regionDelete').removeClass('hidden');
                 });
                 $('#andromeda-region').on('click', function () {
                     andromedaEl.push($(this).prev().clone().val(''));
                     andromedaEl[andromedaEl.length-1].insertBefore($(this));
-                    $('#andromeda-regionDelete').removeClass('hidden');
                 });
                 $('#roadButtonAdd').on('click', function () {
                     roadEl.push($(this).prev().clone().val(''));
@@ -963,11 +961,86 @@
                 $('#production-plan').on('click', function () {
                     productionEl.push($(this).prev().clone().val(''));
                     productionEl[productionEl.length-1].insertBefore($(this));
+                    productionEl[productionEl.length-1].find('input[name="ProductionPlan[rk_count][]"]').val('');
+                    productionEl[productionEl.length-1].find('input[name="ProductionPlan[date_shipping][]"]').val('');
+                    productionEl[productionEl.length-1].find('input[name="ProductionPlan[preliminary_calculation_equipment][]"]').val('');
+                    productionEl[productionEl.length-1].find('input[name="ProductionPlan[final_equipment_calculation][]"]').val('');
+                    $.getScript('/js/datetimepicker/jquery.datetimepicker.js', function () {
+
+                        $.datetimepicker.setLocale('ru');
+
+
+                        $('.fromto__datetime-input').datetimepicker({
+                            locale:'ru',
+                            timepicker: false,
+                            format:'Y-m-d',
+                            formatDate:'Y-m-d',
+                            allowTimes:[
+                                '00:00',
+                                '00:30',
+                                '01:00',
+                                '01:30',
+                                '02:00',
+                                '02:30',
+                                '03:00',
+                                '03:30',
+                                '04:00',
+                                '04:30',
+                                '05:00',
+                                '05:30',
+                                '06:00',
+                                '06:30',
+                                '07:00',
+                                '07:30',
+                                '08:00',
+                                '08:30',
+                                '09:00',
+                                '09:30',
+                                '10:00',
+                                '10:30',
+                                '11:00',
+                                '11:30',
+                                '12:00',
+                                '12:30',
+                                '13:00',
+                                '13:30',
+                                '14:00',
+                                '14:30',
+                                '15:00',
+                                '15:30',
+                                '16:00',
+                                '16:30',
+                                '17:00',
+                                '17:30',
+                                '18:00',
+                                '18:30',
+                                '19:00',
+                                '19:30',
+                                '20:00',
+                                '20:30',
+                                '21:00',
+                                '21:30',
+                                '22:00',
+                                '22:30',
+                                '23:00',
+                                '23:30',
+                                '23:59',
+                            ],
+
+                        });
+                    });
                     $('#production-planDelete').removeClass('hidden');
                 });
                 $('#contacts').on('click', function () {
                     contactsEl.push($(this).prev().clone().val(''));
                     contactsEl[contactsEl.length-1].insertBefore($(this));
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[fio][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[position][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[mobile_number][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[work_number][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[email][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[address][]"]').val('');
+                    contactsEl[contactsEl.length-1].find('input[name="Contacts[company][]"]').val('');
                     $('#contactsDelete').removeClass('hidden');
                 });
 
@@ -988,16 +1061,10 @@
                 $('#cafap-regionDelete').on('click', function () {
                     $(cafapEl[cafapEl.length-1]).remove();
                     cafapEl.pop();
-                    if (cafapEl.length === 1) {
-                        $(this).addClass('hidden');
-                    }
                 });
                 $('#andromeda-regionDelete').on('click', function () {
                     $(andromedaEl[andromedaEl.length-1]).remove();
                     andromedaEl.pop();
-                    if (andromedaEl.length === 1) {
-                        $(this).addClass('hidden');
-                    }
                 });
                 $('#roadButtonDelete').on('click', function () {
                     $(roadEl[roadEl.length-1]).remove();

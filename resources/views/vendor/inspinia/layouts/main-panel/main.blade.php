@@ -129,7 +129,7 @@
       @show
     </div>
       <div class="col-sm-6" style="text-align:right; padding-top:10px">
-          <img style="height:50px; width:auto; margin-right:20px; vertical-align:middle;" src="{{'/' . stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}">
+          @if (isset (auth()->user()->avatarFile))<img style="height:50px; width:auto; margin-right:20px; vertical-align:middle;" src="{{'/' . stristr(auth()->user()->avatarFile->path, 'Пользовательские файлы') . auth()->user()->avatarFile->file_name}}">@endif
           <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
               {{ csrf_field() }}
           </form>

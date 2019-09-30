@@ -19,9 +19,9 @@ class Cafap extends Model
 
     /** @var array $cafapFiles -  Correlates table columns and file location paths*/
     private static $cafapFiles = [
-        'data_transfer_scheme' => 'Shema peredachi dannyh/',
-        'location_directions' => 'Dislocaziya i napravlenie/',
-        'speed_mode' => 'Skorostnoy rezhim/'
+        'data_transfer_scheme' => 'Схема передачи данных/',
+        'location_directions' => 'Дислокация и направление/',
+        'speed_mode' => 'Скоростной режим/'
     ];
 
     /**
@@ -38,7 +38,7 @@ class Cafap extends Model
             if (isset($arCafap[$column])) {
                 $file = new File();
                 $fileName = File::createName($project->name);
-                $file->createFile($arCafap[$column], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/' . $path), $fileName);
+                $file->createFile($arCafap[$column], public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $file->id;
             }
         }
@@ -53,10 +53,10 @@ class Cafap extends Model
             if (isset($arCafap[$column])) {
                 $file = File::find($this->$column);
                 $fileSystem = new Filesystem();
-                $fileSystem->delete(public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/' . $path . $file->file_name));
+                $fileSystem->delete(public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
                 $newFile = new File();
                 $fileName = File::createName($project->name);
-                $newFile->createFile($arCafap[$column], public_path('/Projects_files/' . $project->code . '/Upravleniye proektom/' . $path), $fileName);
+                $newFile->createFile($arCafap[$column], public_path('/Проекты/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $newFile->id;
                 $file->delete();
             }

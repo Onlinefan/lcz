@@ -28,7 +28,7 @@
                                         <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
                                         @endif
                                         @if (isset($project->head))
-                                            <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
+                                                @if (isset ($project->head->avatarFile))<img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'Пользовательские файлы') . $project->head->avatarFile->file_name}}" width="32px">@endif
                                             {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
@@ -127,7 +127,7 @@
                                             <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
                                         @endif
                                         @if (isset($project->head))
-                                            <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
+                                                @if (isset ($project->head->avatarFile))<img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'Пользовательские файлы') . $project->head->avatarFile->file_name}}" width="32px">@endif
                                             {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
@@ -222,7 +222,7 @@
                                 <li class="info-element" id="task16">
                                     <h4>
                                         @if (isset($project->head))
-                                        <img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="32px">
+                                            @if (isset ($project->head->avatarFile))<img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'Пользовательские файлы') . $project->head->avatarFile->file_name}}" width="32px">@endif
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         @endif
                                         <span class="label badge-info pull-right">{{$project->status}}</span>

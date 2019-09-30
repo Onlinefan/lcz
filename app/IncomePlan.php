@@ -39,7 +39,26 @@ class IncomePlan extends Model
     public function dateDiff()
     {
         $dateNow = new DateTime();
-        $datePay = new DateTime($this->income_date);
+        $datePay = new DateTime($this->income_date ?: 'now');
         return date_diff($dateNow, $datePay)->format('%r%d');
+    }
+
+    public function findPlan($options, $role)
+    {
+        return $this->when($options['name'], function ($query) use ($options) {
+            return $query->where('name', 'LIKE', "%{$options['name']}%");
+        })
+            ->when($options['project_name'], function ($query) use ($options) {
+            $projectIds = Project::where('name', 'LIKE', "%{$options['project_name']}%")->pluck('id')->all();
+            return $query->whereIn('project_id', $projectIds);
+        })
+            ->when($options['project_code'], function ($query) use ($options) {
+            $projectCodeIds = Project::where('code', 'LIKE', "%{$options['project_code']}%")->pluck('id')->all();
+            return $query->whereIn('project_id', $projectCodeIds);
+        })
+            ->when($role === 'Оператор', function ($query) {
+            $projectHeadIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+            return $query->whereIn('project_id', $projectHeadIds);
+        })->get();
     }
 }

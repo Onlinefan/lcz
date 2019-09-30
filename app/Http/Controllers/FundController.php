@@ -31,54 +31,22 @@ class FundController extends Controller
         $requestIncome = $request->get('IncomePlan');
         $requestCost = $request->get('CostPlan');
         if ($requestIncome) {
-            if (auth()->user()->role === 'Оператор') {
-                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
-                if ($requestIncome['name']) {
-                    $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->where('name', 'LIKE', "%{$requestIncome['name']}%")->get();
-                } else {
-                    $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
-                }
-                $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
-                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
-            } else {
-                if ($requestIncome['name']) {
-                    $incomePlans = IncomePlan::where('name', 'like', "%{$requestIncome['name']}%")->get();
-                } else {
-                    $incomePlans = IncomePlan::all();
-                }
-                $costPlans = CostPlan::all();
-                $otherDocuments = OtherContract::all();
-            }
+            $incomeObj = new IncomePlan;
+            $incomePlans = $incomeObj->findPlan($requestIncome, auth()->user()->role);
+            $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+            $costPlans = auth()->user()->role === 'Оператор' ? CostPlan::whereIn('project_id', $projectIds)->get() : CostPlan::all();
+            $otherDocuments = auth()->user()->role === 'Оператор' ? CostPlan::whereIn('project_id', $projectIds)->get() : OtherContract::all();
         } elseif ($requestCost) {
-            if (auth()->user()->role === 'Оператор') {
-                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
-                if ($requestCost['article']) {
-                    $costPlans = CostPlan::whereIn('project_id', $projectIds)->where('article', 'like', "%{$requestCost['article']}%")->get();
-                } else {
-                    $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
-                }
-                $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
-                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
-            } else {
-                if ($requestCost['article']) {
-                    $costPlans = CostPlan::where('article', 'like', "%{$requestCost['article']}%")->get();
-                } else {
-                    $costPlans = CostPlan::all();
-                }
-                $incomePlans = IncomePlan::all();
-                $otherDocuments = OtherContract::all();
-            }
+            $costObj = new CostPlan;
+            $costPlans = $costObj->findPlan($requestCost, auth()->user()->role);
+            $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+            $incomePlans = auth()->user()->role === 'Оператор' ? IncomePlan::whereIn('project_id', $projectIds)->get() : IncomePlan::all();
+            $otherDocuments = auth()->user()->role === 'Оператор' ? OtherContract::whereIn('project_id', $projectIds)->get() : OtherContract::all();
         } else {
-            if (auth()->user()->role === 'Оператор') {
-                $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
-                $incomePlans = IncomePlan::whereIn('project_id', $projectIds)->get();
-                $costPlans = CostPlan::whereIn('project_id', $projectIds)->get();
-                $otherDocuments = OtherContract::whereIn('project_id', $projectIds)->get();
-            } else {
-                $incomePlans = IncomePlan::all();
-                $costPlans = CostPlan::all();
-                $otherDocuments = OtherContract::all();
-            }
+            $projectIds = Project::where(['head_id' => auth()->user()->id])->pluck('id')->all();
+            $incomePlans = auth()->user()->role === 'Оператор' ? IncomePlan::whereIn('project_id', $projectIds)->get() : IncomePlan::all();
+            $costPlans = auth()->user()->role === 'Оператор' ? CostPlan::whereIn('project_id', $projectIds)->get() : CostPlan::all();
+            $otherDocuments = auth()->user()->role === 'Оператор' ? OtherContract::whereIn('project_id', $projectIds)->get() : OtherContract::all();
         }
 
         return view('funds', [
@@ -162,7 +130,7 @@ class FundController extends Controller
         $file = new File();
         $fileName = File::createName($project->name);
         $file->createFile($request->file('contract'),
-            public_path('Projects_files/' . $project->code . '/Dogovory (inie)/' . $request->get('base') . '/' . $request->get('number') . ' ' . $request->get('contractor') . '/'),
+            public_path('Проекты/' . $project->code . '/Договоры (иные)/' . $request->get('base') . '/' . $request->get('number') . ' ' . $request->get('contractor') . '/'),
             $fileName);
         $otherContract->contract = $file->id;
         $otherContract->save();
@@ -194,7 +162,7 @@ class FundController extends Controller
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('document'),
-                public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (postupleniya)/' . $incomePlan->name . '/'),
+                public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
                 $fileName);
             $income->document = $file->id;
         }
@@ -203,7 +171,7 @@ class FundController extends Controller
             $file = new File();
             $fileName = File::createName($project->name);
             $file->createFile($request->file('closed_document'),
-                public_path('Projects_files/' . $project->code . '/Upravleniye proektom/Dogovory (postupleniya)/' . $incomePlan->name . '/'),
+                public_path('Проекты/' . $project->code . '/Управление проектом/Договоры (поступления)/' . $incomePlan->name . '/'),
                 $fileName);
             $income->closed_document = $file->id;
         }

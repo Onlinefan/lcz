@@ -81,8 +81,8 @@
                                                 <td>{{$income->document_number}}</td>
                                                 <td>{{$income->created_at}}</td>
                                                 <td style="text-align:right">{{number_format($income->count, 2, '.', ' ')}}</td>
-                                                <td>@if (isset($income->documentFile))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
-                                                <td>@if (isset($income->closedDocumentFile))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
+                                                <td>@if (isset($income->documentFile))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
+                                                <td>@if (isset($income->closedDocumentFile))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Проекты/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
 
                                                 @if ($key === 0)
                                                     <td style="text-align:right" rowspan="{{$project->incomes()->count() ?: 1}}">{{number_format($project->contract->amount, 2, '.', ' ')}}</td>

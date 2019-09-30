@@ -79,7 +79,7 @@ class RegisterController extends Controller
 
         if (isset($data['avatar'])) {
             $file = new File();
-            $file->createFile($data['avatar'], public_path('User_files/avatars/' . $user->id . '/'), 'avatar');
+            $file->createFile($data['avatar'], public_path('Пользовательские файлы/Аватарки/' . $user->id . '/'), 'avatar');
             $user->avatar = $file->id;
             $user->save();
         }

@@ -28,7 +28,7 @@
                                         @if ($realization->deadline() <= 10)
                                             <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>
                                         @endif
-                                        <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="32px">
+                                        @if (isset (auth()->user()->avatarFile))<img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'Пользовательские файлы') . auth()->user()->avatarFile->file_name}}" width="32px"> @endif
                                         {{auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic}}
                                         <span class="label badge-info pull-right">{{$realization->status}}</span>
                                     </h4>
@@ -121,7 +121,7 @@
                             @foreach ($projectsFinished as $project)
                                 <li class="info-element" id="task16">
                                     <h4>
-                                        <img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'User_files') . auth()->user()->avatarFile->file_name}}" width="32px">
+                                        @if (isset (auth()->user()->avatarFile))<img alt="image" class="img-circle" src="{{stristr(auth()->user()->avatarFile->path, 'Пользовательские файлы') . auth()->user()->avatarFile->file_name}}" width="32px">@endif
                                         {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                                         <span class="label badge-info pull-right">{{$project->status}}</span>
                                     </h4>

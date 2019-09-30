@@ -15,7 +15,7 @@
                 <div class="ibox-content">
                     <h1 class="no-margins">{{number_format((int)$contracts->contract_sum, 2, '.', ' ')}}</h1>
                     <div class="progress progress-mini">
-                        <div style="width: {{($signPercent->count/$contracts->contract_count)*100}}%;" class="progress-bar"></div>
+                        <div style="width: @if ($contracts->contract_count){{($signPercent->count/$contracts->contract_count)*100}} @else 0 @endif%;" class="progress-bar"></div>
                     </div>
                     <div class="stat-percent font-bold text-success">{{$contracts->contract_count}} <i class="fa fa-bolt"></i></div>
                     <small>Количество контрактов</small>
@@ -30,7 +30,7 @@
                 <div class="ibox-content">
                     <h1 class="no-margins">{{number_format((int)$incomes->income_sum, 2, '.', ' ')}}</h1>
                     <div class="progress progress-mini">
-                        <div style="width: {{(int)$incomes->income_sum/(int)$contracts->contract_sum*100}}%;" class="progress-bar progress-bar-danger"></div>
+                        <div style="width: @if ((int)$contracts->contract_sum){{(int)$incomes->income_sum/(int)$contracts->contract_sum*100}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
                     </div>
                     <div class="stat-percent font-bold text-info">{{$incomes->income_count}} <i class="fa fa-level-up"></i></div>
                     <small>Выставлено счетов </small>

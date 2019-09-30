@@ -19,6 +19,10 @@ class AdminController extends Controller
 
     public function index()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $projects = Project::whereNull('head_id')->get();
         return view('admin-index', [
             'projects' => $projects
@@ -27,6 +31,10 @@ class AdminController extends Controller
 
     public function countries()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $countries = Country::all();
         return view('countries', [
             'countries' => $countries
@@ -35,6 +43,10 @@ class AdminController extends Controller
 
     public function editCountry($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $country = Country::find($id);
         $countryCodes = CountryCode::all();
         return view('edit-country', [
@@ -45,6 +57,10 @@ class AdminController extends Controller
 
     public function submitCountry($id, Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $country = Country::find($id);
         $country->name = $request->get('name');
         $country->code = $request->get('code');
@@ -55,6 +71,10 @@ class AdminController extends Controller
 
     public function addCountry()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $countryCodes = CountryCode::all();
         return view('add-country', [
             'countryCodes' => $countryCodes
@@ -63,6 +83,10 @@ class AdminController extends Controller
 
     public function createCountry(Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $country = new Country($request->all());
         $country->save();
         return redirect('/countries');
@@ -70,6 +94,10 @@ class AdminController extends Controller
 
     public function regions()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $regions = Region::all();
         return view('regions', [
             'regions' => $regions
@@ -78,6 +106,10 @@ class AdminController extends Controller
 
     public function editRegion($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $region = Region::find($id);
         $countries = Country::all();
         return view('edit-region', [
@@ -88,6 +120,10 @@ class AdminController extends Controller
 
     public function submitRegion($id, Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $region = Region::find($id);
         $region->name = $request->get('name');
         $region->country_id = $request->get('country_id');
@@ -97,6 +133,10 @@ class AdminController extends Controller
 
     public function addRegion()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $countries = Country::all();
         return view('add-region', [
             'countries' => $countries
@@ -105,6 +145,10 @@ class AdminController extends Controller
 
     public function createRegion(Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $region = new Region($request->all());
         $region->save();
         return redirect('/regions');
@@ -112,6 +156,10 @@ class AdminController extends Controller
 
     public function products()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $products = Product::all();
         return view('products', [
             'products' => $products
@@ -120,6 +168,10 @@ class AdminController extends Controller
 
     public function editProduct($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $product = Product::find($id);
         return view('edit-product', [
             'product' => $product
@@ -128,6 +180,10 @@ class AdminController extends Controller
 
     public function submitProduct($id, Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $product = Product::find($id);
         $product->name = $request->get('name');
         $product->save();
@@ -136,11 +192,19 @@ class AdminController extends Controller
 
     public function addProduct()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         return view('add-product');
     }
 
     public function createProduct(Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $product = new Product($request->all());
         $product->save();
         return redirect('/products');
@@ -148,24 +212,40 @@ class AdminController extends Controller
 
     public function deleteProduct($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         Product::destroy($id);
         return redirect('/products');
     }
 
     public function deleteCountry($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         Country::destroy($id);
         return redirect('/countries');
     }
 
     public function deleteRegion($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         Region::destroy($id);
         return redirect('/regions');
     }
 
     public function poCafap()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $poCafap = CafapRegionPo::all();
         return view('po-cafap', [
             'poCafap' => $poCafap
@@ -174,6 +254,10 @@ class AdminController extends Controller
 
     public function editPoCafap($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $poCafap = CafapRegionPo::find($id);
         return view('edit-po-cafap', [
             'poCafap' => $poCafap
@@ -182,6 +266,10 @@ class AdminController extends Controller
 
     public function submitPoCafap($id, Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $poCafap = CafapRegionPo::find($id);
         $poCafap->name = $request->get('name');
         $poCafap->save();
@@ -190,11 +278,19 @@ class AdminController extends Controller
 
     public function addPoCafap()
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         return view('add-po-cafap');
     }
 
     public function createPoCafap(Request $request)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         $poCafap = new CafapRegionPo($request->all());
         $poCafap->save();
         return redirect('/po-cafap');
@@ -202,6 +298,10 @@ class AdminController extends Controller
 
     public function deletePoCafap($id)
     {
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        }
+
         CafapRegionPo::destroy($id);
         return redirect('/po-cafap');
     }

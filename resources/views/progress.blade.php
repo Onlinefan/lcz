@@ -11,7 +11,7 @@
                     <div class="ibox-content">
                         @if (isset($project->head))
                             <h4>
-                                <img alt="image" class="img-circle" src="{{'/' . stristr($project->head->avatarFile->path, 'User_files') . $project->head->avatarFile->file_name}}" width="64px" />
+                                @if (isset ($project->head->avatarFile))<img alt="image" class="img-circle" src="{{'/' . stristr($project->head->avatarFile->path, 'Пользовательские файлы') . $project->head->avatarFile->file_name}}" width="64px" />@endif
                                 {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
                             </h4>
                         @endif
@@ -297,20 +297,20 @@
                                                         <td>@if (isset($row->pnr->inCafap))<span class="label label-secondary">{{$row->pnr->inCafap->name}}</span>@endif</td>
                                                         <td><a href="/edit-pnr/{{$row->pnr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
-                                                        <td><span class="label label-secondary">@if (isset($row->document->examinationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Obsledovanie/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->projectDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Proektnaya documentaciya/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->executiveDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ispolnitelnaya documentaciya/{{$row->document->executiveDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->verificationFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Poverka/{{$row->document->verificationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->formsFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Formulyary/{{$row->document->formsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->passportsFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Pasporta/{{$row->document->passportsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->tu220File))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU-220/{{$row->document->tu220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/TU na oporu/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Dogovor na opory/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->addressPlanAgreedCafapFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Adresnyi plan/{{$row->document->addressPlanAgreedCafapFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->dataTransferSchemeFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Shema peredachi dannyh/{{$row->document->dataTransferSchemeFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->inboxFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Vhodyashie/{{$row->document->inboxFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->outgoingFile))<a href="/download?path=Projects_files/{{$project->code}}/Upravleniye proektom/Ishodyashie/{{$row->document->outgoingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->examinationFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Обследование/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->projectDocumentationFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Проектная документация/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->executiveDocumentationFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Исполнительная документация/{{$row->document->executiveDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->verificationFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Поверка/{{$row->document->verificationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->formsFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Формуляры/{{$row->document->formsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->passportsFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Паспорта/{{$row->document->passportsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->tu220File))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/ТУ-220/{{$row->document->tu220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Договор 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/ТУ на опору/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Договор на опору/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->addressPlanAgreedCafapFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Адресный план/{{$row->document->addressPlanAgreedCafapFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->dataTransferSchemeFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Схема передачи данных/{{$row->document->dataTransferSchemeFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->inboxFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Входящие/{{$row->document->inboxFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label label-secondary">@if (isset($row->document->outgoingFile))<a href="/download?path=Проекты/{{$project->code}}/Управление проектом/Исходящие/{{$row->document->outgoingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><a href="/edit-documents/{{$row->document->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
                                                         <td><a href="/delete-data-row/{{$row->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                                     </tr>
@@ -328,31 +328,31 @@
                         <br>
                         <div class="row">
                             @if (isset($project->cafap->dataTransfer))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->dataTransfer->path, strripos($project->cafap->dataTransfer->path, 'Projects_files/')) . $project->cafap->dataTransfer->file_name}}">Схема передачи данных</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->dataTransfer->path, strripos($project->cafap->dataTransfer->path, 'Проекты/')) . $project->cafap->dataTransfer->file_name}}">Схема передачи данных</a>
                             @endif
                             @if (isset($project->cafap->locationDirections))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->locationDirections->path, strripos($project->cafap->locationDirections->path, 'Projects_files/')) . $project->cafap->locationDirections->file_name}}">Дислокации и направления</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->locationDirections->path, strripos($project->cafap->locationDirections->path, 'Проекты/')) . $project->cafap->locationDirections->file_name}}">Дислокации и направления</a>
                             @endif
                             @if (isset($project->cafap->speedMode))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->speedMode->path, strripos($project->cafap->speedMode->path, 'Projects_files/')) . $project->cafap->speedMode->file_name}}">Скоростной режим</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->cafap->speedMode->path, strripos($project->cafap->speedMode->path, 'Проекты/')) . $project->cafap->speedMode->file_name}}">Скоростной режим</a>
                             @endif
                         </div>
                         <div class="row">
                             <a class="btn btn-outline btn-info" href="{{$project->contract->purchase_reference}}">Ссылка на закупку</a>
                             @if (isset($project->contract->planChart))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->planChart->path, strripos($project->contract->planChart->path, 'Projects_files/')) . $project->contract->planChart->file_name}}">План-график</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->planChart->path, strripos($project->contract->planChart->path, 'Проекты/')) . $project->contract->planChart->file_name}}">План-график</a>
                             @endif
                             @if (isset($project->contract->lopFile))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/')) . $project->contract->lopFile->file_name}}">ЛОП (бюджет проекта)</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Проекты/')) . $project->contract->lopFile->file_name}}">ЛОП (бюджет проекта)</a>
                             @endif
                             @if (isset($project->contract->projectCharter))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->projectCharter->path, strripos($project->contract->projectCharter->path, 'Projects_files/')) . $project->contract->projectCharter->file_name}}">Устав проекта</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->projectCharter->path, strripos($project->contract->projectCharter->path, 'Проекты/')) . $project->contract->projectCharter->file_name}}">Устав проекта</a>
                             @endif
                             @if (isset($project->contract->contractFile))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->contractFile->path, strripos($project->contract->contractFile->path, 'Projects_files/')) . $project->contract->contractFile->file_name}}">Контракт</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->contractFile->path, strripos($project->contract->contractFile->path, 'Проекты/')) . $project->contract->contractFile->file_name}}">Контракт</a>
                             @endif
                             @if (isset($project->contract->technicalTask))
-                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->technicalTask->path, strripos($project->contract->technicalTask->path, 'Projects_files/')) . $project->contract->technicalTask->file_name}}">Тех. задание</a>
+                                <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->technicalTask->path, strripos($project->contract->technicalTask->path, 'Проекты/')) . $project->contract->technicalTask->file_name}}">Тех. задание</a>
                             @endif
                             <a class="btn btn-outline btn-info" href="/files">Документы по проекту</a>
                         </div>

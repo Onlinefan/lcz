@@ -20,14 +20,28 @@
                                     <div class="ibox">
                                         <div class="ibox-content">
                                             <form type="get">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2">Наименование</label>
-                                                    <div class="cols-sm-2">
-                                                        <input type="text" class="form-control" name="IncomePlan[name]" value="@if(isset($_GET['IncomePlan'])){{$_GET['IncomePlan']['name']}}@endif">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Наименование</label>
+                                                            <input type="text" class="form-control" name="IncomePlan[name]" value="@if(isset($_GET['IncomePlan'])){{$_GET['IncomePlan']['name']}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Наименование проекта</label>
+                                                            <input type="text" class="form-control" name="IncomePlan[project_name]" value="@if(isset($_GET['IncomePlan'])){{$_GET['IncomePlan']['project_name']}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Код проекта</label>
+                                                            <input type="text" class="form-control" name="IncomePlan[project_code]" value="@if(isset($_GET['IncomePlan'])){{$_GET['IncomePlan']['project_code']}}@endif">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-2">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-2">
                                                         <button type="submit" class="btn btn-primary btn-sm">Найти</button>
                                                     </div>
                                                 </div>
@@ -65,15 +79,15 @@
                                                                         @if ($k === 0)
                                                                             <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (isset($plan->project)){{$plan->project->code}}@endif</td>
                                                                             <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (isset($plan->project)){{$plan->project->name}}@endif</td>
-                                                                            <td rowspan="{{$plan->incomes->count() ?: 1}}">@if ($plan->balance() > 0 && $plan->dateDiff() <= 5)<i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i>   @endif{{$plan->income_date}}</td>
+                                                                            <td rowspan="{{$plan->incomes->count() ?: 1}}">@if ($plan->balance() > 0 && $plan->dateDiff() <= 0)<i class="fa fa-exclamation-circle" style="color:red; font-size: 28px;"></i>  @elseif ($plan->balance() > 0 && $plan->dateDiff() <= 5) <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i> @endif{{$plan->income_date}}</td>
                                                                             <td style="text-align:right" rowspan="{{$plan->incomes->count() ?: 1}}">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                             <td rowspan="{{$plan->incomes->count() ?: 1}}">{{$plan->name}}</td>
                                                                         @endif
                                                                         <td>{{$income->document_number}}</td>
                                                                         <td>{{$income->created_at}}</td>
                                                                         <td>{{$income->date_payment}}</td>
-                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
-                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/'))}}</span><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Проекты/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Проекты/'))}}</span><a href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Проекты/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
                                                                         <td style="text-align:right">{{number_format($income->count, 2, '.', ' ')}}</td>
                                                                         <td>{{$income->payment_status}}</td>
                                                                         @if ($k === 0)
@@ -85,7 +99,7 @@
                                                                 <tr>
                                                                     <td>@if (isset($plan->project)){{$plan->project->code}}@endif</td>
                                                                     <td>@if (isset($plan->project)){{$plan->project->name}}@endif</td>
-                                                                    <td>{{$plan->income_date}}</td>
+                                                                    <td>@if ($plan->balance() > 0 && $plan->dateDiff() <= 0)<i class="fa fa-exclamation-circle" style="color:red; font-size: 28px;"></i>  @elseif ($plan->balance() > 0 && $plan->dateDiff() <= 5) <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i> @endif{{$plan->income_date}}</td>
                                                                     <td style="text-align:right">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                     <td>{{$plan->name}}</td>
                                                                     <td></td>
@@ -123,14 +137,28 @@
                                     <div class="ibox">
                                         <div class="ibox-content">
                                             <form type="get">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2">Статья расходов</label>
-                                                    <div class="cols-sm-2">
-                                                        <input type="text" class="form-control" name="CostPlan[article]" value="@if (isset($_GET['CostPlan'])){{$_GET['CostPlan']['article']}}@endif">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Статья расходов</label>
+                                                            <input type="text" class="form-control" name="CostPlan[article]" value="@if(isset($_GET['CostPlan'])){{$_GET['CostPlan']['article']}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Наименование проекта</label>
+                                                            <input type="text" class="form-control" name="CostPlan[project_name]" value="@if(isset($_GET['CostPlan'])){{$_GET['CostPlan']['project_name']}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Код проекта</label>
+                                                            <input type="text" class="form-control" name="CostPlan[project_code]" value="@if(isset($_GET['CostPlan'])){{$_GET['CostPlan']['project_code']}}@endif">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-2">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-2">
                                                         <button type="submit" class="btn btn-primary btn-sm">Найти</button>
                                                     </div>
                                                 </div>
@@ -244,7 +272,7 @@
                                                             <td>{{$document->number}}</td>
                                                             <td>{{$document->base}}</td>
                                                             <td>{{$document->contractor}}</td>
-                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Projects_files/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
+                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Проекты/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
                                                             <td>{{$document->project->name}}</td>
                                                         </tr>
                                                     @endforeach

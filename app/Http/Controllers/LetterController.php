@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class LetterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +47,7 @@ class LetterController extends Controller
 
             if ($request->file('letter_file')) {
                 $file = new File();
-                $file->createFile($request->file('letter_file'), public_path('/Mails/' . $email->status . '/' . $email->id . '/'), 'id'.uniqid());
+                $file->createFile($request->file('letter_file'), public_path('/Письма/' . $email->status . '/' . $email->id . '/'), 'id'.uniqid());
                 $email->letter_file = $file->id;
                 $email->save();
             }
@@ -98,11 +103,11 @@ class LetterController extends Controller
             if (isset($letter->letterFile)) {
                 $oldFile = File::find($letter->letter_file);
                 $fileSystem = new Filesystem();
-                $fileSystem->delete(public_path('/Mails/' . $letter->status . '/' . $letter->id . '/' . $oldFile->file_name));
+                $fileSystem->delete(public_path('/Письма/' . $letter->status . '/' . $letter->id . '/' . $oldFile->file_name));
                 $oldFile->delete();
             }
             $file = new File();
-            $file->createFile($request->file('letter_file'), public_path('/Mails/' . $letter->status . '/' . $letter->id . '/'), 'id'.uniqid());
+            $file->createFile($request->file('letter_file'), public_path('/Письма/' . $letter->status . '/' . $letter->id . '/'), 'id'.uniqid());
             $letter->letter_file = $file->id;
         }
 
