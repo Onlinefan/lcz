@@ -32,9 +32,9 @@
                     <div class="ibox-content">
                         <h1 class="no-margins">{{number_format($project->contract->amount, 2, '.', ' ')}}</h1>
                         <div class="progress progress-mini">
-                            <div style="width: {{round($income/$project->contract->amount*100)}}%;" class="progress-bar"></div>
+                            <div style="width: @if ($project->contract->amount){{round($incomePay/$project->contract->amount*100)}} @else 0 @endif%;" class="progress-bar"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">{{round($income/$project->contract->amount*100)}}%</div>
+                        <div class="stat-percent font-bold text-success">{{$incomePay}}</div>
                         <small>Поступления</small>
                     </div>
                 </div>
@@ -45,11 +45,11 @@
                         <h5>Выставлено счетов</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">{{number_format($countPlan, 2, '.', ' ')}}</h1>
+                        <h1 class="no-margins">{{number_format($income, 2, '.', ' ')}}</h1>
                         <div class="progress progress-mini">
-                            <div style="width: {{$countPlan ? round($cost/$countPlan*100) : 0}}%;" class="progress-bar progress-bar-danger"></div>
+                            <div style="width: {{$income ? round($cost/$income*100) : 0}}%;" class="progress-bar progress-bar-danger"></div>
                         </div>
-                        <div class="stat-percent font-bold text-success">{{$countPlan ? round($cost/$countPlan*100) : 0}}%</div>
+                        <div class="stat-percent font-bold text-success">{{$cost}}</div>
                         <small>Затраты</small>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/(7 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/(6 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">ПНР</h5>
                                             </div>
@@ -166,8 +166,9 @@
                                                     <th colspan="11" style="text-align: center;">ПИР</th>
                                                     <th colspan="7" style="text-align: center;">Производство</th>
                                                     <th colspan="7" style="text-align: center;">СМР/Монтаж</th>
-                                                    <th colspan="8" style="text-align: center;">ПНР</th>
+                                                    <th colspan="7" style="text-align: center;">ПНР</th>
                                                     <th colspan="15" style="text-align: center;">Документы</th>
+                                                    <th></th>
                                                 </tr>
                                                 <tr>
                                                     <th>№</th>
@@ -193,7 +194,7 @@
                                                     <th>Количество новых опор под ЛЭП</th>
                                                     <th>Количество РК</th>
                                                     <th>Количество ОК</th>
-                                                    <th>Суммарная мощность оборудования</th>
+                                                    <th>Суммарная мощность оборудования, Вт</th>
                                                     <th>Запрос ТУ на 220</th>
                                                     <th>Запрос на опоры</th>
                                                     <th></th>
@@ -214,13 +215,12 @@
                                                     <th>Передано в ПНР</th>
                                                     <th></th>
 
-                                                    <th>Калибровка 2000 проездов</th>
+                                                    <th>Калибровка</th>
                                                     <th>КП</th>
                                                     <th>Результаты анализа</th>
                                                     <th>Передача комплекса в мониторинг</th>
                                                     <th>Выгрузка в Андромеду</th>
-                                                    <th>Выгрузка</th>
-                                                    <th>в ЦАФАП</th>
+                                                    <th>Выгрузка в ЦАФАП</th>
                                                     <th></th>
 
                                                     <th>Обследование</th>
@@ -233,18 +233,18 @@
                                                     <th>Договор 220</th>
                                                     <th>ТУ на опору</th>
                                                     <th>Договор на опоры</th>
-                                                    <th>Адресный план согласованный с ЦАФАП</th>
-                                                    <th>Схема передачи данных</th>
-                                                    <th>Входящие</th>
-                                                    <th>Исходящие</th>
+                                                    <th></th>
                                                     <th></th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                @foreach ($region->projectStatus() as $row)
+                                                @php
+                                                    $k = 1
+                                                @endphp
+                                                @foreach ($region->projectStatus()->reverse() as $row)
                                                     <tr>
-                                                        <td>{{$row->id}}</td>
+                                                        <td>{{($k++)}}</td>
                                                         <td>{{$row->system_id}}</td>
                                                         <td>{{$row->complex_id}}</td>
                                                         <td>{{$row->city}}</td>
@@ -293,7 +293,6 @@
                                                         <td>@if (isset($row->pnr->analysisResult))<span class="label {{$row->pnr->analysisResult->name === 'Неудовлетворительно' ? 'label-danger' : 'label-secondary'}}">{{$row->pnr->analysisResult->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pnr->complexToMonitoring))<span class="label label-secondary">{{$row->pnr->complexToMonitoring->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pnr->andromedaUnloading))<span class="label label-secondary">{{$row->pnr->andromedaUnloading->name}}</span>@endif</td>
-                                                        <td><span class="label label-secondary">{{$row->pnr->unloading}}</span></td>
                                                         <td>@if (isset($row->pnr->inCafap))<span class="label label-secondary">{{$row->pnr->inCafap->name}}</span>@endif</td>
                                                         <td><a href="/edit-pnr/{{$row->pnr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
 
@@ -307,10 +306,6 @@
                                                         <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ на опору/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор на опору/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->addressPlanAgreedCafapFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Адресный план/{{$row->document->addressPlanAgreedCafapFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->dataTransferSchemeFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Схема передачи данных/{{$row->document->dataTransferSchemeFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->inboxFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Входящие/{{$row->document->inboxFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->outgoingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Исходящие/{{$row->document->outgoingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><a href="/edit-documents/{{$row->document->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
                                                         <td><a href="/delete-data-row/{{$row->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                                     </tr>
@@ -338,7 +333,7 @@
                             @endif
                         </div>
                         <div class="row">
-                            <a class="btn btn-outline btn-info" href="{{$project->contract->purchase_reference}}">Ссылка на закупку</a>
+                            <a class="btn btn-outline btn-info" target="_blank" href="{{$project->contract->purchase_reference}}">Ссылка на закупку</a>
                             @if (isset($project->contract->planChart))
                                 <a class="btn btn-outline btn-info" href="/download?path={{substr($project->contract->planChart->path, strripos($project->contract->planChart->path, 'Projects_files/')) . $project->contract->planChart->file_name}}">План-график</a>
                             @endif

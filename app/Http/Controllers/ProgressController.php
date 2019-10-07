@@ -59,6 +59,7 @@ class ProgressController extends Controller
         $countPlan = 0;
         $realizationCount = 0;
         $finishCount = 0;
+        $incomePay = 0;
 
         foreach ($countStatuses as $status) {
             if ($status->status === 'Реализация') {
@@ -69,107 +70,36 @@ class ProgressController extends Controller
         }
 
         foreach ($project->incomePlans as $incomePlan) {
-            $income += floatval($incomePlan->payed);
+            foreach ($incomePlan->incomes as $inc) {
+                $income += $inc->payment_status === 'Выставлен' ? floatval($inc->count) : floatval(0);
+                $incomePay += $inc->payment_status === 'Оплачен' ? floatval($inc->count) : floatval(0);
+            }
         }
 
         foreach ($project->costPlans as $costPlan) {
-            $cost += floatval($costPlan->count);
-            $countPlan += floatval($costPlan->plan);
+            foreach ($costPlan->costs as $cos) {
+                $cost += floatval($cos->count);
+            }
         }
 
         $now = new DateTime('now');
         $contractEnd = new DateTime($project->contract->date_end);
-        $contractStart = new DateTime($project->contract->date_start);
-        $dateDiff = $contractEnd->diff($now)->format('%a');
-        $datePercent = $now->diff($contractStart)->format('%a')/($contractEnd->diff($contractStart)->format('%a') ?: 1)*100;
+        $dateDiff = $now->diff($contractEnd)->format('%r%a');
 
-        $arPercents = [];
+
         $vu220 = '220_vu';
 
         $projectRegions = ProjectRegion::where(['project_id' => $id])->get();
-        foreach ($projectRegions as $region) {
-            $dataCount = 0;
-            $initialDataCount = 0;
-            $pirCount = 0;
-            $productionCount = 0;
-            $smrCount = 0;
-            $pnrCount = 0;
-            $documentsCount = 0;
-            foreach ($region->projectStatus() as $projectStatus) {
-                $dataCount += isset($projectStatus->system_number);
-                $dataCount += isset($projectStatus->system_id);
-                $dataCount += isset($projectStatus->complex_id);
-                $dataCount += isset($projectStatus->city);
-                $dataCount += isset($projectStatus->affiliation_of_the_road);
-                $dataCount += isset($projectStatus->address_contract);
-                $dataCount += isset($projectStatus->address_gibdd);
+        $arPercents = $project->projectPercent();
 
-                $initialDataCount += isset($projectStatus->initialData->equipment_type);
-                $initialDataCount += isset($projectStatus->initialData->road_type);
-                $initialDataCount += isset($projectStatus->initialData->speed_mode);
-                $initialDataCount += isset($projectStatus->initialData->borders_number);
-                $initialDataCount += isset($projectStatus->initialData->koap);
+        $datePercent = 0;
 
-                $pirCount += isset($projectStatus->pir->survey_status);
-                $pirCount += isset($projectStatus->pir->survey_comment);
-                $pirCount += isset($projectStatus->pir->design_documentation);
-                $pirCount += isset($projectStatus->pir->new_footing_fvf);
-                $pirCount += isset($projectStatus->pir->new_footing_lep);
-                $pirCount += isset($projectStatus->pir->rk_count);
-                $pirCount += isset($projectStatus->pir->ok_count);
-                $pirCount += isset($projectStatus->pir->equipment_power);
-                $pirCount += isset($projectStatus->pir->request_tu);
-                $pirCount += isset($projectStatus->pir->request_footing);
-
-                $productionCount += isset($projectStatus->production->shipment_status);
-                $productionCount += isset($projectStatus->production->date_equipment_shipment);
-                $productionCount += isset($projectStatus->production->number_sim_internet);
-                $productionCount += isset($projectStatus->production->number_sim_ssu);
-                $productionCount += isset($projectStatus->production->number_verification);
-                $productionCount += isset($projectStatus->production->date_verification_end);
-
-                $smrCount += isset($projectStatus->smr->link_root_task);
-                $smrCount += isset($projectStatus->smr->$vu220);
-                $smrCount += isset($projectStatus->smr->link_contract);
-                $smrCount += isset($projectStatus->smr->dislocation_strapping);
-                $smrCount += isset($projectStatus->smr->installation_status);
-                $smrCount += isset($projectStatus->smr->transferred_pnr);
-
-                $pnrCount += isset($projectStatus->pnr->calibration_2000);
-                $pnrCount += isset($projectStatus->pnr->kp);
-                $pnrCount += isset($projectStatus->pnr->analysis_result);
-                $pnrCount += isset($projectStatus->pnr->complex_to_monitoring);
-                $pnrCount += isset($projectStatus->pnr->andromeda_unloading);
-                $pnrCount += isset($projectStatus->pnr->unloading);
-                $pnrCount += isset($projectStatus->pnr->in_cafap);
-
-                $documentsCount += isset($projectStatus->document->examinationFile);
-                $documentsCount += isset($projectStatus->document->projectDocumentationFile);
-                $documentsCount += isset($projectStatus->document->executiveDocumentationFile);
-                $documentsCount += isset($projectStatus->document->verificationFile);
-                $documentsCount += isset($projectStatus->document->formsFile);
-                $documentsCount += isset($projectStatus->document->passportsFile);
-                $documentsCount += isset($projectStatus->document->tu220File);
-                $documentsCount += isset($projectStatus->document->contract220File);
-                $documentsCount += isset($projectStatus->document->tuFootingFile);
-                $documentsCount += isset($projectStatus->document->contractFootingFile);
-                $documentsCount += isset($projectStatus->document->addressPlanAgreedCafapFile);
-                $documentsCount += isset($projectStatus->document->dataTransferSchemeFile);
-                $documentsCount += isset($projectStatus->document->inboxFile);
-                $documentsCount += isset($projectStatus->document->outgoingFile);
-            }
-
-            $arPercents[] = [
-                'dataCount' => $dataCount,
-                'initialDataCount' => $initialDataCount,
-                'pirCount' => $pirCount,
-                'productionCount' => $productionCount,
-                'smrCount' => $smrCount,
-                'pnrCount' => $pnrCount,
-                'documentsCount' => $documentsCount
-            ];
+        foreach ($arPercents as $region) {
+            $datePercent += ($region['dataCount'] / 7 + $region['initialDataCount'] / 5 + $region['pirCount'] / 10 + $region['productionCount'] / 6 + $region['smrCount'] / 6 +
+                $region['pnrCount'] / 6 + $region['documentsCount'] / 10) / 7 * 100;
         }
 
+        $datePercent = $datePercent/count($arPercents);
         $products = Product::all();
         $roadTypes = RoadType::all();
 
@@ -186,7 +116,8 @@ class ProgressController extends Controller
             'realizationCount' => $realizationCount,
             'finishCount' => $finishCount,
             'vu220' => $vu220,
-            'arPercents' => $arPercents
+            'arPercents' => $arPercents,
+            'incomePay' => $incomePay
         ]);
     }
 

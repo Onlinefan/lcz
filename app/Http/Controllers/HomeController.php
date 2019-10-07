@@ -34,7 +34,12 @@ class HomeController extends Controller
                 ->where('sign_status', '=', 'Подписан с обеих сторон')
                 ->get();
             $incomes = DB::table('income')
-                ->select(DB::raw('sum(count) as income_sum, count(*) as income_count'))
+                ->select(DB::raw('sum(count) as income_sum'))
+                ->where(['payment_status' => 'Оплачен'])
+                ->get();
+            $incomeCount = DB::table('income')
+                ->select(DB::raw('sum(count) as income_count'))
+                ->where(['payment_status' => 'Выставлен'])
                 ->get();
             $contractCount = DB::table('projects')
                 ->select(DB::raw('count(*) as count'))
@@ -85,10 +90,11 @@ class HomeController extends Controller
 `crossroad`.crossroad as 'Пер. (тип 2)', `pedestrian`.pedestrian as 'Пер. (тип 3)', `product1`.kopp as 'Коперник (передвижка)', `product2`.kops AS 'Коперник (стационар)',
 `product3`.arhimed AS 'Архимед', `product4`.andromeda as 'Андромеда', `pc1`.quantity as 'Количество', `pc2`.amount FROM `countries` as `c`
 	LEFT JOIN (
-		SELECT `c`.id, COUNT(`p`.status) AS quantity
+		SELECT `c`.id, SUM(DISTINCT `project_products_count`.count) AS quantity
 			FROM `project_countries` AS `pc`
-				RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
+				RIGHT JOIN `project_products_count` ON `pc`.project_id = `project_products_count`.project_id
 				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
+				WHERE `project_products_count`.product_id IN (3, 4, 5)
 				GROUP BY `pc`.country_id, `c`.id
 		) pc1 ON pc1.id = `c`.id	
 	left join (
@@ -169,7 +175,8 @@ class HomeController extends Controller
                 'rentCount' => $rentCount->count,
                 'techCount' => $techCount->count,
                 'regionsTable' => $regionsTable,
-                'rkTable' => $rkTable
+                'rkTable' => $rkTable,
+                'incomeCount' => $incomeCount
             ]);
         }
         return redirect('/home2');

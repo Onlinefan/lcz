@@ -454,4 +454,90 @@ class Project extends Model
             return 0;
         }
     }
+
+    public function projectPercent()
+    {
+        $arPercents = [];
+        $vu220 = '220_vu';
+        $projectRegions = ProjectRegion::where(['project_id' => $this->id])->get();
+        foreach ($projectRegions as $region) {
+            $dataCount = 0;
+            $initialDataCount = 0;
+            $pirCount = 0;
+            $productionCount = 0;
+            $smrCount = 0;
+            $pnrCount = 0;
+            $documentsCount = 0;
+            foreach ($region->projectStatus() as $projectStatus) {
+                $dataCount += isset($projectStatus->system_number);
+                $dataCount += isset($projectStatus->system_id);
+                $dataCount += isset($projectStatus->complex_id);
+                $dataCount += isset($projectStatus->city);
+                $dataCount += isset($projectStatus->affiliation_of_the_road);
+                $dataCount += isset($projectStatus->address_contract);
+                $dataCount += isset($projectStatus->address_gibdd);
+
+                $initialDataCount += isset($projectStatus->initialData->equipment_type);
+                $initialDataCount += isset($projectStatus->initialData->road_type);
+                $initialDataCount += isset($projectStatus->initialData->speed_mode);
+                $initialDataCount += isset($projectStatus->initialData->borders_number);
+                $initialDataCount += isset($projectStatus->initialData->koap);
+
+                $pirCount += isset($projectStatus->pir->survey_status);
+                $pirCount += isset($projectStatus->pir->survey_comment);
+                $pirCount += isset($projectStatus->pir->design_documentation);
+                $pirCount += isset($projectStatus->pir->new_footing_fvf);
+                $pirCount += isset($projectStatus->pir->new_footing_lep);
+                $pirCount += isset($projectStatus->pir->rk_count);
+                $pirCount += isset($projectStatus->pir->ok_count);
+                $pirCount += isset($projectStatus->pir->equipment_power);
+                $pirCount += isset($projectStatus->pir->request_tu);
+                $pirCount += isset($projectStatus->pir->request_footing);
+
+                $productionCount += isset($projectStatus->production->shipment_status);
+                $productionCount += isset($projectStatus->production->date_equipment_shipment);
+                $productionCount += isset($projectStatus->production->number_sim_internet);
+                $productionCount += isset($projectStatus->production->number_sim_ssu);
+                $productionCount += isset($projectStatus->production->number_verification);
+                $productionCount += isset($projectStatus->production->date_verification_end);
+
+                $smrCount += isset($projectStatus->smr->link_root_task);
+                $smrCount += isset($projectStatus->smr->$vu220);
+                $smrCount += isset($projectStatus->smr->link_contract);
+                $smrCount += isset($projectStatus->smr->dislocation_strapping);
+                $smrCount += isset($projectStatus->smr->installation_status);
+                $smrCount += isset($projectStatus->smr->transferred_pnr);
+
+                $pnrCount += (isset($projectStatus->pnr->calibration_2000) && (int)$projectStatus->pnr->calibration_2000 === 2);
+                $pnrCount += isset($projectStatus->pnr->kp);
+                $pnrCount += (isset($projectStatus->pnr->analysis_result) && (int)$projectStatus->pnr->analysis_result === 6);
+                $pnrCount += isset($projectStatus->pnr->complex_to_monitoring);
+                $pnrCount += (isset($projectStatus->pnr->andromeda_unloading) && (int)$projectStatus->pnr->andromeda_unloading === 4);
+                $pnrCount += isset($projectStatus->pnr->in_cafap);
+
+                $documentsCount += isset($projectStatus->document->examinationFile);
+                $documentsCount += isset($projectStatus->document->projectDocumentationFile);
+                $documentsCount += isset($projectStatus->document->executiveDocumentationFile);
+                $documentsCount += isset($projectStatus->document->verificationFile);
+                $documentsCount += isset($projectStatus->document->formsFile);
+                $documentsCount += isset($projectStatus->document->passportsFile);
+                $documentsCount += isset($projectStatus->document->tu220File);
+                $documentsCount += isset($projectStatus->document->contract220File);
+                $documentsCount += isset($projectStatus->document->tuFootingFile);
+                $documentsCount += isset($projectStatus->document->contractFootingFile);
+            }
+
+            $arPercents[] = [
+                'dataCount' => $dataCount,
+                'initialDataCount' => $initialDataCount,
+                'pirCount' => $pirCount,
+                'productionCount' => $productionCount,
+                'smrCount' => $smrCount,
+                'pnrCount' => $pnrCount,
+                'documentsCount' => $documentsCount
+            ];
+        }
+
+        return $arPercents;
+    }
 }

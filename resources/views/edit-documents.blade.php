@@ -102,42 +102,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Адресный план согласованный с ЦАФАП</label>
-                        @if (isset($documents->addressPlanAgreddCafapFile))<label class="col-sm-2 col-form-label">{{$documents->addressPlanAgreedCafapFile->file_name}}</label>@endif
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="address_plan_agreed_cafap">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Схема передачи данныз</label>
-                        @if (isset($documents->dataTransferSchemeFile))<label class="col-sm-2 col-form-label">{{$documents->dataTransferSchemeFile->file_name}}</label>@endif
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="data_transfer_scheme">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Входящие</label>
-                        @if (isset($documents->inboxFile))<label class="col-sm-2 col-form-label">{{$documents->inboxFile->file_name}}</label>@endif
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="inbox">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Исходящие</label>
-                        @if (isset($documents->outgoingFile))<label class="col-sm-2 col-form-label">{{$documents->outgoingFile->file_name}}</label>@endif
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="outgoing">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <div class="col-sm-4 col-sm-offset-2">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </div>

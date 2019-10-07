@@ -63,10 +63,6 @@ class FundController extends Controller
      */
     public function createIncomePlan(Request $request)
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $incomePlan = new IncomePlan($request->all());
         $incomePlan->save();
         return redirect('/funds');
@@ -74,10 +70,6 @@ class FundController extends Controller
 
     public function addIncomePlan()
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $projects = Project::all();
         return view('add-income-plan', [
             'projects' => $projects
@@ -109,10 +101,6 @@ class FundController extends Controller
 
     public function addOtherContract()
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $projects = Project::all();
         return view('add-other-document', [
             'projects' => $projects
@@ -121,10 +109,6 @@ class FundController extends Controller
 
     public function createOtherContract(Request $request)
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $otherContract = new OtherContract($request->all());
         $project = Project::find($request->get('project_id'));
         $file = new File();
@@ -139,10 +123,6 @@ class FundController extends Controller
 
     public function addIncome()
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $incomePlans = IncomePlan::all();
         return view('add-income', [
             'incomePlans' => $incomePlans
@@ -151,10 +131,6 @@ class FundController extends Controller
 
     public function createIncome(Request $request)
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $income = new Income($request->all());
         $incomePlan = IncomePlan::find($request->get('plan_id'));
         $project = $incomePlan->project;
@@ -181,10 +157,6 @@ class FundController extends Controller
 
     public function addCost()
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $costPlans = CostPlan::all();
         return view('add-cost', [
             'costPlans' => $costPlans
@@ -193,10 +165,6 @@ class FundController extends Controller
 
     public function createCost(Request $request)
     {
-        if (auth()->user()->role === 'Оператор') {
-            return redirect('/home2');
-        }
-
         $cost = new Cost($request->all());
         $cost->save();
         return redirect('/funds');

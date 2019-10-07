@@ -22,6 +22,17 @@
 
                         <ul class="sortable-list connectList agile-list" id="todo">
                             @foreach ($realization as $project)
+                                @php
+                                    $arPercents = $project->projectPercent();
+                                    $datePercent = 0;
+
+                                    foreach ($arPercents as $region) {
+                                        $datePercent += ($region['dataCount'] / 7 + $region['initialDataCount'] / 5 + $region['pirCount'] / 10 + $region['productionCount'] / 6 + $region['smrCount'] / 6 +
+                                            $region['pnrCount'] / 6 + $region['documentsCount'] / 10) / 7 * 100;
+                                    }
+
+                                    $datePercent = count($arPercents) ? $datePercent/count($arPercents) : 0;
+                                @endphp
                                 <li class="{{$project->deadline() <= 10 ? 'warning-element' : 'success-element'}}" id="task1" style="background: #FFFFFF;">
                                     <h4>
                                         @if ($project->deadline() <= 10)
@@ -46,7 +57,7 @@
                                     </div>
                                     <div class="flex-row">
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
-                                            <div style="width: @if ($project->contract->amount > 0) {{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
+                                            <div style="width: {{$datePercent}}%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
                                         <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
                                     </div>
@@ -121,6 +132,17 @@
                     <div class="ibox-content">
                         <ul class="sortable-list connectList agile-list" id="inprogress">
                             @foreach ($exploitation as $project)
+                                @php
+                                    $arPercents = $project->projectPercent();
+                                    $datePercent = 0;
+
+                                    foreach ($arPercents as $region) {
+                                        $datePercent += ($region['dataCount'] / 7 + $region['initialDataCount'] / 5 + $region['pirCount'] / 10 + $region['productionCount'] / 6 + $region['smrCount'] / 6 +
+                                            $region['pnrCount'] / 6 + $region['documentsCount'] / 10) / 7 * 100;
+                                    }
+
+                                    $datePercent = count($arPercents) ? $datePercent/count($arPercents) : 0;
+                                @endphp
                                 <li class="{{$project->deadline() <= 10 ? 'warning-element' : 'success-element'}}" id="task1" style="background: #FFFFFF;">
                                     <h4>
                                         @if ($project->deadline() <= 10)
@@ -145,7 +167,7 @@
                                     </div>
                                     <div class="flex-row">
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
-                                            <div style="width: @if ($project->contract->amount){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
+                                            <div style="width: {{$datePercent}}" class="progress-bar progress-bar-danger"></div>
                                         </div>
                                         <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
                                     </div>

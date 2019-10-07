@@ -12,7 +12,7 @@
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="calibration_2000">Калибровка 2000 проездов</label>
+                        <label class="col-sm-2 col-form-label" for="calibration_2000">Калибровка</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="calibration_2000" id="calibration_2000">
                                 @foreach ($calibration2000 as $calibration)

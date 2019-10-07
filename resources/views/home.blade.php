@@ -13,7 +13,7 @@
                     </h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{{number_format((int)$contracts->contract_sum, 2, '.', ' ')}}</h1>
+                    <h1 class="no-margins">{{number_format((float)$contracts->contract_sum, 2, '.', ' ')}}</h1>
                     <div class="progress progress-mini">
                         <div style="width: @if ($contracts->contract_count){{($signPercent->count/$contracts->contract_count)*100}} @else 0 @endif%;" class="progress-bar"></div>
                     </div>
@@ -32,8 +32,8 @@
                     <div class="progress progress-mini">
                         <div style="width: @if ((int)$contracts->contract_sum){{(int)$incomes->income_sum/(int)$contracts->contract_sum*100}} @else 0 @endif%;" class="progress-bar progress-bar-danger"></div>
                     </div>
-                    <div class="stat-percent font-bold text-info">{{$incomes->income_count}} <i class="fa fa-level-up"></i></div>
-                    <small>Выставлено счетов </small>
+                    <div class="stat-percent font-bold text-info">{{(int)$incomeCount[0]->income_count}} <i class="fa fa-level-up"></i></div>
+                    <small>Выставлено счетов на сумму</small>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@
                             <a class="btn btn-success " href="statuses"><i class="fa fa-user"></i>&nbsp;Проекты на РП</a>
                             <a class="btn btn-danger " href="/contracts"><i class="fa fa-bell"></i>&nbsp;Реестр договоров</a>
                             <a class="btn btn-info " href="/contacts"><i class="fa fa-phone"></i>&nbsp;Контакты</a>
-                            <a class="btn btn-primary " href="/production"><i class="fa fa-warning"></i>&nbsp;План производства</a>
+                            <a class="btn btn-primary " href="/production_plan"><i class="fa fa-warning"></i>&nbsp;План производства</a>
                             <a class="btn btn-white" href="/openings"> Реестр ЛОП</a>
                         </p>
                     </div>
@@ -260,7 +260,7 @@
                         @foreach ($rkTable as $row)
                             <tr>
                                 @foreach ($row as $key => $cell)
-                                    @if ($key === 0)
+                                    @if ($key === 'Округ/Страна')
                                     <th class="text-nowrap" scope="row">
                                         {{$cell}}
                                     </th>
