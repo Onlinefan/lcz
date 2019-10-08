@@ -6,13 +6,31 @@ use App\Project;
 use App\ProjectCountry;
 use App\Summary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SummaryController extends Controller
 {
+    protected $user;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -107,15 +125,14 @@ class SummaryController extends Controller
 
     public function getMap()
     {
-        $codeResults = DB::select(DB::raw('SELECT countries.code, pc1.quantity FROM countries
+        $codeResults = DB::select(DB::raw('SELECT regions.code, pc1.quantity FROM regions
             LEFT JOIN (
-		        SELECT `c`.id, SUM(`p`.count) AS quantity
-			    FROM `project_countries` AS `pc`
-                    RIGHT JOIN `project_products_count` AS `p` ON `pc`.project_id = `p`.project_id
-                    RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-                    GROUP BY `pc`.country_id, `c`.id
-		    ) pc1 ON pc1.id = countries.id
-		    where countries.code IS NOT NULL'));
+		        SELECT `c`.id, SUM(`pc`.count) AS quantity
+			    FROM `project_products_count` AS `pc`
+                    RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+                    GROUP BY `pc`.region_id, `c`.id
+		    ) pc1 ON pc1.id = regions.id
+		    where regions.code IS NOT NULL'));
 
         $mapData = [];
         foreach ($codeResults as $result) {
@@ -136,7 +153,7 @@ class SummaryController extends Controller
         $queryResult = DB::select(DB::raw("SELECT countries.name, countries.color, pc1.quantity AS `$dateMonth1`, pc2.quantity AS `$dateMonth2`, pc3.quantity AS `$dateMonth3`,
             pc4.quantity AS `$dateMonth4`, pc5.quantity AS `$dateMonth5`, pc6.quantity AS `$dateMonth6` FROM countries
             LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
@@ -145,7 +162,7 @@ class SummaryController extends Controller
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc1 ON pc1.id = countries.id
 		    LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
@@ -154,7 +171,7 @@ class SummaryController extends Controller
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc2 ON pc2.id = countries.id
 		    LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
@@ -163,7 +180,7 @@ class SummaryController extends Controller
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc3 ON pc3.id = countries.id
 		    LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
@@ -172,7 +189,7 @@ class SummaryController extends Controller
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc4 ON pc4.id = countries.id
 		    LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
@@ -181,7 +198,7 @@ class SummaryController extends Controller
                     GROUP BY `pc`.country_id, `c`.id
 		    ) pc5 ON pc5.id = countries.id
 		    LEFT JOIN (
-		        SELECT `c`.id, SUM(`contracts`.amount) AS quantity
+		        SELECT `c`.id, SUM(`pc`.amount) AS quantity
 			    FROM `project_countries` AS `pc`
                     RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
                     RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id

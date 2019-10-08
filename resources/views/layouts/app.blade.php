@@ -17,7 +17,7 @@
 @section('sidebar-menu')
 
     <ul class="nav metismenu" id="side-menu" style="padding-left:0px;">
-        @if (auth()->user()->role !== 'Оператор')
+        @if (auth()->user()->role === 'Администратор' || auth()->user()->role === 'Суперпользователь')
             @foreach ([
                 [
                     'route'=> 'home',
@@ -90,7 +90,7 @@
                             class="nav-label">{{ $menu_item['name'] }}</span></a>
                 </li>
             @endforeach
-        @else
+        @elseif (auth()->user()->role === 'Оператор')
             @foreach ([
                 [
                     'route'=> 'home2',
@@ -143,10 +143,91 @@
                             class="nav-label">{{ $menu_item['name'] }}</span></a>
                 </li>
             @endforeach
+        @elseif (auth()->user()->role === 'Производство')
+            @foreach ([
+                [
+                    'route'=> 'summary',
+                    'icon'=> 'calculator',
+                    'name'=> 'Сводная по проектам',
+                ],
+                [
+                    'route'=> 'statuses',
+                    'icon'=> 'newspaper-o',
+                    'name'=> 'Проекты на РП',
+                ],
+                [
+                    'route'=> 'production_plan',
+                    'icon'=> 'industry',
+                    'name'=> 'План производства',
+                ],
+            ] as $menu_item)
+                <li class="{{ (request()->is($menu_item['route'])) ? 'active' : '' }}">
+                    <a href="{{ route($menu_item['route']) }}"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span
+                            class="nav-label">{{ $menu_item['name'] }}</span></a>
+                </li>
+            @endforeach
+        @elseif (auth()->user()->role === 'Бухгалтер')
+            @foreach ([
+                [
+                    'route'=> 'home',
+                    'icon'=> 'home',
+                    'name'=> 'Главная',
+                ],
+                [
+                    'route'=> 'summary',
+                    'icon'=> 'calculator',
+                    'name'=> 'Сводная по проектам',
+                ],
+                [
+                    'route'=> 'contracts',
+                    'icon'=> 'handshake-o',
+                    'name'=> 'Реестр договоров',
+                ],
+                [
+                    'route'=> 'contacts',
+                    'icon'=> 'fax',
+                    'name'=> 'Контакты',
+                ],
+                [
+                    'route'=> 'openings',
+                    'icon'=> 'address-card-o',
+                    'name'=> 'Реестр ЛОП',
+                ],
+                [
+                    'route'=> 'funds',
+                    'icon'=> 'bank',
+                    'name'=> 'ДДС по контракту',
+                ],
+            ] as $menu_item)
+                <li class="{{ (request()->is($menu_item['route'])) ? 'active' : '' }}">
+                    <a href="{{ route($menu_item['route']) }}"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span
+                            class="nav-label">{{ $menu_item['name'] }}</span></a>
+                </li>
+            @endforeach
+        @else
+            @foreach ([
+                [
+                    'route'=> 'statuses',
+                    'icon'=> 'newspaper-o',
+                    'name'=> 'Проекты на РП',
+                ],
+                [
+                    'route'=> 'letters',
+                    'icon'=> 'envelope-o',
+                    'name'=> 'Письма',
+                ],
+            ] as $menu_item)
+                <li class="{{ (request()->is($menu_item['route'])) ? 'active' : '' }}">
+                    <a href="{{ route($menu_item['route']) }}"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span
+                            class="nav-label">{{ $menu_item['name'] }}</span></a>
+                </li>
+            @endforeach
         @endif
+        @if(auth()->user()->role === 'Оператор' || auth()->user()->role === 'Суперпользователь' || auth()->user()->role === 'Администратор')
             <li>
                 <a href="/files"><i class="fa fa-{{ $menu_item['icon'] }}"></i> <span
                         class="nav-label">Файловое хранилище</span></a>
             </li>
+        @endif
     </ul>
 @endsection

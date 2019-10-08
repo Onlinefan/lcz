@@ -26,12 +26,34 @@ use App\RoadType;
 use App\ServiceType;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
+    protected $user;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Производство') {
+                    return redirect('/production_plan');
+                } elseif ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Бухгалтер') {
+                    return redirect('/home');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -42,9 +64,7 @@ class ProjectController extends Controller
     public function index()
     {
         if (auth()->user()->role === 'Оператор') {
-            $projectRealization = Project::where([['status', '=', 'Реализация'], ['head_id', '=', auth()->user()->id]])->get();
-            $projectExploitation = Project::where([['status', '=', 'Эксплуатация'], ['head_id', '=', auth()->user()->id]])->get();
-            $projectFinished = Project::where([['status', '=', 'Завершен'], ['head_id', '=', auth()->user()->id]])->get();
+            return redirect('/home2');
         } else {
             $projectRealization = Project::where(['status' => 'Реализация'])->get();
             $projectExploitation = Project::where(['status' => 'Эксплуатация'])->get();

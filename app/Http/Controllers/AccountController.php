@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Account;
+use App\File;
 use App\User;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
@@ -12,6 +15,27 @@ class AccountController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Производство') {
+                    return redirect('/production_plan');
+                } elseif ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Оператор') {
+                    return redirect('/home2');
+                } elseif ($this->user->role === 'Бухгалтер') {
+                    return redirect('/home');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -78,6 +102,19 @@ class AccountController extends Controller
             $user->login = $request['login'] ?: $user->login;
             $user->role = $request['role'] ?: $user->role;
             $user->status = $request['status'] ?: $user->status;
+            if ($request->file('avatar')) {
+                if ($user->avatar) {
+                    $fileSystem = new Filesystem();
+                    $file = File::find($user->avatar);
+                    $fileSystem->delete(public_path('Пользовательские файлы/Аватарки/' . $user->id . '/' . $file->file_name));
+                    $file->delete();
+                }
+
+                $file = new File();
+                $file->createFile($request->file('avatar'), public_path('Пользовательские файлы/Аватарки/' . $user->id . '/'), 'avatar');
+                $user->avatar = $file->id;
+            }
+
             $user->save();
             return redirect('/accounts');
         }

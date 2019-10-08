@@ -90,7 +90,7 @@
                                         <td><span class="label {{$user->status === 'Ожидает модерации' ? 'label-default' : ($user->status === 'Активен' ? 'label-primary' : 'label-danger')}}">{{$user->status}}</span></td>
                                         <td class="text-right">
                                             <div class="btn-group">
-                                                <a class="btn-white btn btn-xs" href="/account_edit/{{$user->id}}">Редактировать</a>
+                                                <a href="/account_edit/{{$user->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>
                                             </div>
                                         </td>
                                     </tr>

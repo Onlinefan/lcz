@@ -34,22 +34,25 @@ class ProjectContact extends Model
 
     public static function createRecords($arContacts, $projectId)
     {
-        foreach ($arContacts['fio'] as $key => $fio) {
-            $contact = Contact::firstOrCreate([
-                'fio' => $fio,
-                'position' => $arContacts['position'][$key],
-                'mobile_number' => $arContacts['mobile_number'][$key],
-                'work_number' => $arContacts['work_number'][$key],
-                'email' => $arContacts['email'][$key],
-                'address' => $arContacts['address'][$key],
-                'company' => $arContacts['company'][$key],]);
+        if ($arContacts) {
+            foreach ($arContacts['fio'] as $key => $fio) {
+                $contact = Contact::firstOrCreate([
+                    'fio' => $fio,
+                    'position' => $arContacts['position'][$key],
+                    'mobile_number' => $arContacts['mobile_number'][$key],
+                    'work_number' => $arContacts['work_number'][$key],
+                    'email' => $arContacts['email'][$key],
+                    'address' => $arContacts['address'][$key],
+                    'company' => $arContacts['company'][$key],
+                    'inn' => $arContacts['inn'][$key]]);
 
-            $projectContacts = new ProjectContact([
-                'contact_id' => $contact->id,
-                'project_id' => $projectId
-            ]);
+                $projectContacts = new ProjectContact([
+                    'contact_id' => $contact->id,
+                    'project_id' => $projectId
+                ]);
 
-            $projectContacts->save();
+                $projectContacts->save();
+            }
         }
     }
 

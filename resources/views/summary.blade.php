@@ -56,7 +56,7 @@
                                 <thead>
                                 <tr>
                                     <th colspan="11" style="text-align: center;">Информация по контракту</th>
-                                    <th colspan="7" style="text-align: center;">РК по контракту</th>
+                                    <th colspan="8" style="text-align: center;">РК по контракту</th>
                                     <th colspan="2" style="text-align: center;"></th>
                                     <th colspan="7" style="text-align: center;">Зона ответственности по контракту</th>
                                     <th colspan="8" style="text-align: center;">Информация по проекту</th>
@@ -83,6 +83,7 @@
                                     <th>Перекресток</th>
                                     <th>Пешеход</th>
                                     <th>ЖД переезд</th>
+                                    <th>Передвижной</th>
                                     <th>Коперник-П</th>
                                     <th>Коперник-С</th>
                                     <th>Архимед</th>
@@ -157,6 +158,7 @@
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->perekrestokCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->peshehodCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->pereezdCount()}}</td>
+                                                        <td rowspan="{{$project->regions->count()}}">{{$project->peredvizhCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->koppCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->kopsCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->arhimedCount()}}</td>
@@ -178,11 +180,11 @@
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract)){{$project->contract->pnr_start}}@endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract)){{$project->contract->pnr_end}}@endif</td>
                                                     @endif
-                                                    <td>{{$project->surveyPercent($region->region_id)}}</td>
-                                                    <td>{{$project->documentPercent($region->region_id)}}</td>
-                                                    <td>{{$project->tuPercent($region->region_id)}}</td>
-                                                    <td>{{$project->footingPercent($region->region_id)}}</td>
-                                                    <td>{{$project->shipmentPercent($region->region_id)}}</td>
+                                                    <td>{{$project->surveyPercent($region->region_id)['done'] . ' из ' . $project->surveyPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->documentPercent($region->region_id)['done'] . ' из ' . $project->documentPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->tuPercent($region->region_id)['done'] . ' из ' . $project->tuPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->footingPercent($region->region_id)['done'] . ' из ' . $project->footingPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->shipmentPercent($region->region_id)['done'] . ' из ' . $project->shipmentPercent($region->region_id)['complex']}}</td>
                                                     @if ($key === 0)
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->cafap))@if (isset($project->cafap->dataTransfer)) <a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($project->cafap->dataTransfer->path, strripos($project->cafap->dataTransfer->path, 'Projects_files/')) . $project->cafap->dataTransfer->file_name}}">{{$project->cafap->dataTransfer->file_name}}</a> @endif @endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->cafap))@if ($project->cafap->cafapCollage->count()) @foreach ($project->cafap->cafapCollage as $collage) @if (isset($collage->collageFile)) <a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($collage->collageFile->path, strripos($collage->collageFile->path, 'Projects_files/')) . $collage->collageFile->file_name}}">{{$collage->collageFile->file_name}}</a> @endif @endforeach @endif @endif</td>
@@ -191,16 +193,16 @@
                                                     @endif
                                                     <td>{{$region->cafapPo()}}</td>
                                                     <td>{{(int)$region->cafapAndromeda() ? 'Да' : 'Нет'}}</td>
-                                                    <td>{{$project->checkPercent($region->region_id)}}</td>
-                                                    <td>{{$project->tuFootingPercent($region->region_id)}}</td>
-                                                    <td>{{$project->tu220Percent($region->region_id)}}</td>
-                                                    <td>{{$project->installPercent($region->region_id)}}</td>
-                                                    <td>{{$project->vu220Percent($region->region_id)}}</td>
-                                                    <td>{{$project->transferredPnrPercent($region->region_id)}}</td>
-                                                    <td>{{$project->kpPercent($region->region_id)}}</td>
-                                                    <td>{{$project->analysisPercent($region->region_id)}}</td>
-                                                    <td>{{$project->monitoringPercent($region->region_id)}}</td>
-                                                    <td>{{$project->inCafapPercent($region->region_id)}}</td>
+                                                    <td>{{$project->checkPercent($region->region_id)['done'] . ' из ' . $project->checkPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->tuFootingPercent($region->region_id)['done'] . ' из ' . $project->tuFootingPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->tu220Percent($region->region_id)['done'] . ' из ' . $project->tu220Percent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->installPercent($region->region_id)['done'] . ' из ' . $project->installPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->vu220Percent($region->region_id)['done'] . ' из ' . $project->vu220Percent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->transferredPnrPercent($region->region_id)['done'] . ' из ' . $project->transferredPnrPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->kpPercent($region->region_id)['done'] . ' из ' . $project->kpPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->analysisPercent($region->region_id)['done'] . ' из ' . $project->analysisPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->monitoringPercent($region->region_id)['done'] . ' из ' . $project->monitoringPercent($region->region_id)['complex']}}</td>
+                                                    <td>{{$project->inCafapPercent($region->region_id)['done'] . ' из ' . $project->inCafapPercent($region->region_id)['complex']}}</td>
                                                     @if ($key === 0)
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract->decreeScan))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($project->contract->decreeScan->path, strripos($project->contract->decreeScan->path, 'Projects_files/')) . $project->contract->decreeScan->file_name}}">{{$project->contract->decreeScan->file_name}}</a>@endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract->lopFile))<a href="http://{{$_SERVER['SERVER_NAME']}}/download?path={{substr($project->contract->lopFile->path, strripos($project->contract->lopFile->path, 'Projects_files/')) . $project->contract->lopFile->file_name}}">{{$project->contract->lopFile->file_name}}</a>@endif</td>
@@ -227,6 +229,7 @@
                                                 <td>{{$project->perekrestokCount()}}</td>
                                                 <td>{{$project->peshehodCount()}}</td>
                                                 <td>{{$project->pereezdCount()}}</td>
+                                                <td>{{$project->peredvizhCount()}}</td>
                                                 <td>{{$project->koppCount()}}</td>
                                                 <td>{{$project->kopsCount()}}</td>
                                                 <td>{{$project->arhimedCount()}}</td>

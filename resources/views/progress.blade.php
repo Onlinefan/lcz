@@ -251,14 +251,14 @@
                                                         <td>@if (isset($row->affiliationRoad))<span class="label label-secondary">{{$row->affiliationRoad->name}}</span>@endif</td>
                                                         <td>{{$row->address_contract}}</td>
                                                         <td>{{$row->address_gibdd}}</td>
-                                                        <td><a href="/edit-data/{{$row->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-data/{{$row->id}}" ><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td>@if (isset($row->initialData->equipmentType))<span class="label label-secondary">{{$row->initialData->equipmentType->name}}</span>@endif</td>
                                                         <td>@if (isset($row->initialData->roadType))<span class="label label-secondary">{{$row->initialData->roadType->name}}</span>@endif</td>
                                                         <td>{{$row->initialData->speed_mode}}</td>
                                                         <td>{{$row->initialData->borders_number}}</td>
                                                         <td>{{$row->initialData->koap}}</td>
-                                                        <td><a href="/edit-initial-data/{{$row->initialData->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-initial-data/{{$row->initialData->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td>@if (isset($row->pir->surveyStatus))<span class="label {{$row->pir->surveyStatus->name === 'В работе' ? 'label-warning' : ($row->pir->surveyStatus->name === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$row->pir->surveyStatus->name}}</span>@endif</td>
                                                         <td>{{$row->pir->survey_comment}}</td>
@@ -270,7 +270,7 @@
                                                         <td>{{$row->pir->equipment_power}}</td>
                                                         <td>@if (isset($row->pir->requestTu))<span class="label {{($row->pir->requestTu->name === 'Заявка подана' || $row->pir->requestTu->name === 'ТУ получено') ? 'label-primary' : ($row->pir->requestTu->name === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$row->pir->requestTu->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pir->requestFooting))<span class="label label-secondary">{{$row->pir->requestFooting->name}}</span>@endif</td>
-                                                        <td><a href="/edit-pir/{{$row->pir->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-pir/{{$row->pir->id}}" ><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td>@if (isset($row->production->shipmentStatus))<span class="label label-secondary">{{$row->production->shipmentStatus->name}}</span>@endif</td>
                                                         <td>{{$row->production->date_equipment_shipment}}</td>
@@ -278,7 +278,7 @@
                                                         <td>{{$row->production->number_sim_ssu}}</td>
                                                         <td>{{$row->production->number_verification}}</td>
                                                         <td>{{$row->production->date_verification_end}}</td>
-                                                        <td><a href="/edit-production/{{$row->production->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-production/{{$row->production->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td><a href="#">{{$row->smr->link_root_task}}</a></td>
                                                         <td>@if (isset($row->smr->vu220))<span class="label label-secondary">{{$row->smr->vu220->name}}</span>@endif</td>
@@ -286,7 +286,7 @@
                                                         <td>@if (isset($row->smr->dislocationStrapping))<span class="label label-secondary">{{$row->smr->dislocationStrapping->name}}</span>@endif</td>
                                                         <td>@if (isset($row->smr->installationStatus))<span class="label {{($row->smr->installationStatus->name === 'Нет' || $row->smr->installationStatus->name === 'Украден') ? 'label-danger' : ($row->smr->installationStatus->name === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$row->smr->installationStatus->name}}</span>@endif</td>
                                                         <td>@if (isset($row->smr->transferredPnr))<span class="label label-secondary">{{$row->smr->transferredPnr->name}}</span>@endif</td>
-                                                        <td><a href="/edit-smr/{{$row->smr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-smr/{{$row->smr->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td>@if (isset($row->pnr->calibration2000))<span class="label {{$row->pnr->calibration2000->name === 'В работе' ? 'label-warning' : 'label-danger'}}">{{$row->pnr->calibration2000->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pnr->kpLink))<span class="label {{$row->pnr->kpLink->name === 'Нет водителя' ? 'label-danger' : ($row->pnr->kpLink->name === 'В работе' ? 'label-warning' : 'label-secondary')}}">{{$row->pnr->kpLink->name}}</span>@endif</td>
@@ -294,7 +294,7 @@
                                                         <td>@if (isset($row->pnr->complexToMonitoring))<span class="label label-secondary">{{$row->pnr->complexToMonitoring->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pnr->andromedaUnloading))<span class="label label-secondary">{{$row->pnr->andromedaUnloading->name}}</span>@endif</td>
                                                         <td>@if (isset($row->pnr->inCafap))<span class="label label-secondary">{{$row->pnr->inCafap->name}}</span>@endif</td>
-                                                        <td><a href="/edit-pnr/{{$row->pnr->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-pnr/{{$row->pnr->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
                                                         <td><span class="label label-secondary">@if (isset($row->document->examinationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Обследование/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><span class="label label-secondary">@if (isset($row->document->projectDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Проектная документация/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
@@ -306,7 +306,7 @@
                                                         <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ на опору/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор на опору/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><a href="/edit-documents/{{$row->document->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                                        <td><a href="/edit-documents/{{$row->document->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
                                                         <td><a href="/delete-data-row/{{$row->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                                     </tr>
                                                 @endforeach

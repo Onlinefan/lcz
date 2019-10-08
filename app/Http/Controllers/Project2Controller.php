@@ -4,12 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Project2;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Project2Controller extends Controller
 {
+    protected $user;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Производство') {
+                    return redirect('/production_plan');
+                } elseif ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Оператор') {
+                    return redirect('/home2');
+                } elseif ($this->user->role === 'Бухгалтер' || $this->user->role === 'Суперпользователь' || $this->user->role === 'Администратор') {
+                    return redirect('/home');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**

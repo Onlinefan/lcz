@@ -5,12 +5,34 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StatusController extends Controller
 {
+    protected $user;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Оператор') {
+                    return redirect('/home2');
+                } elseif ($this->user->role === 'Бухгалтер') {
+                    return redirect('/home');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**

@@ -26,7 +26,7 @@
                                         <td>{{$po->name}}</td>
                                         <td class="text-right">
                                             <div class="btn-group">
-                                                <a class="btn-white btn btn-xs" href="/edit-po-cafap/{{$po->id}}">Редактировать</a>
+                                                <a href="/edit-po-cafap/{{$po->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>
                                             </div>
                                         </td>
                                         <td class="text-right"><a href="/delete-po-cafap/{{$po->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>

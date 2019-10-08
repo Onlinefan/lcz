@@ -15,6 +15,7 @@
                                     <th data-toggle="true">ID</th>
                                     <th data-hide="phone">Название</th>
                                     <th data-hide="phone">Страна/округ</th>
+                                    <th data-hide="phone">Код на карте</th>
                                     <th class="text-right" data-sort-ignore="true"></th>
                                 </tr>
                                 </thead>
@@ -24,10 +25,11 @@
                                     <tr>
                                         <td>{{$region->id}}</td>
                                         <td>{{$region->name}}</td>
-                                        <td>{{$region->country->name}}</td>
+                                        <td>@if (isset($region->country)){{$region->country->name}}@endif</td>
+                                        <td>{{$region->code}}</td>
                                         <td class="text-right">
                                             <div class="btn-group">
-                                                <a class="btn-white btn btn-xs" href="/edit-region/{{$region->id}}">Редактировать</a>
+                                                <a href="/edit-region/{{$region->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>
                                             </div>
                                         </td>
                                         <td class="text-right"><a href="/delete-region/{{$region->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>

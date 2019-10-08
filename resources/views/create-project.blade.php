@@ -100,12 +100,16 @@
 
                             <div class="form-group row" data-block="country">
                                 <label class="col-sm-2 col-form-label">Округ</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="Country[]">
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="Country[country_id][]">
                                         @foreach ($countries as $country)
                                             <option value="{{$country->id}}">{{$country->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Стоимость</label>
+                                <div class="col-sm-4">
+                                    <input type="number" step="0.01" class="form-control" name="Country[amount][]">
                                 </div>
                             </div>
 
@@ -199,7 +203,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Сумма договора</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="Contract[amount]">
+                                    <input type="number" step="0.01" class="form-control" name="Contract[amount]">
                                 </div>
                             </div>
 
@@ -360,6 +364,14 @@
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group row" id="road-group1" data-block="road">
+                                <label class="col-sm-1 col-form-label">Регион</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="ProjectProduct[region_id][]">
+                                        @foreach ($regions as $region)
+                                            <option value="{{$region->id}}">{{$region->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <label class="col-sm-2 col-form-label">Тип дороги</label>
                                 <div class="col-sm-2">
                                     <select class="form-control" name="ProjectProduct[road_id][]">
@@ -369,7 +381,7 @@
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Продукт</label>
+                                <label class="col-sm-1 col-form-label">Продукт</label>
                                 <div class="col-sm-2">
                                     <select class="form-control" name="ProjectProduct[product_id][]">
                                         @foreach ($products as $product)
@@ -378,8 +390,8 @@
                                     </select>
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Количество</label>
-                                <div class="col-sm-2">
+                                <label class="col-sm-1 col-form-label">Количество</label>
+                                <div class="col-sm-1">
                                     <input type="number" class="form-control" name="ProjectProduct[count][]">
                                 </div>
                             </div>
@@ -806,6 +818,13 @@
                                     <label class="col-sm-2 col-form-label">Организация</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="Contacts[company][]">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">ИНН</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="Contacts[inn][]">
                                     </div>
                                 </div>
 

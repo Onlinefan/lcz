@@ -57,6 +57,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="inn">ИНН</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="inn" name="inn" value="{{$contact->inn}}" placeholder="Введите ИНН"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <div class="col-sm-2">
                         <button type="submit" class="form-control btn btn-primary" id="search">Сохранить</button>
                     </div>

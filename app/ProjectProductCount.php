@@ -34,14 +34,16 @@ class ProjectProductCount extends Model
 
     public static function createRecords($arProducts, $projectId)
     {
-        foreach ($arProducts['product_id'] as $key => $productId) {
-            self::createRecord($productId, $arProducts['count'][$key], $projectId, $arProducts['road_id'][$key]);
+        if ($arProducts) {
+            foreach ($arProducts['product_id'] as $key => $productId) {
+                self::createRecord($productId, $arProducts['count'][$key], $projectId, $arProducts['road_id'][$key], $arProducts['region_id'][$key]);
+            }
         }
     }
 
-    public static function createRecord($productId, $count, $projectId, $roadId)
+    public static function createRecord($productId, $count, $projectId, $roadId, $regionId)
     {
-        $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count, 'road_id' => $roadId]);
+        $projectProduct = new ProjectProductCount(['project_id' => $projectId, 'product_id' => $productId, 'count' => $count, 'road_id' => $roadId, 'region_id' => $regionId]);
         $projectProduct->save();
     }
 

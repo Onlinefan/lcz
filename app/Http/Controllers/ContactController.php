@@ -3,13 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\ProjectContact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Производство') {
+                    return redirect('/production_plan');
+                } elseif ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -67,6 +86,10 @@ class ContactController extends Controller
      */
     public function edit($id)
     {
+        if (auth()->user()->role === 'Бухгалтер') {
+            return redirect('/contacts');
+        }
+
         $contact = Contact::find($id);
         return view('edit-contact', [
             'contact' => $contact
@@ -83,8 +106,16 @@ class ContactController extends Controller
         $contact->email = $request->get('email');
         $contact->address = $request->get('address');
         $contact->company = $request->get('company');
+        $contact->inn = $request->get('inn');
         $contact->save();
 
+        return redirect('/contacts');
+    }
+
+    public function delete($id)
+    {
+        Contact::destroy($id);
+        ProjectContact::where(['contact_id' => $id])->delete();
         return redirect('/contacts');
     }
 

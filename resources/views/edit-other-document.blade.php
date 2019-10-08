@@ -1,71 +1,75 @@
 @extends('layouts.app')
 @section('page-title')
-    Добавить поступление
+    Добавить документ
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
-    <form method="POST" action="/create-income" enctype="multipart/form-data">
+    <form method="POST" action="/submit-other-document" enctype="multipart/form-data">
         {{csrf_field()}}
+        <input type="hidden" name="id" value="{{$document->id}}">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan_id">План поступлений</label>
+                        <label class="col-sm-2 col-form-label">Проект</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="plan_id" id="plan_id">
-                                @foreach ($incomePlans as $plan)
-                                    <option value="{{$plan->id}}">{{$plan->project->name}}/{{$plan->name}}</option>
+                            <select class="form-control" name="project_id">
+                                @foreach ($projects as $project)
+                                    <option value="{{$project->id}}" {{(int)$document->project_id === (int)$project->id ? 'selected' : ''}}>{{$project->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document_number">Номер счета</label>
+                        <label class="col-sm-2 col-form-label" for="date_contract">Дата договора</label>
                         <div class="col-sm-10">
-                            <input type="text" id="document_number" name="document_number" value="" placeholder="Введите номер счета" class="form-control">
+                            <input type="text" id="date_contract" name="date_contract" value="{{$document->date_contract}}" placeholder="Введите дату" class="form-control fromto__datetime-input">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_document">Дата счета</label>
+                        <label class="col-sm-2 col-form-label" for="type">Тип договора</label>
                         <div class="col-sm-10">
-                            <input type="text" id="date_document" name="date_document" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата оплаты</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Сумма</label>
-                        <div class="col-sm-10">
-                            <input type="number" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="payment_status">Статус</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="payment_status" id="payment_status">
-                                <option value="Не выставлен">Не выставлен</option>
-                                <option value="Выставлен">Выставлен</option>
-                                <option value="Оплачен">Оплачен</option>
+                            <select class="form-control" name="type">
+                                <option value="Доп.соглашение к договору" {{$document->type === 'Доп.соглашение к договору' ? 'selected' : ''}}>Доп.соглашение к договору</option>
+                                <option value="Договор (расходный)" {{$document->type === 'Договор (расходный)' ? 'selected' : ''}}>Договор (расходный)</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document">Скан счета</label>
+                        <label class="col-sm-2 col-form-label" for="number">Номер договора</label>
                         <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="document" class="custom-file-input" name="document">
-                            </div>
+                            <input type="text" id="number" name="number" value="{{$document->number}}" placeholder="Введите номер договора" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="closed_document">Закрывающий документ</label>
+                        <label class="col-sm-2 col-form-label" for="base">Основание</label>
                         <div class="col-sm-10">
+                            <select class="form-control" name="base">
+                                <option value="Электричество" {{$document->base === 'Электричество' ? 'selected' : ''}}>Электричество</option>
+                                <option value="Опоры" {{$document->base === 'Опоры' ? 'selected' : ''}}>Опоры</option>
+                                <option value="Канал связи" {{$document->base === 'Канал связи' ? 'selected' : ''}}>Канал связи</option>
+                                <option value="Логистика (грузчики)" {{$document->base === 'Логистика (грузчики)' ? 'selected' : ''}}>Логистика (грузчики)</option>
+                                <option value="Аренда склада" {{$document->base === 'Аренда склада' ? 'selected' : ''}}>Аренда склада</option>
+                                <option value="Транспорт" {{$document->base === 'Транспорт' ? 'selected' : ''}}>Транспорт</option>
+                                <option value="Субподряд" {{$document->base === 'Субподряд' ? 'selected' : ''}}>Субподряд</option>
+                                <option value="Доп.соглашение к договору" {{$document->base === 'Доп.соглашение к договору' ? 'selected' : ''}}>Доп.соглашение к договору</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="contractor">Контрагент</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="contractor" name="contractor" value="{{$document->contractor}}" placeholder="Введите контрагента" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="contract">Контракт</label>
+                        @if (isset($document->contractFile))
+                            <label class="col-sm-2 col-form-label" for="contract">{{$document->contractFile->file_name}}</label>
+                        @endif
+                        <div class="col-sm-8">
                             <div class="custom-file">
-                                <input type="file" id="closed_document" class="custom-file-input" name="closed_document">
+                                <input type="file" id="contract" class="custom-file-input" name="contract">
                             </div>
                         </div>
                     </div>

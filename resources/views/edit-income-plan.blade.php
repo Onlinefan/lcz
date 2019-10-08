@@ -1,72 +1,41 @@
 @extends('layouts.app')
 @section('page-title')
-    Добавить поступление
+    Редактировать план поступлений
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
-    <form method="POST" action="/create-income" enctype="multipart/form-data">
+    <form method="POST" action="/submit-income-plan">
         {{csrf_field()}}
+        <input type="hidden" name="id" value="{{$incomePlan->id}}">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan_id">План поступлений</label>
+                        <label class="col-sm-2 col-form-label">Проект</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="plan_id" id="plan_id">
-                                @foreach ($incomePlans as $plan)
-                                    <option value="{{$plan->id}}">{{$plan->project->name}}/{{$plan->name}}</option>
+                            <select class="form-control" name="project_id">
+                                @foreach ($projects as $project)
+                                    <option value="{{$project->id}}" {{(int)$incomePlan->project_id === (int)$project->id ? 'selected' : ''}}>{{$project->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document_number">Номер счета</label>
+                        <label class="col-sm-2 col-form-label" for="income_date">Дата</label>
                         <div class="col-sm-10">
-                            <input type="text" id="document_number" name="document_number" value="" placeholder="Введите номер счета" class="form-control">
+                            <input type="text" id="income_date" name="income_date" value="{{$incomePlan->income_date}}" placeholder="Введите дату" class="form-control fromto__datetime-input">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_document">Дата счета</label>
+                        <label class="col-sm-2 col-form-label" for="name">Наименование</label>
                         <div class="col-sm-10">
-                            <input type="text" id="date_document" name="date_document" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
+                            <input type="text" id="name" name="name" value="{{$incomePlan->name}}" placeholder="Введите наименование" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата оплаты</label>
+                        <label class="col-sm-2 col-form-label" for="plan">Сумма</label>
                         <div class="col-sm-10">
-                            <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="count">Сумма</label>
-                        <div class="col-sm-10">
-                            <input type="number" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="payment_status">Статус</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="payment_status" id="payment_status">
-                                <option value="Не выставлен">Не выставлен</option>
-                                <option value="Выставлен">Выставлен</option>
-                                <option value="Оплачен">Оплачен</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document">Скан счета</label>
-                        <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="document" class="custom-file-input" name="document">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="closed_document">Закрывающий документ</label>
-                        <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="closed_document" class="custom-file-input" name="closed_document">
-                            </div>
+                            <input type="number" id="plan" name="plan" value="{{$incomePlan->plan}}" placeholder="Введите сумму" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

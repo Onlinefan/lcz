@@ -3,7 +3,7 @@
     Редактирование аккаунта
 @endsection
 @section('content')
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">
@@ -37,7 +37,10 @@
                         <select name="role" id="role" class="form-control">
                             <option value="Оператор" {{$user->role === 'Оператор' ? 'selected' : ''}}>Оператор</option>
                             <option value="Администратор" {{$user->role === 'Администратор' ? 'selected' : ''}}>Администратор</option>
-                            <option value="Суперпользователь" {{$user->role === 'Суперпользователь' ? 'selected' : ''}}>Суперпользователь</option>
+                            @if(auth()->user()->role === 'Суперпользователь')<option value="Суперпользователь" {{$user->role === 'Суперпользователь' ? 'selected' : ''}}>Суперпользователь</option>@endif
+                            <option value="Производство" {{$user->role === 'Производство' ? 'selected' : ''}}>Производство</option>
+                            <option value="Бухгалтер" {{$user->role === 'Бухгалтер' ? 'selected' : ''}}>Бухгалтер</option>
+                            <option value="Секретарь" {{$user->role === 'Секретарь' ? 'selected' : ''}}>Секретарь</option>
                         </select>
                     </div>
                 </div>
@@ -49,6 +52,15 @@
                             <option value="Заблокирован" {{$user->status === 'Заблокирован' ? 'selected' : ''}}>Заблокирован</option>
                             <option value="Ожидает модерации" {{$user->status === 'Ожидает модерации' ? 'selected' : ''}}>Ожидает модерации</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2" for="avatar">Аватар</label>
+                    @if (isset($user->avatarFile))
+                        <label class="col-form-label col-sm-2" for="avatar">{{$user->avatarFile->file_name}}</label>
+                    @endif
+                    <div class="col-sm-8">
+                        <input type="file" id="avatar" name="avatar" class="form-control" {{isset($user->avatarFile) ? '' : 'required'}}>
                     </div>
                 </div>
                 <div class="form-group row">

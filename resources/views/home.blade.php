@@ -244,16 +244,17 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th class="text-nowrap" scope="row">Округ/страна</th>
+                            <th class="text-nowrap" scope="row">Регион</th>
                             <th class="text-center">Линейники</th>
                             <th class="text-center">Перекресток</th>
                             <th class="text-center">Пешеход</th>
+                            <th class="text-center">ЖД переезд</th>
                             <th class="text-center">Коперник (стационар)</th>
                             <th class="text-center">Коперник (передвижка)</th>
                             <th class="text-center">Архимед</th>
+                            <th class="text-center">Лобачевский</th>
                             <th class="text-center">Андромеда</th>
-                            <td class="text-center">Всего</td>
-                            <td></td>
+                            <td class="text-center">Всего РК</td>
                         </tr>
                         </thead>
                         <tbody>

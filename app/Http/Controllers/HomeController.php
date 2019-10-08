@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Contract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    protected $user;
+
     /**
      * Create a new controller instance.
      *
@@ -16,6 +19,25 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Производство') {
+                    return redirect('/production_plan');
+                } elseif ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Оператор') {
+                    return redirect('/home2');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -72,10 +94,8 @@ class HomeController extends Controller
 
             $regionsTable = DB::select(DB::raw('SELECT `c`.name, pc1.amount, pr1.regions_count FROM countries AS `c`
 	LEFT JOIN (
-		SELECT `c`.id, SUM(DISTINCT contracts.amount) AS amount
+		SELECT `c`.id, SUM(DISTINCT `pc`.amount) AS amount
 			FROM `project_countries` AS `pc`
-				RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
-				RIGHT JOIN contracts ON `p`.id = contracts.project_id
 				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
 				GROUP BY `pc`.country_id, `c`.id
 		) pc1 ON pc1.id = `c`.id
@@ -87,79 +107,89 @@ class HomeController extends Controller
 		) pr1 ON pr1.id = `c`.id'));
 
             $query = DB::raw("SELECT `c`.name AS 'Округ/Страна', `linear_road`.linear_road as 'Лин. (тип 1)',
-`crossroad`.crossroad as 'Пер. (тип 2)', `pedestrian`.pedestrian as 'Пер. (тип 3)', `product1`.kopp as 'Коперник (передвижка)', `product2`.kops AS 'Коперник (стационар)',
-`product3`.arhimed AS 'Архимед', `product4`.andromeda as 'Андромеда', `pc1`.quantity as 'Количество', `pc2`.amount FROM `countries` as `c`
+`crossroad`.crossroad as 'Пер. (тип 2)', `pedestrian`.pedestrian as 'Пер. (тип 3)', `zhd`.zhd, `product1`.kopp as 'Коперник (передвижка)', `product2`.kops AS 'Коперник (стационар)',
+`product3`.arhimed AS 'Архимед', `product5`.lobach, `product4`.andromeda as 'Андромеда', `pc1`.quantity as 'Количество' FROM `regions` as `c`
 	LEFT JOIN (
-		SELECT `c`.id, SUM(DISTINCT `project_products_count`.count) AS quantity
-			FROM `project_countries` AS `pc`
-				RIGHT JOIN `project_products_count` ON `pc`.project_id = `project_products_count`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-				WHERE `project_products_count`.product_id IN (3, 4, 5)
-				GROUP BY `pc`.country_id, `c`.id
+		SELECT `c`.id, SUM(DISTINCT `pc`.count) AS quantity
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `pc`.product_id IN (3, 4, 5, 6)
+				GROUP BY `pc`.region_id, `c`.id
 		) pc1 ON pc1.id = `c`.id	
 	left join (
 		select `c`.id, sum(distinct `project_roads`.count) as linear_road
-			from `project_countries` as `pc`
+			from `project_products_count` as `pc`
 				right join `project_roads` on `pc`.project_id = `project_roads`.project_id
-				right join `countries` as `c` on `c`.id = `pc`.country_id
+				right join `regions` as `c` on `c`.id = `pc`.region_id
 				where `project_roads`.road_id = 1
-				group by `pc`.country_id, `c`.id
+				group by `pc`.region_id, `c`.id
 		) `linear_road` on `linear_road`.id = `c`.id	
 	LEFT JOIN (
 		SELECT `c`.id, SUM(DISTINCT `project_roads`.count) AS crossroad
-			FROM `project_countries` AS `pc`
+			FROM `project_products_count` AS `pc`
 				RIGHT JOIN `project_roads` ON `pc`.project_id = `project_roads`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
 				WHERE `project_roads`.road_id = 2
-				GROUP BY `pc`.country_id, `c`.id
+				GROUP BY `pc`.region_id, `c`.id
 		) `crossroad` ON `crossroad`.id = `c`.id
 	LEFT JOIN (
 		SELECT `c`.id, SUM(DISTINCT `project_roads`.count) AS pedestrian
-			FROM `project_countries` AS `pc`
+			FROM `project_products_count` AS `pc`
 				RIGHT JOIN `project_roads` ON `pc`.project_id = `project_roads`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
 				WHERE `project_roads`.road_id = 3
-				GROUP BY `pc`.country_id, `c`.id
+				GROUP BY `pc`.region_id, `c`.id
 		) `pedestrian` ON `pedestrian`.id = `c`.id
+		LEFT JOIN (
+		SELECT `c`.id, SUM(DISTINCT `project_roads`.count) AS zhd
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `project_roads` ON `pc`.project_id = `project_roads`.project_id
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `project_roads`.road_id = 4
+				GROUP BY `pc`.region_id, `c`.id
+		) `zhd` ON `zhd`.id = `c`.id
 	left join (
-		select `c`.id, sum(distinct `project_products_count`.count) as kopp
-			from `project_countries` as `pc`
-				right join `project_products_count` on `pc`.project_id = `project_products_count`.project_id
-				right join `countries` as `c` on `c`.id = `pc`.country_id
-				where `project_products_count`.product_id = 4
-				group by `pc`.country_id, `c`.id
+		select `c`.id, sum(distinct `pc`.count) as kopp
+			from `project_products_count` as `pc`
+				right join `regions` as `c` on `c`.id = `pc`.region_id
+				where `pc`.product_id = 4
+				group by `pc`.region_id, `c`.id
 		) `product1` on `product1`.id = `c`.id	
 	LEFT JOIN (
-		SELECT `c`.id, SUM(DISTINCT `project_products_count`.count) AS kops
-			FROM `project_countries` AS `pc`
-				RIGHT JOIN `project_products_count` ON `pc`.project_id = `project_products_count`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-				WHERE `project_products_count`.product_id = 3
-				GROUP BY `pc`.country_id, `c`.id
+		SELECT `c`.id, SUM(DISTINCT `pc`.count) AS kops
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `pc`.product_id = 3
+				GROUP BY `pc`.region_id, `c`.id
 		) `product2` ON `product2`.id = `c`.id		
 	LEFT JOIN (
-		SELECT `c`.id, SUM(DISTINCT `project_products_count`.count) AS arhimed
-			FROM `project_countries` AS `pc`
-				RIGHT JOIN `project_products_count` ON `pc`.project_id = `project_products_count`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-				WHERE `project_products_count`.product_id = 5
-				GROUP BY `pc`.country_id, `c`.id
+		SELECT `c`.id, SUM(DISTINCT `pc`.count) AS arhimed
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `pc`.product_id = 5
+				GROUP BY `pc`.region_id, `c`.id
 		) `product3` ON `product3`.id = `c`.id
 	LEFT JOIN (
-		SELECT `c`.id, SUM(DISTINCT `project_products_count`.count) AS andromeda
-			FROM `project_countries` AS `pc`
-				RIGHT JOIN `project_products_count` ON `pc`.project_id = `project_products_count`.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-				WHERE `project_products_count`.product_id = 7
-				GROUP BY `pc`.country_id, `c`.id
+		SELECT `c`.id, SUM(DISTINCT `pc`.count) AS andromeda
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `pc`.product_id = 7
+				GROUP BY `pc`.region_id, `c`.id
 		) `product4` ON `product4`.id = `c`.id	
+		LEFT JOIN (
+		SELECT `c`.id, SUM(DISTINCT `pc`.count) AS lobach
+			FROM `project_products_count` AS `pc`
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				WHERE `pc`.product_id = 6
+				GROUP BY `pc`.region_id, `c`.id
+		) `product5` ON `product5`.id = `c`.id	
 	LEFT JOIN (
 		SELECT `c`.id, SUM(DISTINCT contracts.amount) AS amount
-			FROM `project_countries` AS `pc`
+			FROM `project_products_count` AS `pc`
 				RIGHT JOIN `projects` AS `p` ON `pc`.project_id = `p`.id
 				RIGHT JOIN contracts ON `p`.id = contracts.project_id
-				RIGHT JOIN `countries` AS `c` ON `c`.id = `pc`.country_id
-				GROUP BY `pc`.country_id, `c`.id
+				RIGHT JOIN `regions` AS `c` ON `c`.id = `pc`.region_id
+				GROUP BY `pc`.region_id, `c`.id
 		) pc2 ON pc2.id = `c`.id		");
             $rkTable = DB::select($query);
 

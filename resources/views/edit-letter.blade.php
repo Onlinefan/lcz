@@ -17,7 +17,18 @@
                             <option value="Исходящие" {{$letter->type === 'Исходящие' ? 'selected' : ''}}>Исходящие</option>
                         </select>
                     </div>
-                </div>p
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Проект</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="type">
+                            @foreach($projects as $project)
+                                <option value="{{$project->id}}" {{(int)$letter->project_id === (int)$project->id ? 'selected' : ''}}>{{$project->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Номер</label>

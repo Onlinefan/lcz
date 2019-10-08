@@ -18,6 +18,9 @@
                 <div class="form-group row">
                     <a href="/po-cafap"><label class="col-sm-2 col-form-label" for="system_id">ПО в ЦАФАП</label></a>
                 </div>
+                <div class="form-group row">
+                    <a href="/projects-table"><label class="col-sm-2 col-form-label" for="system_id">Проекты</label></a>
+                </div>
             </div>
 
             @if (!$projects->isEmpty())
@@ -40,7 +43,7 @@
                             <td>{{$project->status}}</td>
                             <td class="text-right">
                                 <div class="btn-group">
-                                    <a class="btn-white btn btn-xs" href="/edit-project/{{$project->id}}">Редактировать</a>
+                                    <a href="/edit-project/{{$project->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>
                                 </div>
                             </td>
                         </tr>

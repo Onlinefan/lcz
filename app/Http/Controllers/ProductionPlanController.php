@@ -10,12 +10,32 @@ use App\Project;
 use App\Region;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductionPlanController extends Controller
 {
+    protected $user;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            if ($this->user) {
+                if ($this->user->status === 'Ожидает модерации') {
+                    return redirect('/moderate');
+                } elseif ($this->user->status === 'Заблокирован') {
+                    return redirect('/blocked');
+                }
+
+                if ($this->user->role === 'Секретарь') {
+                    return redirect('/statuses');
+                } elseif ($this->user->role === 'Бухгалтер') {
+                    return redirect('/home');
+                }
+            }
+            return $next($request);
+        });
     }
 
     /**
@@ -26,6 +46,15 @@ class ProductionPlanController extends Controller
     public function index()
     {
         $productionPlan = ProductionPlan::all();
+        if (auth()->user()->role === 'Оператор') {
+            $projectCodes = json_encode(Project::where(['head_id' => auth()->user()->id])->pluck('code')->all());
+        } else {
+            $projectCodes = json_encode(Project::pluck('code')->all());
+        }
+
+        if (!isset($_COOKIE['projectCodes'])) {
+            setcookie('projectCodes', $projectCodes, 0, '/');
+        }
 
         return view('production_plan', [
             'productionPlan' => $productionPlan

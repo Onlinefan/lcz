@@ -22,6 +22,16 @@ class Project extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function realizationHead()
+    {
+        return $this->belongsTo('App\User', 'realization_id');
+    }
+
+    public function exploitationHead()
+    {
+        return $this->belongsTo('App\User', 'exploitation_id');
+    }
+
     public function regions()
     {
         return $this->hasMany('App\ProjectRegion', 'project_id');
@@ -182,6 +192,12 @@ class Project extends Model
         return $sumProducts;
     }
 
+    public function peredvizhCount()
+    {
+        $sumProducts = ProjectProductCount::where([['project_id', '=', $this->id], ['road_id', '=', 5]])->sum('count');
+        return $sumProducts;
+    }
+
     public function koppCount()
     {
         $sumProducts = ProjectProductCount::where([['project_id', '=', $this->id], ['product_id', '=', 4]])->sum('count');
@@ -205,15 +221,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pir::whereIn('complex_id', $complexIds)->where(['survey_status' => 3])->count();
-            $surveyCount = Pir::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
 
     }
@@ -223,15 +239,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pir::whereIn('complex_id', $complexIds)->whereIn('design_documentation', [2, 1])->count();
-            $surveyCount = Pir::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -240,15 +256,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pir::whereIn('complex_id', $complexIds)->whereIn('request_tu', [2, 4])->count();
-            $surveyCount = Pir::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -257,15 +273,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pir::whereIn('complex_id', $complexIds)->whereIn('request_footing', [1, 3])->count();
-            $surveyCount = Pir::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
 
     }
@@ -275,15 +291,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Production::whereIn('complex_id', $complexIds)->whereIn('shipment_status', [3, 4])->count();
-            $surveyCount = Production::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -292,15 +308,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Production::whereIn('complex_id', $complexIds)->whereNotNull('number_verification')->count();
-            $surveyCount = Production::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -309,15 +325,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Document::whereIn('complex_id', $complexIds)->where('tu_footing', '<>', 'Не требуется')->count();
-            $surveyCount = Document::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -326,13 +342,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Document::whereIn('complex_id', $complexIds)->where('tu_220', '<>', 'Не требуется')->count();
-            $surveyCount = Document::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } return 0;
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -341,15 +359,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = SmrInstallation::whereIn('complex_id', $complexIds)->where(['installation_status' => 3])->count();
-            $surveyCount = SmrInstallation::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -358,15 +376,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = SmrInstallation::whereIn('complex_id', $complexIds)->where(['220_vu' => 2])->count();
-            $surveyCount = SmrInstallation::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -375,15 +393,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = SmrInstallation::whereIn('complex_id', $complexIds)->where(['transferred_pnr' => 1])->count();
-            $surveyCount = SmrInstallation::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -392,15 +410,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pnr::whereIn('complex_id', $complexIds)->where(['kp' => 3])->count();
-            $surveyCount = Pnr::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -409,15 +427,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pnr::whereIn('complex_id', $complexIds)->where(['analysis_result' => 2])->count();
-            $surveyCount = Pnr::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -426,15 +444,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pnr::whereIn('complex_id', $complexIds)->where(['complex_to_monitoring' => 2])->count();
-            $surveyCount = Pnr::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 
@@ -443,15 +461,15 @@ class Project extends Model
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
             $surveyDone = Pnr::whereIn('complex_id', $complexIds)->where(['in_cafap' => 1])->count();
-            $surveyCount = Pnr::whereIn('complex_id', $complexIds)->count();
-            if ($surveyCount) {
-                $percent = round($surveyDone/$surveyCount*100, 2);
-                return $percent;
-            } else {
-                return 0;
-            }
+            return [
+                'complex' => count($complexIds),
+                'done' => $surveyDone
+            ];
         } else {
-            return 0;
+            return [
+                'complex' => 0,
+                'done' => 0
+            ];
         }
     }
 

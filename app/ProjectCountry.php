@@ -34,14 +34,16 @@ class ProjectCountry extends Model
 
     public static function createRecords($arCountries, $projectId)
     {
-        foreach ($arCountries as $countryId) {
-            self::createRecord($countryId, $projectId);
+        if ($arCountries) {
+            foreach ($arCountries['country_id'] as $key => $countryId) {
+                self::createRecord($countryId, $projectId, $arCountries['amount'][$key]);
+            }
         }
     }
 
-    public static function createRecord($countryId, $projectId)
+    public static function createRecord($countryId, $projectId, $amount)
     {
-        $projectCountry = new ProjectCountry(['project_id' => $projectId, 'country_id' => $countryId]);
+        $projectCountry = new ProjectCountry(['project_id' => $projectId, 'country_id' => $countryId, 'amount' => $amount]);
         $projectCountry->save();
     }
 

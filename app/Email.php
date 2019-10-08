@@ -22,4 +22,9 @@ class Email extends Model
     {
         return $this->belongsTo('App\File', 'letter_file');
     }
+
+    public function project()
+    {
+        return $this->belongsTo('App\Project', 'project_id');
+    }
 }

@@ -69,14 +69,16 @@ class Contract extends Model
         $original = $this->getOriginal();
         foreach (self::$contractFiles as $column => $path) {
             if (isset($files[$column])) {
-                $file = File::find($original[$column]);
-                $fileSystem = new Filesystem();
-                $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                if ($original[$column]) {
+                    $file = File::find($original[$column]);
+                    $fileSystem = new Filesystem();
+                    $fileSystem->delete(public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path . $file->file_name));
+                    $file->delete();
+                }
                 $newFile = new File();
                 $fileName = File::createName($project->name);
                 $newFile->createFile($files[$column], public_path('Projects_files/' . $project->code . '/Управление проектом/' . $path), $fileName);
                 $this->$column = $newFile->id;
-                $file->delete();
             }
         }
 

@@ -1,72 +1,50 @@
 @extends('layouts.app')
 @section('page-title')
-    Добавить поступление
+    Редактировать затраты
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/jquery.datetimepicker.min.css')}}"/>
-    <form method="POST" action="/create-income" enctype="multipart/form-data">
+    <form method="POST" action="/submit-cost" enctype="multipart/form-data">
         {{csrf_field()}}
+        <input type="hidden" name="id" value="{{$cost->id}}">
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="panel-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="plan_id">План поступлений</label>
+                        <label class="col-sm-2 col-form-label" for="plan_id">План затрат</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="plan_id" id="plan_id">
-                                @foreach ($incomePlans as $plan)
-                                    <option value="{{$plan->id}}">{{$plan->project->name}}/{{$plan->name}}</option>
+                                @foreach ($costPlans as $costPlan)
+                                    <option value="{{$costPlan->id}}" {{(int)$costPlan->id === (int)$cost->plan_id ? 'selected' : ''}}>{{$costPlan->project->name}}/{{$costPlan->article}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document_number">Номер счета</label>
+                        <label class="col-sm-2 col-form-label" for="date_payment">Дата</label>
                         <div class="col-sm-10">
-                            <input type="text" id="document_number" name="document_number" value="" placeholder="Введите номер счета" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_document">Дата счета</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="date_document" name="date_document" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="date_payment">Дата оплаты</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="date_payment" name="date_payment" value="" placeholder="Введите дату" class="form-control fromto__datetime-input">
+                            <input type="text" id="date_payment" name="date_payment" value="{{$cost->date_payment}}" placeholder="Введите дату" class="form-control fromto__datetime-input">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label" for="count">Сумма</label>
                         <div class="col-sm-10">
-                            <input type="number" id="count" name="count" value="" placeholder="Введите сумму" class="form-control">
+                            <input type="number" id="count" name="count" value="{{$cost->count}}" placeholder="Введите сумму" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="payment_status">Статус</label>
+                        <label class="col-sm-2 col-form-label" for="comment">Комментарий</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="payment_status" id="payment_status">
-                                <option value="Не выставлен">Не выставлен</option>
-                                <option value="Выставлен">Выставлен</option>
-                                <option value="Оплачен">Оплачен</option>
+                            <input type="text" id="comment" name="comment" value="{{$cost->comment}}" placeholder="Введите комментарий" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="payment_method">Способ оплаты</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="payment_method" id="payment_method">
+                                <option value="Наличный" {{$cost->payment_method === 'Наличный' ? 'selected' : ''}}>Наличный</option>
+                                <option value="Безналичный" {{$cost->payment_method === 'Безналичный' ? 'selected' : ''}}>Безналичный</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="document">Скан счета</label>
-                        <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="document" class="custom-file-input" name="document">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="closed_document">Закрывающий документ</label>
-                        <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" id="closed_document" class="custom-file-input" name="closed_document">
-                            </div>
                         </div>
                     </div>
                     <div class="form-group row">

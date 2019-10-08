@@ -8,7 +8,7 @@
             <div class="col-lg-6">
                 <div class="ibox">
                     <div class="ibox-title">
-                        <h5>Проекты в реализации</h5>
+                        <h5>@if (auth()->user()->department === 'Реализация')Проекты в реализации@else Проекты в эксплуатации@endif</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="agile-detail">
                                         <div>
-                                            Ввод в эксплуатацию
+                                            @if(auth()->user()->department === 'Реализация')Ввод в эксплуатацию@elseДата завершения договора@endif
                                         </div>
                                         <div>
                                             <i class="fa fa-clock-o"></i> {{$realization->contract->date_end}}
@@ -142,10 +142,30 @@
                                         </h3>
                                     </div>
                                     <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
+                                        <a href="/progress/{{$project->id}}" class="pull-right btn btn-xs btn-white">Просмотр</a>
                                         <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
                                     </div>
                                 </li>
+                            @endforeach
+                            @foreach ($projectsExploitation as $project)
+                                    <li class="info-element" id="task16">
+                                        <h4>
+                                            @if ($project->head)
+                                            @if (isset ($project->head->avatarFile))<img alt="image" class="img-circle" src="{{stristr($project->head->avatarFile->path, 'Пользовательские файлы') . $project->head->avatarFile->file_name}}" width="32px">@endif
+                                            {{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}
+                                            @endif
+                                            <span class="label badge-info pull-right">{{$project->status}}</span>
+                                        </h4>
+                                        <div class="col-md-6">
+                                            <h3>
+                                                {{$project->name}}
+                                            </h3>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <a href="/progress/{{$project->id}}" class="pull-right btn btn-xs btn-white">Просмотр</a>
+                                            <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
+                                        </div>
+                                    </li>
                             @endforeach
                         </ul>
                     </div>

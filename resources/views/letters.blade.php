@@ -26,6 +26,17 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Проект</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="type">
+                                        @foreach($projects as $project)
+                                            <option value="{{$project->id}}">{{$project->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Номер</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="number" class="form-control" required>
@@ -95,6 +106,7 @@
                                     <th>Адресат</th>
                                     <th>Статус</th>
                                     <th>Файл</th>
+                                    <th>Проект</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -109,7 +121,8 @@
                                         <td>{{$email->recipient}}</td>
                                         <td><span class="label {{$email->status === 'Получено' ? 'label-primary' : 'label-warning'}}">{{$email->status}}</span></td>
                                         <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/'))}}</span><a href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
-                                        <td><a href="/edit-letter/{{$email->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                        <td>{{$email->project->name}}</td>
+                                        <td><a href="/edit-letter/{{$email->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

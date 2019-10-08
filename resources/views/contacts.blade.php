@@ -20,6 +20,8 @@
                                     <th>E-mail</th>
                                     <th>Адрес</th>
                                     <th>Организация</th>
+                                    <th>ИНН</th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -34,7 +36,9 @@
                                         <td><a href="mailto:name@email.com">{{$contact->email}}</a></td>
                                         <td>{{$contact->address}}</td>
                                         <td>{{$contact->company}}</td>
-                                        <td><a href="/edit-contact/{{$contact->id}}" class="btn-white btn btn-xs">Редактировать</a></td>
+                                        <td>{{$contact->inn}}</td>
+                                        <td>@if(auth()->user()->role !== 'Бухгалтер')<a href="/edit-contact/{{$contact->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
+                                        <td>@if(auth()->user()->role !== 'Бухгалтер')<a href="/delete-contact/{{$contact->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
