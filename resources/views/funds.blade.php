@@ -57,10 +57,10 @@
                                                         <th rowspan="2">Дата</th>
                                                         <th rowspan="2">Сумма</th>
                                                         <th rowspan="2">Наименование</th>
+                                                        <th rowspan="2"></th>
+                                                        <th rowspan="2"></th>
                                                         <th colspan="9" style="text-align:center">Фактические поступления</th>
                                                         <th rowspan="2">Остаток</th>
-                                                        <th rowspan="2"></th>
-                                                        <th rowspan="2"></th>
                                                     </tr>
                                                     <tr>
                                                         <th>Номер счета</th>
@@ -87,6 +87,8 @@
                                                                             <td rowspan="{{$plan->incomes->count() ?: 1}}">@if ($plan->balance() > 0 && $plan->dateDiff() <= 0)<i class="fa fa-exclamation-circle" style="color:red; font-size: 28px;"></i>  @elseif ($plan->balance() > 0 && $plan->dateDiff() <= 5) <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i> @endif{{$plan->income_date}}</td>
                                                                             <td style="text-align:right" rowspan="{{$plan->incomes->count() ?: 1}}">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                             <td rowspan="{{$plan->incomes->count() ?: 1}}">{{$plan->name}}</td>
+                                                                            <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (auth()->user()->role !== 'Бухгалтер')<a href="/edit-income-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
+                                                                            <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-income-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @endif
                                                                         <td>{{$income->document_number}}</td>
                                                                         <td>{{$income->date_document}}</td>
@@ -99,8 +101,6 @@
                                                                         <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-income/{{$income->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @if ($k === 0)
                                                                                 <td style="text-align:right" rowspan="{{$plan->incomes->count() ?: 1}}">{{number_format($plan->balance(), 2, '.', ' ')}}</td>
-                                                                                <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (auth()->user()->role !== 'Бухгалтер')<a href="/edit-income-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
-                                                                                <td rowspan="{{$plan->incomes->count() ?: 1}}">@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-income-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @endif
                                                                     </tr>
                                                                 @endforeach
@@ -111,6 +111,8 @@
                                                                     <td>@if ($plan->balance() > 0 && $plan->dateDiff() <= 0)<i class="fa fa-exclamation-circle" style="color:red; font-size: 28px;"></i>  @elseif ($plan->balance() > 0 && $plan->dateDiff() <= 5) <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 28px;"></i> @endif{{$plan->income_date}}</td>
                                                                     <td style="text-align:right">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                     <td>{{$plan->name}}</td>
+                                                                    <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/edit-income-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
+                                                                    <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-income-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td></td>
@@ -121,8 +123,6 @@
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td style="text-align:right">{{number_format($plan->balance(), 2, '.', ' ')}}</td>
-                                                                    <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/edit-income-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
-                                                                    <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-income-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -136,7 +136,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <a class="btn btn-primary btn-sm" href="/add-income-plan">Добавить план поступлений</a>
-                                    <a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>
+                                    @if ($incomePlans->count())<a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>@endif
                                 </div>
                             </div>
                         </div>
@@ -188,10 +188,10 @@
                                                         <th rowspan="2">Номер договора</th>
                                                         <th rowspan="2">План затрат</th>
                                                         <th rowspan="2">Статья расходов</th>
+                                                        <th rowspan="2"></th>
+                                                        <th rowspan="2"></th>
                                                         <th colspan="6" style="text-align:center">Фактические затраты</th>
                                                         <th rowspan="2">Остаток</th>
-                                                        <th rowspan="2"></th>
-                                                        <th rowspan="2"></th>
                                                     </tr>
                                                     <tr>
                                                         <th>Дата оплаты</th>
@@ -215,6 +215,8 @@
                                                                             <td rowspan="{{$plan->costs->count() ?: 1}}">{{$plan->project->contract->number}}</td>
                                                                             <td style="text-align:right" rowspan="{{$plan->costs->count() ?: 1}}">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                             <td rowspan="{{$plan->costs->count() ?: 1}}">{{$plan->article}}</td>
+                                                                            <td rowspan="{{$plan->costs->count() ?: 1}}">@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/edit-cost-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
+                                                                            <td rowspan="{{$plan->costs->count() ?: 1}}">@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' ?? auth()->user()->role !== 'Бухгалтер'))<a href="/delete-cost-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @endif
                                                                         <td>{{$cost->date_payment}}</td>
                                                                         <td style="text-align:right">{{number_format($cost->count, 2, '.', ' ')}}</td>
@@ -224,8 +226,6 @@
                                                                         <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/delete-cost/{{$cost->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @if ($key === 0)
                                                                             <td style="text-align:right @if ($plan->balance() < 0) color:red;@endif" rowspan="{{$plan->costs->count() ?: 1}}">{{number_format($plan->balance(), 2, '.', ' ')}}</td>
-                                                                            <td rowspan="{{$plan->costs->count() ?: 1}}">@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/edit-cost-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
-                                                                            <td rowspan="{{$plan->costs->count() ?: 1}}">@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' ?? auth()->user()->role !== 'Бухгалтер'))<a href="/delete-cost-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                         @endif
                                                                     </tr>
                                                                 @endforeach
@@ -237,6 +237,8 @@
                                                                     <td>{{$plan->project->contract->number}}</td>
                                                                     <td style="text-align:right">{{number_format($plan->plan, 2, '.', ' ')}}</td>
                                                                     <td>{{$plan->article}}</td>
+                                                                    <td>@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/edit-cost-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
+                                                                    <td>@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/delete-cost-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td></td>
@@ -244,8 +246,6 @@
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td style="text-align:right; @if ($plan->balance() < 0) color:red;@endif">{{number_format($plan->balance(), 2, '.', ' ')}}</td>
-                                                                    <td>@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/edit-cost-plan/{{$plan->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
-                                                                    <td>@if ((int)$plan->project->head_id === (int)auth()->user()->id || (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер'))<a href="/delete-cost-plan/{{$plan->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a>@endif</td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -259,7 +259,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
                                     @if (auth()->user()->role !== 'Оператор')<a class="btn btn-primary btn-sm" href="/add-cost-plan">Добавить план затрат</a>@endif
-                                    <a class="btn btn-primary btn-sm" href="/add-cost">Добавить затраты</a>
+                                    @if ($costPlans->count())<a class="btn btn-primary btn-sm" href="/add-cost">Добавить затраты</a>@endif
                                     @if (auth()->user()->role !== 'Оператор')<a class="btn btn-primary btn-sm" href="/add-cost-file">Загрузить файл затрат</a>@endif
                                 </div>
                             </div>

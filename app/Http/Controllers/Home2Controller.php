@@ -50,7 +50,7 @@ class Home2Controller extends Controller
             if (auth()->user()->department === 'Реализация') {
                 $projectsRealize = Project::where([['status', '=', 'Реализация'], ['head_id', '=', auth()->user()->id]])->get();
                 $projectsExploitation = Project::where([['status', '=', 'Эксплуатация'], ['realization_id', '=', auth()->user()->id]])->where(function ($query) {
-                    $query->whereNull('head_id')->orWhere(['head_id' => auth()->user()->id]);
+                    $query->whereNull('head_id')->orWhere('head_id', '<>', auth()->user()->id);
                 })->get();
             } else {
                 $projectsRealize = Project::where([['status', '=', 'Эксплуатация'], ['head_id', '=', auth()->user()->id]])->get();

@@ -391,7 +391,7 @@ class FundController extends Controller
     public function editIncome($id)
     {
         $income = Income::find($id);
-        if ((int)$income->plan->project->head_id && (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$income->plan->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 
@@ -406,7 +406,7 @@ class FundController extends Controller
     public function submitIncome(Request $request)
     {
         $income = Income::find($request->get('id'));
-        if ((int)$income->plan->project->head_id && (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$income->plan->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 
@@ -455,7 +455,7 @@ class FundController extends Controller
     public function deleteIncome($id)
     {
         $income = Income::find($id);
-        if ((int)$income->plan->project->head_id && (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$income->plan->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 
@@ -566,7 +566,7 @@ class FundController extends Controller
     public function editOtherDocument($id)
     {
         $document = OtherContract::find($id);
-        if ((int)$document->project->head_id !== (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$document->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 
@@ -585,7 +585,7 @@ class FundController extends Controller
     public function submitOtherDocument(Request $request)
     {
         $document = OtherContract::find($request->get('id'));
-        if ((int)$document->project->head_id !== (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$document->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 
@@ -619,7 +619,7 @@ class FundController extends Controller
     public function deleteOtherDocument($id)
     {
         $document = OtherContract::find($id);
-        if ((int)$document->project->head_id !== (int)auth()->user()->id) {
+        if (auth()->user()->role === 'Оператор' && (int)$document->project->head_id !== (int)auth()->user()->id) {
             return redirect('/funds');
         }
 

@@ -20,8 +20,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label" for="file">Затраты</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-2 col-form-label" for="file">Затраты <a href="/download?path=Project_files/fund.xlsx">(Скачать пример)</a></label>
+                        <div class="col-sm-8">
                             <input type="file" id="file" name="file" value="" class="form-control" required>
                         </div>
                     </div>

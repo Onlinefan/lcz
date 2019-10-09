@@ -51,14 +51,6 @@
                     </span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
-                <input type="text" class="form-control" placeholder="Введите логин" name="login" value="{{ old('login') }}" required>
-                @if ($errors->has('login'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('login') }}</strong>
-                    </span>
-                @endif
-            </div>
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <input type="password" class="form-control" placeholder="Введите пароль" name="password" required>
                 @if ($errors->has('password'))

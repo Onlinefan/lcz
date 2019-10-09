@@ -131,7 +131,12 @@ class ProjectController extends Controller
         ProductionPlan::createRecords($request->get('ProductionPlan'), $request->file('ProductionPlan'), $project);
         ProjectContact::createRecords($request->get('Contacts'), $project->id);
 
-        return redirect('/create-project');
+        if (auth()->user()->role === 'Оператор') {
+            return redirect('/home2');
+        } else {
+            return redirect('/projects');
+        }
+
     }
 
     public function changeStatus($id, $status)
@@ -252,7 +257,6 @@ class ProjectController extends Controller
         CafapCollage::updateRecords($request->file('CafapCollage'), $cafap->id, $project);
         CafapRegion::updateRecords($request->get('CafapRegion'), $cafap->id);
         CafapAndromedaExist::updateRecords($request->get('CafapAndromedaExist'), $cafap->id);
-        ProductionPlan::updateRecords($request->get('ProductionPlan'), $request->file('ProductionPlan'), $project);
         ProjectContact::updateRecords($request->get('Contacts'), $project->id);
         return redirect('/edit-project/' . $project->id);
     }

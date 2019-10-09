@@ -65,7 +65,7 @@ class HomeController extends Controller
                 ->get();
             $contractCount = DB::table('projects')
                 ->select(DB::raw('count(*) as count'))
-                ->where('type', 'Гос. контракт')
+                ->whereIn('type', ['Гос. контракт', 'Договор', 'ДС', 'Рамочный'])
                 ->first();
             $pilotCount = DB::table('projects')
                 ->select(DB::raw('count(*) as count'))

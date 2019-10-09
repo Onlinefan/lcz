@@ -46,15 +46,6 @@ class ProductionPlanController extends Controller
     public function index()
     {
         $productionPlan = ProductionPlan::all();
-        if (auth()->user()->role === 'Оператор') {
-            $projectCodes = json_encode(Project::where(['head_id' => auth()->user()->id])->pluck('code')->all());
-        } else {
-            $projectCodes = json_encode(Project::pluck('code')->all());
-        }
-
-        if (!isset($_COOKIE['projectCodes'])) {
-            setcookie('projectCodes', $projectCodes, 0, '/');
-        }
 
         return view('production_plan', [
             'productionPlan' => $productionPlan

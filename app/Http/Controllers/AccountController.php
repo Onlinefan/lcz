@@ -99,7 +99,7 @@ class AccountController extends Controller
             $user->first_name = $request['first_name'] ?: $user->first_name;
             $user->second_name = $request['second_name'] ?: $user->second_name;
             $user->patronymic = $request['patronymic'] ?: $user->patronymic;
-            $user->login = $request['login'] ?: $user->login;
+            $user->department = $request['department'] ?: $user->department;
             $user->role = $request['role'] ?: $user->role;
             $user->status = $request['status'] ?: $user->status;
             if ($request->file('avatar')) {

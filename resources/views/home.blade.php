@@ -45,7 +45,7 @@
                 <div class="ibox-content">
                     <div class="txssd">
                         <div class="stat-percent font-bold text-navy">{{$contractCount}} <i class="fa fa-level-up"></i></div>
-                        <small>По контракту</small>
+                        <small>По договору(доход)</small>
                     </div>
                     <div class="txssd">
                         <div class="stat-percent font-bold text-navy">{{$pilotCount}} <i class="fa fa-level-up"></i></div>
@@ -316,7 +316,10 @@
                                             series: {
                                                 regions: [{
                                                     values: mapData,
-                                                    scale: [ "#22d6b1", "#1ab394", ],
+                                                    scale: [
+                                                        "#2893ef",
+                                                        "#1a4277",
+                                                    ],
                                                     normalizeFunction: 'polynomial'
                                                 }]
                                             },

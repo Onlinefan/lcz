@@ -58,7 +58,7 @@
                 <div class="ibox ">
                     <div class="ibox-title">
 
-                        <h5>@if ($dateDiff <= 10)
+                        <h5>@if ($dateDiff <= 10 && (int)$incomePay < (int)$project->contract->amount)
                                 <i class="fa fa-exclamation-circle" style="color:#f8ac59; font-size: 20px;"></i>
                             @endifДедлайн</h5>
                     </div>
@@ -68,7 +68,7 @@
                             <div style="width: {{round($datePercent)}}%;" class="progress-bar progress-bar-warning"></div>
                         </div>
                         <div class="stat-percent font-bold text-success">{{round($datePercent)}}%</div>
-                        <small>{{$project->contract->date_start}} - {{$project->contract->date_end}}</small>
+                        <small>{{$project->contract->date_start}} - @if($project->status === 'Реализация'){{$project->contract->date_sign_acts}} @else{{$project->contract->date_end}}@endif</small>
                     </div>
                 </div>
             </div>
@@ -108,49 +108,49 @@
                                         <div class="row">
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['dataCount']/(7 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1)) * 100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['dataCount']/6 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Начальные данные</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['initialDataCount']/(5 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1)) * 100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['initialDataCount']/5 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Исходные данные</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['pirCount']/(10  * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['pirCount']/10 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">ПИР</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['productionCount']/(6  * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['productionCount']/6 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Производство</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['smrCount']/(6 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['smrCount']/6 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">СМР/Монтаж</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/(6 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['pnrCount']/6 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">ПНР</h5>
                                             </div>
 
                                             <div class="col-lg-1">
                                                 <div class="progress progress-mini">
-                                                    <div style="width: {{round($arPercents[$key]['documentsCount']/(14 * ($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1))*100)}}%;" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width: {{round($arPercents[$key]['documentsCount']/10 * 100)}}%;" class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                                 <h5 class="no-margins">Документы</h5>
                                             </div>
@@ -262,17 +262,17 @@
 
                                                         <td>@if (isset($row->pir->surveyStatus))<span class="label {{$row->pir->surveyStatus->name === 'В работе' ? 'label-warning' : ($row->pir->surveyStatus->name === 'Не обследовано' ? 'label-danger' : 'label-primary')}}">{{$row->pir->surveyStatus->name}}</span>@endif</td>
                                                         <td>{{$row->pir->survey_comment}}</td>
-                                                        <td>@if (isset($row->pir->designDocumentation))<span class="label label-secondary">{{$row->pir->designDocumentation->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pir->designDocumentation))<span class="label {{$row->pir->designDocumentation->name === 'Не требуется' ? 'label-secondary' : ($row->pir->designDocumentation->name === 'Загружено' ? 'label-primary' : 'label-danger')}}">{{$row->pir->designDocumentation->name}}</span>@endif</td>
                                                         <td>{{$row->pir->new_footing_fvf}}</td>
                                                         <td>{{$row->pir->new_footing_lep}}</td>
                                                         <td>{{$row->pir->rk_count}}</td>
                                                         <td>{{$row->pir->ok_count}}</td>
                                                         <td>{{$row->pir->equipment_power}}</td>
-                                                        <td>@if (isset($row->pir->requestTu))<span class="label {{($row->pir->requestTu->name === 'Заявка подана' || $row->pir->requestTu->name === 'ТУ получено') ? 'label-primary' : ($row->pir->requestTu->name === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$row->pir->requestTu->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pir->requestFooting))<span class="label label-secondary">{{$row->pir->requestFooting->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pir->requestTu))<span class="label {{$row->pir->requestTu->name === 'ТУ получено' ? 'label-primary' : ($row->pir->requestTu->name === 'Отсутствует' ? 'label-danger' : ($row->pir->requestTu->name === 'Заявка подана' ? 'label-warning' : 'label-secondary'))}}">{{$row->pir->requestTu->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pir->requestFooting))<span class="label {{$row->pir->requestFooting->name === 'Получено' ? 'label-primary' : ($row->pir->requestFooting->name === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$row->pir->requestFooting->name}}</span>@endif</td>
                                                         <td><a href="/edit-pir/{{$row->pir->id}}" ><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td>@if (isset($row->production->shipmentStatus))<span class="label label-secondary">{{$row->production->shipmentStatus->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->production->shipmentStatus))<span class="label {{$row->production->shipmentStatus->name === 'На паузе' ? 'label-danger' : ($row->production->shipmentStatus->name === 'В закупке' ? 'label-warning' : ($row->production->shipmentStatus->name === 'Отгружен' ? 'label-primary' : 'label-secondary'))}}">{{$row->production->shipmentStatus->name}}</span>@endif</td>
                                                         <td>{{$row->production->date_equipment_shipment}}</td>
                                                         <td>{{$row->production->number_sim_internet}}</td>
                                                         <td>{{$row->production->number_sim_ssu}}</td>
@@ -280,32 +280,32 @@
                                                         <td>{{$row->production->date_verification_end}}</td>
                                                         <td><a href="/edit-production/{{$row->production->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td><a href="#">{{$row->smr->link_root_task}}</a></td>
-                                                        <td>@if (isset($row->smr->vu220))<span class="label label-secondary">{{$row->smr->vu220->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->smr->linkContract))<span class="label label-secondary">{{$row->smr->linkContract->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->smr->dislocationStrapping))<span class="label label-secondary">{{$row->smr->dislocationStrapping->name}}</span>@endif</td>
+                                                        <td><a href="{{$row->smr->link_root_task}}">{{$row->smr->link_root_task}}</a></td>
+                                                        <td>@if (isset($row->smr->vu220))<span class="label {{$row->smr->vu220->name === 'Питание отсутствует' ? 'label-danger' : 'label-primary'}}">{{$row->smr->vu220->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->linkContract))<span class="label {{$row->smr->linkContract->name === 'Не требуется' ? 'label-secondary' : 'label-primary'}}">{{$row->smr->linkContract->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->dislocationStrapping))<span class="label {{$row->smr->dislocationStrapping->name === 'Не требуется' ? 'label-secondary' : 'label-primary'}}">{{$row->smr->dislocationStrapping->name}}</span>@endif</td>
                                                         <td>@if (isset($row->smr->installationStatus))<span class="label {{($row->smr->installationStatus->name === 'Нет' || $row->smr->installationStatus->name === 'Украден') ? 'label-danger' : ($row->smr->installationStatus->name === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$row->smr->installationStatus->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->smr->transferredPnr))<span class="label label-secondary">{{$row->smr->transferredPnr->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->smr->transferredPnr))<span class="label {{$row->smr->transferredPnr->name === 'Нет' ? 'label-danger' : 'label-primary'}}">{{$row->smr->transferredPnr->name}}</span>@endif</td>
                                                         <td><a href="/edit-smr/{{$row->smr->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td>@if (isset($row->pnr->calibration2000))<span class="label {{$row->pnr->calibration2000->name === 'В работе' ? 'label-warning' : 'label-danger'}}">{{$row->pnr->calibration2000->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pnr->kpLink))<span class="label {{$row->pnr->kpLink->name === 'Нет водителя' ? 'label-danger' : ($row->pnr->kpLink->name === 'В работе' ? 'label-warning' : 'label-secondary')}}">{{$row->pnr->kpLink->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pnr->analysisResult))<span class="label {{$row->pnr->analysisResult->name === 'Неудовлетворительно' ? 'label-danger' : 'label-secondary'}}">{{$row->pnr->analysisResult->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pnr->complexToMonitoring))<span class="label label-secondary">{{$row->pnr->complexToMonitoring->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pnr->andromedaUnloading))<span class="label label-secondary">{{$row->pnr->andromedaUnloading->name}}</span>@endif</td>
-                                                        <td>@if (isset($row->pnr->inCafap))<span class="label label-secondary">{{$row->pnr->inCafap->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->calibration2000))<span class="label {{$row->pnr->calibration2000->name === 'В процессе' ? 'label-warning' : ($row->pnr->calibration2000->name === 'Откалиброван' ? 'label-primary' : 'label-danger')}}">{{$row->pnr->calibration2000->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->kpLink))<span class="label {{$row->pnr->kpLink->name === 'Нет водителя' ? 'label-danger' : ($row->pnr->kpLink->name === 'В работе' ? 'label-warning' : 'label-primary')}}">{{$row->pnr->kpLink->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->analysisResult))<span class="label {{$row->pnr->analysisResult->name === 'Неудовлетворительно' ? 'label-danger' : 'label-primary'}}">{{$row->pnr->analysisResult->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->complexToMonitoring))<span class="label {{$row->pnr->complexToMonitoring->name === 'Передано' ? 'label-primary' : 'label-danger'}}">{{$row->pnr->complexToMonitoring->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->andromedaUnloading))<span class="label {{$row->pnr->andromedaUnloading->name === 'Включена' ? 'label-primary' : 'label-danger'}}">{{$row->pnr->andromedaUnloading->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->pnr->inCafap))<span class="label {{$row->pnr->inCafap->name === 'Включена' ? 'label-primary' : 'label-danger'}}">{{$row->pnr->inCafap->name}}</span>@endif</td>
                                                         <td><a href="/edit-pnr/{{$row->pnr->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td><span class="label label-secondary">@if (isset($row->document->examinationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Обследование/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->projectDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Проектная документация/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->executiveDocumentationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Исполнительная документация/{{$row->document->executiveDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->verificationFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Поверка/{{$row->document->verificationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->formsFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Формуляры/{{$row->document->formsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->passportsFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Паспорта/{{$row->document->passportsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->tu220File))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ-220/{{$row->document->tu220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->contract220File))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->tuFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ на опору/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
-                                                        <td><span class="label label-secondary">@if (isset($row->document->contractFootingFile))<a href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор на опору/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->examinationFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->examinationFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Обследование/{{$row->document->examinationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->projectDocumentationFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->projectDocumentationFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Проектная документация/{{$row->document->projectDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label {{$row->document->executiveDocumentationFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->executiveDocumentationFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Исполнительная документация/{{$row->document->executiveDocumentationFile->file_name}}">Загрузить</a> @else Не требуется @endif</span></td>
+                                                        <td><span class="label {{$row->document->verificationFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->verificationFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Поверка/{{$row->document->verificationFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->formsFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->formsFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Формуляры/{{$row->document->formsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->passportsFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->passportsFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Паспорта/{{$row->document->passportsFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->tu220File ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->tu220File))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ-220/{{$row->document->tu220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->contract220File ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->contract220File))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор 220/{{$row->document->contract220File->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->tuFootingFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->tuFootingFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/ТУ на опору/{{$row->document->tuFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
+                                                        <td><span class="label {{$row->document->contractFootingFile ? 'label-primary' : 'label-secondary'}}">@if (isset($row->document->contractFootingFile))<a style="color:white;" href="/download?path=Projects_files/{{$project->code}}/Управление проектом/Договор на опору/{{$row->document->contractFootingFile->file_name}}">Загрузить</a> @else Отсутствует @endif</span></td>
                                                         <td><a href="/edit-documents/{{$row->document->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
                                                         <td><a href="/delete-data-row/{{$row->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                                     </tr>

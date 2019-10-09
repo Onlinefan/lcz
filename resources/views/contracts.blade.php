@@ -61,9 +61,9 @@
                                                 @if ($key === 0)
                                                     <td rowspan="{{$project->incomes()->count() ?: 1}}">{{$project->id}}</td>
                                                     <td rowspan="{{$project->incomes()->count() ?: 1}}">{{$project->code}}</td>
-                                                    <td rowspan="{{$project->incomes()->count() ?: 1}}">@foreach ($project->countries as $country)<span class="label label-secondary">{{$country->country->name}}; </span><br>@endforeach</td>
+                                                    <td rowspan="{{$project->incomes()->count() ?: 1}}">@foreach ($project->countries as $key => $country) @if ($key !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span>@endif<span class="label label-secondary">{{$country->country->name}}; </span><br>@endforeach</td>
                                                     <td rowspan="{{$project->incomes()->count() ?: 1}}">@if (isset($project->head)){{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}@endif</td>
-                                                    <td rowspan="{{$project->incomes()->count() ?: 1}}">@foreach ($project->regions as $region){{$region->region->name}}; <br>@endforeach</td>
+                                                    <td rowspan="{{$project->incomes()->count() ?: 1}}">@foreach ($project->regions as $key => $region)@if ($key !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span>@endif{{$region->region->name}}; <br>@endforeach</td>
                                                     <td rowspan="{{$project->incomes()->count() ?: 1}}">{{$project->name}}</td>
                                                     <td rowspan="{{$project->incomes()->count() ?: 1}}">{{$project->contract->customer}}</td>
 
@@ -97,9 +97,9 @@
                                         <tr>
                                             <td>{{$project->id}}</td>
                                             <td>{{$project->code}}</td>
-                                            <td>@foreach ($project->countries as $country)<span class="label label-secondary">{{$country->country->name}}; </span><br>@endforeach</td>
+                                            <td>@foreach ($project->countries as $key => $country) @if ($key !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span>@endif<span class="label label-secondary">{{$country->country->name}}; </span><br>@endforeach</td>
                                             <td>{{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}</td>
-                                            <td>@foreach ($project->regions as $region){{$region->region->name}}; <br>@endforeach</td>
+                                            <td>@foreach ($project->regions as $key => $region)@if ($key !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span>@endif{{$region->region->name}}; <br>@endforeach</td>
                                             <td>{{$project->name}}</td>
                                             <td>{{$project->contract->customer}}</td>
 

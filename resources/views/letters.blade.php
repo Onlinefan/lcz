@@ -28,7 +28,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Проект</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="type">
+                                    <select class="form-control" name="project_id">
                                         @foreach($projects as $project)
                                             <option value="{{$project->id}}">{{$project->name}}</option>
                                         @endforeach
@@ -120,8 +120,8 @@
                                         <td>{{$email->number}}</td>
                                         <td>{{$email->recipient}}</td>
                                         <td><span class="label {{$email->status === 'Получено' ? 'label-primary' : 'label-warning'}}">{{$email->status}}</span></td>
-                                        <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/'))}}</span><a href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Mails/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
-                                        <td>{{$email->project->name}}</td>
+                                        <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
+                                        <td>@if (isset($email->project)){{$email->project->name}}@endif</td>
                                         <td><a href="/edit-letter/{{$email->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
                                     </tr>
                                 @endforeach
@@ -148,7 +148,7 @@
                     buttons: [
                         { extend: 'copy'},
                         {extend: 'csv'},
-                        {extend: 'excel', title: 'Contacts'},
+                        {extend: 'excel', title: 'Letters'},
                         //{extend: 'pdf', title: 'Contacts'},
 
                         {extend: 'print',

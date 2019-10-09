@@ -12,7 +12,6 @@
                     <li class="active"><a class="nav-link active" data-toggle="tab" data-tab="1" href="#tab-1">Исходные данные по контракту</a></li>
                     <li><a class="nav-link" data-toggle="tab" data-tab="2" href="#tab-2">Продукт/Услуга</a></li>
                     <li><a class="nav-link" data-toggle="tab" data-tab="3" href="#tab-3">Исходные данные ЦАФАП</a></li>
-                    <li><a class="nav-link" data-toggle="tab" data-tab="4" href="#tab-4">План производства</a></li>
                     <li><a class="nav-link" data-toggle="tab" data-tab="5" href="#tab-5">Контакты</a></li>
                 </ul>
                 <input type="hidden" name="Project[id]" value="{{$project->id}}">
@@ -107,7 +106,7 @@
                             @foreach ($projectCountries as $projectCountry)
                                 <div class="form-group row" data-block="country">
                                     <label class="col-sm-2 col-form-label">Округ</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-4">
                                         <select class="form-control" name="Country[country_id][]">
                                             @foreach ($countries as $country)
                                                 <option value="{{$country->id}}" {{intval($projectCountry->country_id) === intval($country->id) ? 'selected' : ''}}>{{$country->name}}</option>
@@ -116,7 +115,7 @@
                                     </div>
                                     <label class="col-sm-2 col-form-label">Стоимость</label>
                                     <div class="col-sm-4">
-                                        <input type="number" step="0.01" class="form-control" name="Country[amount][]">
+                                        <input type="number" step="0.01" class="form-control" name="Country[amount][]" value="{{$projectCountry->amount}}">
 
                                     </div>
                                 </div>
@@ -818,117 +817,6 @@
                         </div>
                     </div>
 
-                    <div role="tabpanel" id="tab-4" class="tab-pane">
-                        <div class="panel-body">
-                            @foreach ($project->productionPlan as $plan)
-                                <div data-block="production-plan">
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Месяц</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="ProductionPlan[month][]">
-                                                <option {{$plan->month === 'Январь' ? 'selected' : ''}}>Январь</option>
-                                                <option {{$plan->month === 'Февраль' ? 'selected' : ''}}>Февраль</option>
-                                                <option {{$plan->month === 'Март' ? 'selected' : ''}}>Март</option>
-                                                <option {{$plan->month === 'Апрель' ? 'selected' : ''}}>Апрель</option>
-                                                <option {{$plan->month === 'Май' ? 'selected' : ''}}>Май</option>
-                                                <option {{$plan->month === 'Июнь' ? 'selected' : ''}}>Июнь</option>
-                                                <option {{$plan->month === 'Июль' ? 'selected' : ''}}>Июль</option>
-                                                <option {{$plan->month === 'Август' ? 'selected' : ''}}>Август</option>
-                                                <option {{$plan->month === 'Сентябрь' ? 'selected' : ''}}>Сентябрь</option>
-                                                <option {{$plan->month === 'Октябрь' ? 'selected' : ''}}>Октябрь</option>
-                                                <option {{$plan->month === 'Ноябрь' ? 'selected' : ''}}>Ноябрь</option>
-                                                <option {{$plan->month === 'Декабрь' ? 'selected' : ''}}>Декабрь</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Регион</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="ProductionPlan[region_id][]">
-                                                @foreach ($regions as $region)
-                                                    <option value="{{$region->id}}" {{intval($plan->region_id) === intval($region->id) ? 'selected' : ''}}>{{$region->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Оборудование</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="ProductionPlan[product_id][]">
-                                                @foreach ($products as $product)
-                                                    <option value="{{$product->id}}" {{intval($plan->product_id) === intval($product->id) ? 'selected' : ''}}>{{$product->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Количество РК</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="ProductionPlan[rk_count][]" value="{{$plan->rk_count}}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Дата отгрузки</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control fromto__datetime-input" name="ProductionPlan[date_shipping][]" value="{{$plan->date_shipping}}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Приоритет</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="ProductionPlan[priority][]">
-                                                <option value="Низкий" {{$plan->priority === 'Низкий' ? 'selected' : ''}}>Низкий</option>
-                                                <option value="Средний" {{$plan->priority === 'Средний' ? 'selected' : ''}}>Средний</option>
-                                                <option value="Высокий" {{$plan->priority === 'Высокий' ? 'selected' : ''}}>Высокий</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Загрузить предварительный расчет оборудования </label>
-                                        @if (isset($plan->preliminaryCalculation))
-                                            <label class="col-sm-2 col-form-label">{{$plan->preliminaryCalculation->file_name}}</label>
-                                        @endif
-                                        <div class="col-sm-8">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="ProductionPlan[preliminary_calculation_equipment][]">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Загрузить окончательный расчет оборудования</label>
-                                        @if (isset($plan->finalCalculation))
-                                            <label class="col-sm-2 col-form-label">{{$plan->finalCalculation->file_name}}</label>
-                                        @endif
-                                        <div class="col-sm-8">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="ProductionPlan[final_equipment_calculation][]">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="hr-line-dashed"></div>
-                                </div>
-                            @endforeach
-
-                            <button type="button" id="production-plan" class="btn btn-white btn-sm">Добавить еще</button>
-                            <button type="button" id="production-planDelete" class="btn btn-white btn-sm {{$project->productionPlan->count() > 1 ? '' : 'hidden'}}">Удалить</button>
-
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" data-toggle="tab" aria-expanded="false" href="#tab-5">Далее</a>
-                                    <a class="btn btn-white btn-sm" data-toggle="tab" aria-expanded="false" href="#tab-3">Назад</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div role="tabpanel" id="tab-5" class="tab-pane">
                         <div class="panel-body">
                             @foreach ($project->contacts as $contact)
@@ -985,7 +873,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">ИНН</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="Contacts[inn][]">
+                                            <input type="text" class="form-control" name="Contacts[inn][]" value="{{$contact->contact->inn}}">
                                         </div>
                                     </div>
 

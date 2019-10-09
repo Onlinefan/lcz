@@ -84,7 +84,7 @@
                                     <th>Пешеход</th>
                                     <th>ЖД переезд</th>
                                     <th>Передвижной</th>
-                                    <th>Коперник-П</th>
+                                    <th>Лобачевский</th>
                                     <th>Коперник-С</th>
                                     <th>Архимед</th>
                                     <th>Сумма договора</th>
@@ -144,11 +144,11 @@
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->head)){{$project->head->second_name . ' ' . $project->head->first_name . ' ' . $project->head->patronymic}}@endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract)){{$project->contract->customer}}@endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->name}}</td>
-                                                        <td rowspan="{{$project->regions->count()}}">@if ($project->countries->count()) @foreach($project->countries as $country) @if (isset($country->country)){{$country->country->name}}; <br>@endif @endforeach @endif</td>
+                                                        <td rowspan="{{$project->regions->count()}}">@if ($project->countries->count()) @foreach($project->countries as $countryKey => $country) @if($countryKey !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span> @endif @if (isset($country->country)){{$country->country->name}}; <br>@endif @endforeach @endif</td>
                                                     @endif
                                                     <td>@if (isset($region->region)){{$region->region->name}}@endif</td>
                                                     @if ($key === 0)
-                                                        <td rowspan="{{$project->regions->count()}}">@if ($project->serviceType->count()) @foreach ($project->serviceType as $serviceType) @if (isset($serviceType->serviceType)) {{$serviceType->serviceType->name}}; <br> @endif @endforeach @endif</td>
+                                                        <td rowspan="{{$project->regions->count()}}">@if ($project->serviceType->count()) @foreach ($project->serviceType as $serviceKey => $serviceType) @if($serviceKey !== 0)<span style="display:block;margin: 10px -9px 5px;border-bottom: 1px solid #e7e7e7;"></span> @endif @if (isset($serviceType->serviceType)) {{$serviceType->serviceType->name}}; <br> @endif @endforeach @endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract)) {{$project->contract->service_terms}} @endif</td>
                                                         <td rowspan="{{$project->regions->count()}}">@if (isset($project->contract)) {{$project->contract->lcz_role}} @endif</td>
                                                     @endif
@@ -159,7 +159,7 @@
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->peshehodCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->pereezdCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->peredvizhCount()}}</td>
-                                                        <td rowspan="{{$project->regions->count()}}">{{$project->koppCount()}}</td>
+                                                        <td rowspan="{{$project->regions->count()}}">{{$project->lobachCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->kopsCount()}}</td>
                                                         <td rowspan="{{$project->regions->count()}}">{{$project->arhimedCount()}}</td>
                                                         <td style="text-align:right" rowspan="{{$project->regions->count()}}">@if (isset($project->contract)){{number_format($project->contract->amount, 2, '.', ' ')}}@endif</td>

@@ -26,9 +26,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-sm-2" for="login">Логин</label>
+                    <label class="col-form-label col-sm-2" for="department">Отдел</label>
                     <div class="col-sm-10">
-                        <input type="text" id="login" name="login" value="{{$user->login}}" placeholder="Логин пользователя" class="form-control" required>
+                        <select name="department" id="department" class="form-control">
+                            <option value="Реализация" {{$user->role === 'Реализация' ? 'selected' : ''}}>Реализация</option>
+                            <option value="Эксплуатация" {{$user->role === 'Эксплуатация' ? 'selected' : ''}}>Эксплуатация</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">

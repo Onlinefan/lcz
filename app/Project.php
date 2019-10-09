@@ -126,7 +126,11 @@ class Project extends Model
     public function deadline()
     {
         $now = new DateTime('now');
-        $contractEnd = new DateTime($this->contract->date_end);
+        if ($this->status === 'Реализация') {
+            $contractEnd = new DateTime($this->contract->date_sign_acts);
+        } else {
+            $contractEnd = new DateTime($this->contract->date_end);
+        }
         $dateDiff = $contractEnd->diff($now)->format('%a');
         return $dateDiff;
     }
@@ -201,6 +205,12 @@ class Project extends Model
     public function koppCount()
     {
         $sumProducts = ProjectProductCount::where([['project_id', '=', $this->id], ['product_id', '=', 4]])->sum('count');
+        return $sumProducts;
+    }
+
+    public function lobachCount()
+    {
+        $sumProducts = ProjectProductCount::where([['project_id', '=', $this->id], ['product_id', '=', 6]])->sum('count');
         return $sumProducts;
     }
 
@@ -487,7 +497,6 @@ class Project extends Model
             $pnrCount = 0;
             $documentsCount = 0;
             foreach ($region->projectStatus() as $projectStatus) {
-                $dataCount += isset($projectStatus->system_number);
                 $dataCount += isset($projectStatus->system_id);
                 $dataCount += isset($projectStatus->complex_id);
                 $dataCount += isset($projectStatus->city);
@@ -546,13 +555,13 @@ class Project extends Model
             }
 
             $arPercents[] = [
-                'dataCount' => $dataCount,
-                'initialDataCount' => $initialDataCount,
-                'pirCount' => $pirCount,
-                'productionCount' => $productionCount,
-                'smrCount' => $smrCount,
-                'pnrCount' => $pnrCount,
-                'documentsCount' => $documentsCount
+                'dataCount' => $dataCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'initialDataCount' => $initialDataCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'pirCount' => $pirCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'productionCount' => $productionCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'smrCount' => $smrCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'pnrCount' => $pnrCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1),
+                'documentsCount' => $documentsCount/($region->projectStatus()->count() > 0 ? $region->projectStatus()->count() : 1)
             ];
         }
 

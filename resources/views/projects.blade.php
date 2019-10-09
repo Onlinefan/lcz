@@ -59,14 +59,14 @@
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
                                             <div style="width: {{$datePercent}}%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">{{round($datePercent)}}% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>
                                             Ввод в эксплуатацию
                                         </div>
                                         <div>
-                                            <i class="fa fa-clock-o"></i> {{$project->contract->date_end}}
+                                            <i class="fa fa-clock-o"></i> {{$project->contract->date_sign_acts}}
                                             <div class="text-right pull-right">
                                                 Дедлайн - {{$project->deadline()}} дней
                                                 <a href="/progress/{{$project->id}}" class="btn btn-xs btn-white" style="margin-left: 20px;">Просмотр</a>
@@ -169,7 +169,7 @@
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
                                             <div style="width: {{$datePercent}}" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">@if ($project->contract->amount > 0){{round($project->incomeSum()/$project->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">{{round($datePercent)}}% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>

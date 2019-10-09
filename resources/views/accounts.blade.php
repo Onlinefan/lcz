@@ -27,8 +27,12 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label class="col-form-label" for="login">Логин</label>
-                            <input type="text" id="login" name="login" value="{{$request['login']}}" placeholder="Логин пользователя" class="form-control">
+                            <label class="col-form-label" for="department">Отдел</label>
+                            <select name="department" id="department" class="form-control">
+                                <option value="" {{$request['department'] === '' ? 'selected' : ''}}>Не выбрано</option>
+                                <option value="Реализация" {{$request['department'] === 'Реализация' ? 'selected' : ''}}>Реализация</option>
+                                <option value="Эксплуатация" {{$request['department'] === 'Эксплуатация' ? 'selected' : ''}}>Эксплуатация</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -39,6 +43,9 @@
                                 <option value="Оператор" {{$request['role'] === 'Оператор' ? 'selected' : ''}}>Оператор</option>
                                 <option value="Администратор" {{$request['role'] === 'Администратор' ? 'selected' : ''}}>Администратор</option>
                                 <option value="Суперпользователь" {{$request['role'] === 'Суперпользователь' ? 'selected' : ''}}>Суперпользователь</option>
+                                <option value="Производство" {{$request['role'] === 'Производство' ? 'selected' : ''}}>Производство</option>
+                                <option value="Бухгалтер" {{$request['role'] === 'Бухгалтер' ? 'selected' : ''}}>Бухгалтер</option>
+                                <option value="Секретарь" {{$request['role'] === 'Секретарь' ? 'selected' : ''}}>Секретарь</option>
                             </select>
                         </div>
                     </div>
@@ -72,7 +79,7 @@
                                         <th data-toggle="true">Фамилия</th>
                                         <th data-hide="phone">Имя</th>
                                         <th data-hide="phone">Отчество</th>
-                                        <th data-hide="phone">Логин</th>
+                                        <th data-hide="phone">Отдел</th>
                                         <th data-hide="phone">Роль</th>
                                         <th data-hide="phone">Статус</th>
                                         <th class="text-right" data-sort-ignore="true"></th>
@@ -85,7 +92,7 @@
                                         <td>{{$user->second_name}}</td>
                                         <td>{{$user->first_name}}</td>
                                         <td>{{$user->patronymic}}</td>
-                                        <td>{{$user->login}}</td>
+                                        <td>{{$user->department}}</td>
                                         <td>{{$user->role}}</td>
                                         <td><span class="label {{$user->status === 'Ожидает модерации' ? 'label-default' : ($user->status === 'Активен' ? 'label-primary' : 'label-danger')}}">{{$user->status}}</span></td>
                                         <td class="text-right">

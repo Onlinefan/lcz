@@ -7,7 +7,15 @@
     @endif
     @section('user-name', auth()->user()->second_name . ' ' . auth()->user()->first_name . ' ' . auth()->user()->patronymic)
 @endif
+@php
+    if (auth()->user()->role === 'Оператор') {
+                $projectCodes = json_encode(\App\Project::where(['head_id' => auth()->user()->id])->pluck('code')->all());
+            } else {
+                $projectCodes = json_encode(\App\Project::pluck('code')->all());
+            }
 
+            setcookie('projectCodes', $projectCodes, 0, '/');
+@endphp
 @section('breadcrumbs')
     @include('inspinia::layouts.main-panel.breadcrumbs', [
         'breadcrumbs' => []

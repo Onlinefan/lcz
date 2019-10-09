@@ -61,8 +61,8 @@ class User extends Authenticatable
             $query = $query + ['patronymic' => $request['patronymic']];
         }
 
-        if ($request['login']) {
-            $query = $query + ['login' => $request['login']];
+        if ($request['department']) {
+            $query = $query + ['department' => $request['department']];
         }
 
         if ($request['role']) {
@@ -77,7 +77,7 @@ class User extends Authenticatable
             $query = $query + ['role' => 'Оператор'];
         }
 
-        return $this->select(['first_name', 'second_name', 'patronymic', 'login', 'role', 'status', 'id'])->where($query)->get();
+        return $this->select(['first_name', 'second_name', 'patronymic', 'department', 'role', 'status', 'id'])->where($query)->get();
     }
 
     public function avatarFile()

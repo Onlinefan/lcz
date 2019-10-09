@@ -58,14 +58,14 @@
                                         <div class="progress progress-mini" style="    width: calc(100% - 50px);">
                                             <div style="width: {{$datePercent}}" class="progress-bar progress-bar-danger"></div>
                                         </div>
-                                        <div class="stat-percent font-bold text-info">@if ($realization->contract->amount){{round($realization->incomeSum()/$realization->contract->amount*100)}} @else 0 @endif% <i class="fa fa-level-up"></i></div>
+                                        <div class="stat-percent font-bold text-info">{{$datePercent}}% <i class="fa fa-level-up"></i></div>
                                     </div>
                                     <div class="agile-detail">
                                         <div>
                                             @if(auth()->user()->department === 'Реализация')Ввод в эксплуатацию@elseДата завершения договора@endif
                                         </div>
                                         <div>
-                                            <i class="fa fa-clock-o"></i> {{$realization->contract->date_end}}
+                                            <i class="fa fa-clock-o"></i> @if(auth()->user()->department === 'Реализация'){{$realization->contract->date_sign_acts}}@else{{$realization->contract->date_end}} @endif
                                             <div class="text-right pull-right">
                                                 Дедлайн - {{$realization->deadline()}} дней
                                                 <a href="/progress/{{$realization->id}}" class="btn btn-xs btn-white" style="margin-left: 20px;">Просмотр</a>
