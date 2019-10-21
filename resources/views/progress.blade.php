@@ -272,7 +272,7 @@
                                                         <td>@if (isset($row->pir->requestFooting))<span class="label {{$row->pir->requestFooting->name === 'Получено' ? 'label-primary' : ($row->pir->requestFooting->name === 'Отсутствует' ? 'label-danger' : 'label-secondary')}}">{{$row->pir->requestFooting->name}}</span>@endif</td>
                                                         <td><a href="/edit-pir/{{$row->pir->id}}" ><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td>@if (isset($row->production->shipmentStatus))<span class="label {{$row->production->shipmentStatus->name === 'На паузе' ? 'label-danger' : ($row->production->shipmentStatus->name === 'В закупке' ? 'label-warning' : ($row->production->shipmentStatus->name === 'Отгружен' ? 'label-primary' : 'label-secondary'))}}">{{$row->production->shipmentStatus->name}}</span>@endif</td>
+                                                        <td>@if (isset($row->production->shipmentStatus))<span class="label {{$row->production->shipmentStatus->name === 'На паузе' ? 'label-danger' : ($row->production->shipmentStatus->name === 'В работе' ? 'label-warning' : ($row->production->shipmentStatus->name === 'Отгружен' ? 'label-primary' : 'label-secondary'))}}">{{$row->production->shipmentStatus->name}}</span>@endif</td>
                                                         <td>{{$row->production->date_equipment_shipment}}</td>
                                                         <td>{{$row->production->number_sim_internet}}</td>
                                                         <td>{{$row->production->number_sim_ssu}}</td>
@@ -280,7 +280,7 @@
                                                         <td>{{$row->production->date_verification_end}}</td>
                                                         <td><a href="/edit-production/{{$row->production->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
 
-                                                        <td><a href="{{$row->smr->link_root_task}}">{{$row->smr->link_root_task}}</a></td>
+                                                        <td><a style="word-break: break-all;" href="{{$row->smr->link_root_task}}">{{$row->smr->link_root_task}}</a></td>
                                                         <td>@if (isset($row->smr->vu220))<span class="label {{$row->smr->vu220->name === 'Питание отсутствует' ? 'label-danger' : 'label-primary'}}">{{$row->smr->vu220->name}}</span>@endif</td>
                                                         <td>@if (isset($row->smr->linkContract))<span class="label {{$row->smr->linkContract->name === 'Не требуется' ? 'label-secondary' : 'label-primary'}}">{{$row->smr->linkContract->name}}</span>@endif</td>
                                                         <td>@if (isset($row->smr->dislocationStrapping))<span class="label {{$row->smr->dislocationStrapping->name === 'Не требуется' ? 'label-secondary' : 'label-primary'}}">{{$row->smr->dislocationStrapping->name}}</span>@endif</td>

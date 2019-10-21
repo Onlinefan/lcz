@@ -23,9 +23,7 @@ class StatusController extends Controller
                     return redirect('/blocked');
                 }
 
-                if ($this->user->role === 'Секретарь') {
-                    return redirect('/statuses');
-                } elseif ($this->user->role === 'Оператор') {
+                if ($this->user->role === 'Оператор') {
                     return redirect('/home2');
                 } elseif ($this->user->role === 'Бухгалтер') {
                     return redirect('/home');

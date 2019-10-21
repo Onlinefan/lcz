@@ -45,7 +45,7 @@ class MessageController extends Controller
             $messageBody = auth()->user()->first_name . ' ' . auth()->user()->second_name . ' написал: ' . $message->message;
             mail($project->head->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);
         } else {
-            $users = User::whereNotIn('role', ['Оператор', 'Производство', 'Бухгалтер'])->get();
+            $users = User::whereNotIn('role', ['Оператор', 'Производство', 'Бухгалтер', 'Секретарь'])->get();
             foreach ($users as $user) {
                 $messageBody = auth()->user()->first_name . ' ' . auth()->user()->second_name . ' написал: ' . $message->message;
                 mail($user->email, 'В проекте ' . $project->name . ' новое сообщение', $messageBody);

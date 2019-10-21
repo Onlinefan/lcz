@@ -191,4 +191,10 @@ class LetterController extends Controller
             return true;
         }
     }
+
+    public function delete($id)
+    {
+        Email::destroy($id);
+        return redirect('/letters');
+    }
 }

@@ -124,3 +124,4 @@ Route::get('/blocked', 'WarningController@blocked')->name('blocked');
 Route::get('/delete-contact/{id}', 'ContactController@delete')->name('delete-contact');
 Route::match(['get', 'post'], '/projects-table', 'AdminController@projectsTable')->name('projects-table');
 Route::match(['get', 'post'], '/delete-project/{id}', 'AdminController@deleteProject')->name('delete-project');
+Route::get('/delete-letter/{id}', 'LetterController@delete')->name('delete-letter');

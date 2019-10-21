@@ -369,56 +369,62 @@ class AdminController extends Controller
     {
         $project = Project::find($id);
         $cafap = Cafap::where(['project_id' => $id])->first();
-        if ($cafap->data_transfer_scheme) {
-            File::destroy($cafap->data_transfer_scheme);
-        }
+        if ($cafap) {
+            if ($cafap->data_transfer_scheme) {
+                File::destroy($cafap->data_transfer_scheme);
+            }
 
-        if ($cafap->location_directions) {
-            File::destroy($cafap->location_directions);
-        }
+            if ($cafap->location_directions) {
+                File::destroy($cafap->location_directions);
+            }
 
-        if ($cafap->speed_mode) {
-            File::destroy($cafap->speed_mode);
-        }
+            if ($cafap->speed_mode) {
+                File::destroy($cafap->speed_mode);
+            }
 
-        CafapAndromedaExist::where(['cafap_id' => $cafap->id])->delete();
-        $collages = CafapCollage::where(['cafap_id' => $cafap->id])->get();
-        foreach ($collages as $collage) {
-            File::destroy($collage->file);
-        }
+            CafapAndromedaExist::where(['cafap_id' => $cafap->id])->delete();
+            $collages = CafapCollage::where(['cafap_id' => $cafap->id])->get();
+            foreach ($collages as $collage) {
+                File::destroy($collage->file);
+                $collage->delete();
+            }
 
-        CafapRegion::where(['cafap_id' => $cafap->id])->delete();
+            CafapRegion::where(['cafap_id' => $cafap->id])->delete();
+            $cafap->delete();
+        }
 
         $contract = Contract::where(['project_id' => $project->id])->first();
-        if ($contract->project_charter) {
-            File::destroy($contract->project_charter);
-        }
+        if ($contract) {
+            if ($contract->project_charter) {
+                File::destroy($contract->project_charter);
+            }
 
-        if ($contract->plan_chart) {
-            File::destroy($contract->plan_chart);
-        }
+            if ($contract->plan_chart) {
+                File::destroy($contract->plan_chart);
+            }
 
-        if ($contract->lop) {
-            File::destroy($contract->lop);
-        }
+            if ($contract->lop) {
+                File::destroy($contract->lop);
+            }
 
-        if ($contract->file) {
-            File::destroy($contract->file);
-        }
+            if ($contract->file) {
+                File::destroy($contract->file);
+            }
 
-        if ($contract->technical_task) {
-            File::destroy($contract->technical_task);
-        }
+            if ($contract->technical_task) {
+                File::destroy($contract->technical_task);
+            }
 
-        if ($contract->risks) {
-            File::destroy($contract->risks);
-        }
+            if ($contract->risks) {
+                File::destroy($contract->risks);
+            }
 
-        if ($contract->decision_sheet) {
-            File::destroy($contract->decision_sheet);
-        }
+            if ($contract->decision_sheet) {
+                File::destroy($contract->decision_sheet);
+            }
 
-        $contract->delete();
+            $contract->delete();
+        }
 
         $costPlans = CostPlan::where(['project_id' => $project->id])->get();
         foreach ($costPlans as $costPlan) {

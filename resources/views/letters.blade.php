@@ -108,6 +108,7 @@
                                     <th>Файл</th>
                                     <th>Проект</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
 
@@ -120,9 +121,10 @@
                                         <td>{{$email->number}}</td>
                                         <td>{{$email->recipient}}</td>
                                         <td><span class="label {{$email->status === 'Получено' ? 'label-primary' : 'label-warning'}}">{{$email->status}}</span></td>
-                                        <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
+                                        <td>@if (isset($email->letterFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/'))}}</span><a style="word-break: break-all;" href="/download?path={{substr($email->letterFile->path, strripos($email->letterFile->path, 'Projects_files/')) . $email->letterFile->file_name}}">{{$email->letterFile->file_name}}</a>@endif</td>
                                         <td>@if (isset($email->project)){{$email->project->name}}@endif</td>
                                         <td><a href="/edit-letter/{{$email->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
+                                        <td><a href="/delete-letter/{{$email->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

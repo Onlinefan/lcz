@@ -93,8 +93,8 @@
                                                                         <td>{{$income->document_number}}</td>
                                                                         <td>{{$income->date_document}}</td>
                                                                         <td>{{$income->date_payment}}</td>
-                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
-                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/'))}}</span><a href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->documentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/'))}}</span><a style="word-break: break-all;" href="/download?path={{substr($income->documentFile->path, strripos($income->documentFile->path, 'Projects_files/')) . $income->documentFile->file_name}}">{{$income->documentFile->file_name}}</a>@endif</td>
+                                                                        <td>@if (isset($income->closedDocumentFile))<span class="hidden-url">http://{{$_SERVER['SERVER_NAME'] . '/download?path=' . substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/'))}}</span><a style="word-break: break-all;" href="/download?path={{substr($income->closedDocumentFile->path, strripos($income->closedDocumentFile->path, 'Projects_files/')) . $income->closedDocumentFile->file_name}}">{{$income->closedDocumentFile->file_name}}</a>@endif</td>
                                                                         <td style="text-align:right">{{number_format($income->count, 2, '.', ' ')}}</td>
                                                                         <td>{{$income->payment_status}}</td>
                                                                         <td>@if (auth()->user()->role !== 'Бухгалтер')<a href="/edit-income/{{$income->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a>@endif</td>
@@ -135,8 +135,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" href="/add-income-plan">Добавить план поступлений</a>
-                                    @if ($incomePlans->count())<a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>@endif
+                                    @if (auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-income-plan">Добавить план поступлений</a>@endif
+                                    @if ($incomePlans->count() && auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-income">Добавить поступление</a>@endif
                                 </div>
                             </div>
                         </div>
@@ -258,9 +258,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    @if (auth()->user()->role !== 'Оператор')<a class="btn btn-primary btn-sm" href="/add-cost-plan">Добавить план затрат</a>@endif
-                                    @if ($costPlans->count())<a class="btn btn-primary btn-sm" href="/add-cost">Добавить затраты</a>@endif
-                                    @if (auth()->user()->role !== 'Оператор')<a class="btn btn-primary btn-sm" href="/add-cost-file">Загрузить файл затрат</a>@endif
+                                    @if (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-cost-plan">Добавить план затрат</a>@endif
+                                    @if ($costPlans->count() && auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-cost">Добавить затраты</a>@endif
+                                    @if (auth()->user()->role !== 'Оператор' && auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-cost-file">Загрузить файл затрат</a>@endif
                                 </div>
                             </div>
                         </div>
@@ -299,10 +299,10 @@
                                                             <td>{{$document->number}}</td>
                                                             <td>{{$document->base}}</td>
                                                             <td>{{$document->contractor}}</td>
-                                                            <td><a href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Projects_files/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
+                                                            <td><a style="word-break: break-all;" href="/download?path={{substr($document->contractFile->path, strripos($document->contractFile->path, 'Projects_files/')) . $document->contractFile->file_name}}">{{$document->contractFile->file_name}}</a></td>
                                                             <td>{{$document->project->name}}</td>
-                                                            <td><a href="/edit-other-document/{{$document->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>
-                                                            <td><a href="/delete-other-document/{{$document->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>
+                                                            <td>@if(auth()->user()->role !== 'Бухгалтер')<a href="/edit-other-document/{{$document->id}}"><i class="fa fa-edit" style="color:blue; font-size:20px;"></i></a></td>@endif
+                                                            <td>@if(auth()->user()->role !== 'Бухгалтер')<a href="/delete-other-document/{{$document->id}}"><i class="fa fa-times-circle" style="color:red; font-size:20px;"></i></a></td>@endif
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -314,7 +314,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <a class="btn btn-primary btn-sm" href="/add-other-document">Добавить документ</a>
+                                    @if(auth()->user()->role !== 'Бухгалтер')<a class="btn btn-primary btn-sm" href="/add-other-document">Добавить документ</a>@endif
                                 </div>
                             </div>
                         </div>

@@ -117,7 +117,9 @@ class Project extends Model
     {
         $incomeSum = 0;
         foreach ($this->incomePlans as $plan) {
-            $incomeSum += $plan->payed;
+            foreach ($plan->incomes as $income) {
+                $incomeSum += $income->payment_status === 'Оплачен' ? (float)$income->count : 0;
+            }
         }
 
         return $incomeSum;
@@ -265,7 +267,7 @@ class Project extends Model
     {
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
-            $surveyDone = Pir::whereIn('complex_id', $complexIds)->whereIn('request_tu', [2, 4])->count();
+            $surveyDone = Pir::whereIn('complex_id', $complexIds)->whereIn('request_tu', [3, 4])->count();
             return [
                 'complex' => count($complexIds),
                 'done' => $surveyDone
@@ -351,10 +353,10 @@ class Project extends Model
     {
         $complexIds = ProjectStatus::where([['project_id', '=', $this->id], ['region_id', '=', $regionId]])->pluck('id')->all();
         if ($complexIds) {
-            $surveyDone = Document::whereIn('complex_id', $complexIds)->where('tu_220', '<>', 'Не требуется')->count();
+            $surveyDone = Document::whereIn('complex_id', $complexIds)->where('tu_220', '<>', 'Не требуется')->get();
             return [
                 'complex' => count($complexIds),
-                'done' => $surveyDone
+                'done' => $surveyDone->count()
             ];
         } else {
             return [
