@@ -106,7 +106,7 @@ class ProgressController extends Controller
 
         $now = new DateTime('now');
         $contractEnd = $project->status === 'Реализация' ? new DateTime($project->contract->date_sign_acts) : new DateTime($project->contract->date_end);
-        $dateDiff = $now->diff($contractEnd)->format('%r%a');
+        $dateDiff = (int)$incomePay === (int)$project->contract->amount ? '-' : $now->diff($contractEnd)->format('%r%a');
 
 
         $vu220 = '220_vu';

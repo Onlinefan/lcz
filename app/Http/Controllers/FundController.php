@@ -442,7 +442,7 @@ class FundController extends Controller
 
             $file = new File();
             $fileName = File::createName($income->plan->project->name);
-            $file->createFile($request->file('document'),
+            $file->createFile($request->file('closed_document'),
                 public_path('Projects_files/' . $income->plan->project->code . '/Управление проектом/Договоры (поступления)/' . $income->plan->name . '/'),
                 $fileName);
             $income->closed_document = $file->id;

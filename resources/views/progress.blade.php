@@ -63,7 +63,7 @@
                             @endifДедлайн</h5>
                     </div>
                     <div class="ibox-content">
-                        <h1 class="no-margins">{{$dateDiff}} дней</h1>
+                        <h1 class="no-margins">{{$dateDiff === '-' ? $dateDiff : $dateDiff . ' дней'}}</h1>
                         <div class="progress progress-mini">
                             <div style="width: {{round($datePercent)}}%;" class="progress-bar progress-bar-warning"></div>
                         </div>
